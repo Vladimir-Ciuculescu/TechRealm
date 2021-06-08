@@ -1,6 +1,7 @@
-.navbar {
+.nav-bar {
   padding-top: 20px;
   padding-bottom: 20px;
+  background-color: #343a40 !important;
 }
 .fa-shopping-cart {
   padding-right: 5px;

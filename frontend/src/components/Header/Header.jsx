@@ -6,7 +6,7 @@ const Header = () => {
 
     return (
         <header>
-            <Navbar className = "navbar" bg='dark' variant = "dark" expand="lg" collapseOnSelect>
+            <Navbar className = "nav-bar" bg='dark' variant = "dark" expand="lg" collapseOnSelect>
                 <Container>
                     <Navbar.Brand href="/">TechRealm</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
