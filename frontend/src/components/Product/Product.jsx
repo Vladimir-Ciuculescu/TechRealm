@@ -1,6 +1,9 @@
 import React from 'react';
-import { Card, Image } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import './Product.css';
+import Rating from '../Rating/Rating';
+
+
 
 const Product = ({product}) => {
 
@@ -13,17 +16,17 @@ const Product = ({product}) => {
 
             <Card.Body>
                 
-                <Card.Title><strong>{product.name}</strong></Card.Title>
+                <a className = "link-to-product" href = {`/product/${product._id}`}>
+                    <Card.Title><strong>{product.name}</strong></Card.Title>
+                </a>
 
                 <Card.Text as="div">
-                    <div className = "my-3">
-                        {product.rating} from {product.numReviews} reviews
-                    </div>
+                    <Rating value = {product.rating} text = {`${product.numReviews} reviews`} />
                 </Card.Text>
 
 
                 <Card.Text as="h3">
-                    <h3>{product.price}$</h3>
+                    <h3 className = "price">{product.price}$</h3>
                 </Card.Text>
                 
             </Card.Body>

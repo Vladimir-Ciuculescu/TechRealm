@@ -5,3 +5,16 @@
 .product-image {
   height: 230px;
 }
+
+.price {
+  padding: 1rem 0;
+}
+
+.link-to-product {
+  text-decoration: none;
+  color: black;
+}
+
+.link-to-product:hover {
+  color: grey;
+}
