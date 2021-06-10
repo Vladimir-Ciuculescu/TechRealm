@@ -1,0 +1,22 @@
+{
+  "name": "techrealm",
+  "version": "1.0.0",
+  "description": "MERN shopping cart app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Riyokoo/TechRealm.git"
+  },
+  "author": "Vladi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Riyokoo/TechRealm/issues"
+  },
+  "homepage": "https://github.com/Riyokoo/TechRealm#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
