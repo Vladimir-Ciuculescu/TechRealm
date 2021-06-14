@@ -8,20 +8,30 @@ import Product from './models/productModel.js'
 import Order from './models/orderModel.js'
 import connectDB from './config/db.js'
 
+//Scriptul asta il apelam doar pentru a introduce sau a sterge niste dummy data in cluster.
+
 dotenv.config()
 
 connectDB()
 
 const importData = async () => {
     try {
+
+        //delete all the documents 
         await Order.deleteMany()
         await Product.deleteMany()
         await User.deleteMany()
 
+
+        //add data as documents to users collections
         const createdUsers = await User.insertMany(users)
+
 
         const adminUser = createdUsers[0]._id
 
+
+        //add data as documents to products collection, each product having associated the id of the admin user,
+        //that is what does the adminUser variable
         const sampleProducts = products.map(product => {
             return {...product, user:adminUser}
         })

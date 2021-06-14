@@ -73,7 +73,7 @@ const ProductScreen = ({ match }) => {
                                 <Button
                                     className=" add-to-cart" 
                                     disabled={product.countInStock > 0 ? false : true}>
-                                    Add to cart
+                                    {product.countInStock > 0 ? "Add to Cart":"Out of stock"}
                                 </Button>
                             </ListGroup.Item>
                             
