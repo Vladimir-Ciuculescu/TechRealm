@@ -1,0 +1,22 @@
+{
+  "name": "techrealm",
+  "version": "1.0.0",
+  "description": "PERN Stack E-commere app",
+  "main": "server.js",
+  "scripts": {
+    "start":"node backend/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vladimir-Ciuculescu/TechRealm.git"
+  },
+  "author": "Vladi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vladimir-Ciuculescu/TechRealm/issues"
+  },
+  "homepage": "https://github.com/Vladimir-Ciuculescu/TechRealm#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

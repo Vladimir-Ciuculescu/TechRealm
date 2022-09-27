@@ -1,4 +1,4 @@
-export interface ProductCardType {
+export interface Product {
   id: number
   name: string
   image?: string
