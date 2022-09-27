@@ -8,7 +8,7 @@ interface IProps {}
 const HomeScreen: React.FC<IProps> = () => {
   return (
     <>
-      <h1>Lates Products </h1>
+      <h1>Latest Products </h1>
       <Row>
         {products.map((product: any) => (
           <Col sm={12} md={6} lg={4} xl={3}>

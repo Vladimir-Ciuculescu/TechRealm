@@ -1,6 +1,8 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import Rating from '../Rating'
+
 import { ProductCardType } from './ProductCardType'
 
 interface ProductCard {
@@ -12,13 +14,15 @@ const ProductCard: React.FC<ProductCard> = ({ product }) => {
 
   return (
     <Card style={{ width: '18rem' }}>
-      <a href={`/product/${id}`}>
+      <Link to={`/product/${id}`}>
         <Card.Img variant="top" src={image} />
-      </a>
+      </Link>
       <Card.Body>
-        <Card.Title>
-          <strong>{name}</strong>
-        </Card.Title>
+        <Link style={{ textDecoration: 'none' }} to={`/product/${id}`}>
+          <Card.Title>
+            <strong>{name}</strong>
+          </Card.Title>
+        </Link>
 
         <Rating numberOfStars={rating} numberOfReviews={numberOfReviews} />
         <Card.Text className="mt-3" as="h3">
