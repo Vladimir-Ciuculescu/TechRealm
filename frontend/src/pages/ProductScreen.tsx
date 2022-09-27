@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col, Image, Card, ListGroup, Button } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import { products } from '../dummyData'
 import { useParams, Link } from 'react-router-dom'
 import { FaCartPlus } from 'react-icons/fa'
+import { Product } from '../interfaces/Product'
+import axios from 'axios'
 
 interface IProps {}
 
 const ProductScreen: React.FC<any> = () => {
   const { id } = useParams()
 
-  const product = products.find((product) => product.id === id)
+  const [product, setProduct] = useState<Product>()
+
+  const fetchProduct = async () => {
+    const { data } = await axios.get(`/products/${id}`)
+    setProduct(data)
+  }
+
+  useEffect(() => {
+    fetchProduct()
+  }, [])
 
   if (product) {
     const {

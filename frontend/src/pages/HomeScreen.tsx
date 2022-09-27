@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import ProductCard from '../components/Product/ProductCard'
-import { Product } from '../components/Product/Product'
+import { Product } from '../interfaces/Product'
 import axios from 'axios'
 
 interface IProps {}
