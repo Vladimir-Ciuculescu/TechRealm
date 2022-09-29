@@ -84,7 +84,7 @@ const ProductScreen: React.FC<any> = () => {
                   type="button"
                   disabled={countInStock === 0}
                 >
-                  <FaCartPlus className="icon__add-to-card" size={23} />
+                  <FaCartPlus className="icon__add-to-cart" size={23} />
                   ADD TO CART
                 </Button>
               </ListGroup.Item>
