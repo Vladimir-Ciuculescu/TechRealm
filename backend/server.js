@@ -4,6 +4,7 @@ const express = require('express')
 const env = require('dotenv')
 const products = require('./data/dummyData')
 const pg_model = require('./pg_model.js')
+const colors = require('colors')
 
 env.config()
 
@@ -61,4 +62,4 @@ app.delete('/merchants/:id', (req, res) => {
 const PORT = process.env.PORT || 5000
 const mode = process.env.NODE_ENV 
 
-app.listen(PORT, console.log(`Running ${mode} mode on port 5000`))
+app.listen(PORT, console.log(`Running ${mode} mode on port 5000`.cyan.bold))

@@ -1,11 +1,15 @@
 const {Pool} = require('pg');
+const env = require('dotenv')
+
+env.config()
+
 
 const pool = new Pool({
 	user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'admin',
-  port: 5432,
+  host: process.env.HOST,
+  database: process.env.DATABASE,
+  password: process.env.PASSWORD,
+  port: process.env.PG_PORT,
 })
 
  const getMerchants = () => {
