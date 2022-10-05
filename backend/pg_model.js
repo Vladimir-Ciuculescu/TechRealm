@@ -12,9 +12,11 @@ const pool = new Pool({
   port: process.env.PG_PORT,
 })
 
- const getMerchants = () => {
-  return new Promise(function(resolve, reject) {
-    pool.query('SELECT * FROM merchants ORDER BY id ASC', (error, results) => {
+
+
+const getProducts = () => {
+	return new Promise(function(resolve, reject) {
+    pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
       if (error) {
         reject(error)
       }
@@ -22,6 +24,7 @@ const pool = new Pool({
     })
   }) 
 }
+
  const createMerchant = (body) => {
   return new Promise(function(resolve, reject) {
     const { name, email } = body
@@ -46,8 +49,8 @@ const pool = new Pool({
 }
 
 module.exports = {
-	getMerchants,
 	createMerchant,
-	deleteMerchant
+	deleteMerchant,
+	getProducts,
 }
 

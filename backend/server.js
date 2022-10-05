@@ -29,7 +29,7 @@ app.get('/products/:id', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  pg_model.getMerchants()
+  pg_model.getProducts()
   .then(response => {
 		console.log(response)
     res.status(200).send(response);
