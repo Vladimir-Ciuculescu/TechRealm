@@ -1,7 +1,8 @@
+create extension pgcrypto;
+
 --Create user type
 create type userRole as enum('admin', 'client');
 
---Create payment type
 create type paymentType as enum ('cash', 'card');
 
 --Add users table
@@ -13,6 +14,8 @@ create table users (
 	role userRole
 )
 
+alter table USERS
+alter column password type varchar(250)
 
 --Add products table 
 create table products (
@@ -66,7 +69,7 @@ drop table orders;
 
 
 --insert users
-insert into users (name, email, password, role) values ('vladi', 'vladi@ceva.com', 'vladi32t23r', 'admin');
+insert into users (name, email, password, role) values ('anda', 'anda@ceva.com', crypt('vladi32t23r', gen_salt('bf')), 'admin');
 insert into users (name, email, password, role) values ('radu', 'radu@ceva.com', 'radui32t1241', 'admin');
 insert into users (name, email, password, role) values ('maria', 'marioara@da.com', 'mariaa_29', 'admin');
 
