@@ -12,6 +12,8 @@ const HomeScreen: React.FC<IProps> = () => {
   const fetchProducts = async () => {
     const { data } = await axios.get('/products')
 
+    console.log(data)
+
     setProducts(data)
   }
 

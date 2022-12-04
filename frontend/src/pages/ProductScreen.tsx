@@ -15,6 +15,7 @@ const ProductScreen: React.FC<any> = () => {
 
   const fetchProduct = async () => {
     const { data } = await axios.get(`/products/${id}`)
+    console.log(data)
     setProduct(data)
   }
 

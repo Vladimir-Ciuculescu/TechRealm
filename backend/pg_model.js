@@ -1,56 +1,65 @@
-const {Pool} = require('pg');
-const env = require('dotenv')
+const { Pool } = require("pg");
+//const env = require("dotenv");
 
-env.config()
-
+//env.config();
 
 const pool = new Pool({
-	user: 'postgres',
-  host: process.env.HOST,
-  database: process.env.DATABASE,
-  password: process.env.PASSWORD,
-  port: process.env.PG_PORT,
-})
-
-
+  user: "vladiciuculescu",
+  host: "localhost",
+  database: "techrealm",
+  password: "root",
+  port: 5432,
+});
 
 const getProducts = () => {
-	return new Promise(function(resolve, reject) {
-    pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
-      if (error) {
-        reject(error)
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT id, 
+      name, 
+      brand, 
+      category, 
+      description, 
+      rating, 
+      numberofreviews as "numberOfReviews",
+      price, 
+      countinstock as countInStock, 
+      user_id as userId, 
+      image 
+      FROM products`,
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(results.rows);
       }
-      resolve(results.rows);
-    })
-  }) 
-}
+    );
+  });
+};
 
- const createMerchant = (body) => {
-  return new Promise(function(resolve, reject) {
-    const { name, email } = body
-    pool.query('INSERT INTO merchants (name, email) VALUES ($1, $2) RETURNING *', [name, email], (error, results) => {
-      if (error) {
-        reject(error)
+const getProductById = (id) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT id, 
+      name, 
+      brand, 
+      category, 
+      description, 
+      rating, 
+      numberofreviews as "numberOfReviews", 
+      price, 
+      countinstock as countInStock,
+      image FROM products WHERE id = ${id}`,
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(results.rows[0]);
       }
-      resolve(`A new merchant has been added added: ${results.rows[0]}`)
-    })
-  })
-}
- const deleteMerchant = () => {
-  return new Promise(function(resolve, reject) {
-    const id = parseInt(request.params.id)
-    pool.query('DELETE FROM merchants WHERE id = $1', [id], (error, results) => {
-      if (error) {
-        reject(error)
-      }
-      resolve(`Merchant deleted with ID: ${id}`)
-    })
-  })
-}
+    );
+  });
+};
 
 module.exports = {
-	createMerchant,
-	deleteMerchant,
-	getProducts,
-}
-
+  getProducts,
+  getProductById,
+};
