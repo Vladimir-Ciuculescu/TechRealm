@@ -1,7 +1,10 @@
+import { Image } from './Image'
+
 export interface Product {
   id: number
   name: string
-  image?: string
+  defaultImage?: Image
+  images?: any[]
   description?: string
   brand: string
   category: string

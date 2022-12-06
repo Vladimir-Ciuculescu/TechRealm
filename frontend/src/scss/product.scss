@@ -1,0 +1,17 @@
+.product {
+  &_card {
+    &_container {
+      margin-top: 3%;
+    }
+
+    &_name {
+      text-decoration: none;
+    }
+  }
+}
+
+.col {
+  &:first {
+    background-color: red;
+  }
+}

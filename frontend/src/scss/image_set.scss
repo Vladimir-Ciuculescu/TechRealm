@@ -1,0 +1,18 @@
+.image-set {
+  &_container {
+    // background-color: aqua;
+    width: 70%;
+  }
+
+  &_mini-image {
+    &_container:hover {
+      &:hover {
+        border: 1px solid #6600cc;
+      }
+    }
+  }
+}
+
+.test {
+  border: 5px solid blue;
+}

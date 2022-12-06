@@ -1,8 +1,10 @@
 const express = require("express");
 const pg_model = require("./pg_model");
 const app = express();
+const cors = require("cors");
 
 app.use(express.json());
+app.use(cors());
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -28,9 +30,15 @@ app.get("/products/:id", async (req, res) => {
     const { id } = req.params;
 
     const product = await pg_model.getProductById(id);
+    const images = await pg_model.getProductImages(id);
 
-    res.status(200).send(product);
-  } catch (error) {}
+    res.status(200).json({
+      product: product,
+      images: images,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 app.listen(5001, console.log("Appliction running at port 5001"));

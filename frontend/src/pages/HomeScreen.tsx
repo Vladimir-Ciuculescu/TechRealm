@@ -12,8 +12,6 @@ const HomeScreen: React.FC<IProps> = () => {
   const fetchProducts = async () => {
     const { data } = await axios.get('/products')
 
-    console.log(data)
-
     setProducts(data)
   }
 
@@ -24,7 +22,7 @@ const HomeScreen: React.FC<IProps> = () => {
   return (
     <>
       <h1>Latest Products </h1>
-      <Row>
+      <Row className="product_card_container">
         {products.map((product: any) => (
           <Col sm={12} md={6} lg={4} xl={3}>
             <ProductCard product={product} />

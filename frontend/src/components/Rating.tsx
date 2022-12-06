@@ -37,8 +37,6 @@ const RenderRating = (numberOfStars: number) => {
 }
 
 const Rating: React.FC<IProps> = ({ numberOfReviews, numberOfStars }) => {
-  console.log(numberOfReviews, numberOfStars)
-
   return (
     <div className="d-flex flex-row justify-content-between">
       {numberOfReviews ? RenderRating(numberOfStars) : null}

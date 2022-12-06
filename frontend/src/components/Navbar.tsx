@@ -5,22 +5,27 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 const NavBar = () => {
   return (
-    <Navbar className="py-3" bg="light" expand="lg" collapseOnSelect>
+    <Navbar
+      className="py-3 navbar_container"
+      variant="dark"
+      expand="lg"
+      collapseOnSelect
+    >
       <Container>
         <LinkContainer to="/">
-          <Navbar.Brand>TechRealm</Navbar.Brand>
+          <Navbar.Brand>Tech Realm</Navbar.Brand>
         </LinkContainer>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <LinkContainer to="/cart">
-              <Nav.Link>
+            <LinkContainer className="navlink-container" to="/cart">
+              <Nav.Link className="d-flex align-items-center">
                 <AiOutlineShoppingCart size={25} />
                 <span>Cart</span>
               </Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/signin">
-              <Nav.Link>
+            <LinkContainer className="navlink-container" to="/signin">
+              <Nav.Link className="d-flex align-items-center">
                 <AiOutlineLogin size={25} />
                 Sign in
               </Nav.Link>

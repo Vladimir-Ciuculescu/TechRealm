@@ -4,19 +4,33 @@ import Rating from '../components/Rating'
 import { useParams, Link } from 'react-router-dom'
 import { FaCartPlus } from 'react-icons/fa'
 import { Product } from '../interfaces/Product'
+import Select from 'react-select'
 import axios from 'axios'
+import { CommonSelect } from '../components/common/CommonSelect'
+import { SelectOption } from '../interfaces/SelectOption'
+import { ImageSet } from '../components/Product/ImageSet'
 
-interface IProps {}
+const options: SelectOption[] = [
+  { value: 1, label: '1' },
+  { value: 2, label: '2' },
+  { value: 3, label: '3' },
+  { value: 5, label: '5' },
+]
 
 const ProductScreen: React.FC<any> = () => {
   const { id } = useParams()
 
   const [product, setProduct] = useState<Product>()
+  const [quantity, setQuantity] = useState<number>()
+  const [productImages, setProductImages] = useState<any[]>([])
 
   const fetchProduct = async () => {
     const { data } = await axios.get(`/products/${id}`)
-    console.log(data)
-    setProduct(data)
+
+    const { product, images } = data
+
+    setProduct(product)
+    setProductImages(images)
   }
 
   useEffect(() => {
@@ -24,15 +38,8 @@ const ProductScreen: React.FC<any> = () => {
   }, [])
 
   if (product) {
-    const {
-      image,
-      name,
-      price,
-      numberOfReviews,
-      rating,
-      description,
-      countInStock,
-    } = product
+    const { name, price, numberOfReviews, rating, description, countInStock } =
+      product
 
     return (
       <>
@@ -41,7 +48,8 @@ const ProductScreen: React.FC<any> = () => {
         </Link>
         <Row>
           <Col md={6}>
-            <Image src={image} alt={name} fluid />
+            <Image src={productImages[0].url} width={400} alt={name} fluid />
+            <ImageSet images={productImages} />
           </Col>
           <Col md={3}>
             <ListGroup>
@@ -65,7 +73,7 @@ const ProductScreen: React.FC<any> = () => {
                 <Row>
                   <Col>Price :</Col>
                   <Col>
-                    <strong>{price}</strong>
+                    <strong>{price}$</strong>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -79,6 +87,19 @@ const ProductScreen: React.FC<any> = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
+              {countInStock > 0 && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Quantity:</Col>
+                    <Col>
+                      <CommonSelect
+                        defaultValue={options[0]}
+                        options={options}
+                      />
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
               <ListGroup.Item>
                 <Button
                   className="button__add-to-cart"
