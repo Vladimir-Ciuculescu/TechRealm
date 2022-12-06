@@ -1,0 +1,23 @@
+.image-slider {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: auto;
+  white-space: nowrap;
+  width: 90%;
+
+  &_container {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+  }
+
+  &_element {
+    width: 100%;
+  }
+}
+
+.image-slider::-webkit-scrollbar {
+  display: none;
+}

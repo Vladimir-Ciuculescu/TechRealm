@@ -7,35 +7,30 @@ interface ImageSetProps {
 }
 
 export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
-  console.log(images)
-
   return (
     // <div className="image-set_container">
-    //   {images?.map((image: Image) => {
+    //   {images?.map((image) => {
     //     return (
-    //     //   <div className="image-set_mini-image">
-    //     //     <img src={image.url} />
-    //     //   </div>
+    //       <img
+    //         className="image-set_mini-image_container"
+    //         width={70}
+    //         height={70}
+    //         src={image.url}
+    //         alt={''}
+    //       />
     //     )
     //   })}
     // </div>
 
-    <Row className="image-set_container">
-      {images?.map((image: Image) => {
+    <div className="scroll-menu">
+      {images?.map((image) => {
         return (
-          <Col>
-            <div>
-              <img
-                className="image-set_mini-image_container"
-                width={50}
-                height={50}
-                src={image.url}
-                alt={''}
-              />
-            </div>
-          </Col>
+          <div className="scroll-a">
+            <img src={image.url} width={200} height={200} />
+            <p>Ceva</p>
+          </div>
         )
       })}
-    </Row>
+    </div>
   )
 }

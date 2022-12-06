@@ -23,9 +23,9 @@ const HomeScreen: React.FC<IProps> = () => {
     <>
       <h1>Latest Products </h1>
       <Row className="product_card_container">
-        {products.map((product: any) => (
+        {products.map((product: Product) => (
           <Col sm={12} md={6} lg={4} xl={3}>
-            <ProductCard product={product} />
+            <ProductCard key={product.id} product={product} />
           </Col>
         ))}
       </Row>

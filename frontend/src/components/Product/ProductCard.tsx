@@ -5,11 +5,11 @@ import Rating from '../Rating'
 
 import { Product } from '../../interfaces/Product'
 
-interface ProductCard {
+interface ProductCardProps {
   product: Product
 }
 
-const ProductCard: React.FC<ProductCard> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { name, defaultImage, id, price, numberOfReviews, rating } = product
 
   return (

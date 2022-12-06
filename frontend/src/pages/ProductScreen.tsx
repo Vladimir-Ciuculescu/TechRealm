@@ -9,6 +9,7 @@ import axios from 'axios'
 import { CommonSelect } from '../components/common/CommonSelect'
 import { SelectOption } from '../interfaces/SelectOption'
 import { ImageSet } from '../components/Product/ImageSet'
+import { ImageSlider } from '../components/Product/ImageSlider'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -47,9 +48,10 @@ const ProductScreen: React.FC<any> = () => {
           Go back
         </Link>
         <Row>
-          <Col md={6}>
-            <Image src={productImages[0].url} width={400} alt={name} fluid />
-            <ImageSet images={productImages} />
+          <Col md={6} lg={6}>
+            {/* <Image src={productImages[0].url} alt={name} fluid /> */}
+            <ImageSlider images={productImages} />
+            {/* <ImageSet images={productImages} /> */}
           </Col>
           <Col md={3}>
             <ListGroup>
