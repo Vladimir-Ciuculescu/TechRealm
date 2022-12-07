@@ -26,12 +26,14 @@ const ProductScreen: React.FC<any> = () => {
   const [productImages, setProductImages] = useState<any[]>([])
 
   const fetchProduct = async () => {
-    const { data } = await axios.get(`/products/${id}`)
-
-    const { product, images } = data
-
-    setProduct(product)
-    setProductImages(images)
+    try {
+      const { data } = await axios.get(`/products/${id}`)
+      const { product, images } = data
+      setProduct(product)
+      setProductImages(images)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
@@ -49,9 +51,8 @@ const ProductScreen: React.FC<any> = () => {
         </Link>
         <Row>
           <Col md={6} lg={6}>
-            {/* <Image src={productImages[0].url} alt={name} fluid /> */}
             <ImageSlider images={productImages} />
-            {/* <ImageSet images={productImages} /> */}
+            <ImageSet images={productImages} />
           </Col>
           <Col md={3}>
             <ListGroup>

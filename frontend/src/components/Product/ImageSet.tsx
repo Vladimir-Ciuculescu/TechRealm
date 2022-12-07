@@ -1,34 +1,37 @@
-import React from 'react'
-import { Row, Col } from 'react-bootstrap'
+import React, { useState } from 'react'
+
 import { Image } from '../../interfaces/Image'
+import { useDispatch } from 'react-redux'
+import { setActiveImageAction } from '../../redux/product/actions'
 
 interface ImageSetProps {
   images?: Image[]
+  setActiveImage?: (index: number) => void
 }
 
-export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
-  return (
-    // <div className="image-set_container">
-    //   {images?.map((image) => {
-    //     return (
-    //       <img
-    //         className="image-set_mini-image_container"
-    //         width={70}
-    //         height={70}
-    //         src={image.url}
-    //         alt={''}
-    //       />
-    //     )
-    //   })}
-    // </div>
+export const ImageSet: React.FC<ImageSetProps> = ({
+  images,
+  setActiveImage,
+}) => {
+  const dispatch = useDispatch()
 
-    <div className="scroll-menu">
-      {images?.map((image) => {
+  const changeCurrentImage = (imageUrl: string, index: number) => {
+    dispatch(setActiveImageAction(imageUrl, index))
+  }
+
+  return (
+    <div className="image-set_container">
+      {images?.map((image, key) => {
         return (
-          <div className="scroll-a">
-            <img src={image.url} width={200} height={200} />
-            <p>Ceva</p>
-          </div>
+          <img
+            onMouseEnter={() => changeCurrentImage(image.url, key)}
+            key={key}
+            className="image-set_mini-image_container"
+            width={70}
+            height={70}
+            src={image.url}
+            alt={''}
+          />
         )
       })}
     </div>

@@ -2,10 +2,10 @@ import { createSlice, configureStore } from '@reduxjs/toolkit'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
-import { productsReducer } from './products/productsReducer'
+import { productsReducer } from './product/productReducer'
 
 const reducer = combineReducers({
-  productList: productsReducer,
+  product: productsReducer,
 })
 
 const middleWare = [thunk]
