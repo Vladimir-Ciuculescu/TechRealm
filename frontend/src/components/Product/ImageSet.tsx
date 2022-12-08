@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 
 import { Image } from '../../interfaces/Image'
 import { useDispatch } from 'react-redux'
-import { setActiveImageAction } from '../../redux/product/actions'
+import {
+  setActiveImageAction,
+  toggleGalleryModalAction,
+} from '../../redux/product/actions'
 
 interface ImageSetProps {
   images?: Image[]
@@ -19,11 +22,16 @@ export const ImageSet: React.FC<ImageSetProps> = ({
     dispatch(setActiveImageAction(imageUrl, index))
   }
 
+  const openGalleryModal = () => {
+    dispatch(toggleGalleryModalAction())
+  }
+
   return (
     <div className="image-set_container">
       {images?.map((image, key) => {
         return (
           <img
+            onClick={openGalleryModal}
             onMouseEnter={() => changeCurrentImage(image.url, key)}
             key={key}
             className="image-set_mini-image_container"

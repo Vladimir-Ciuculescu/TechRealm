@@ -1,15 +1,37 @@
 .button {
-	&__add-to-cart {
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		width: 100%;
-	}
+  &__add-to-cart {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
 }
 
 .icon {
-	&__add-to-cart {
-		transform: translateY(-10%);
-		transform: translateX(-30%);
-	}
+  &__add-to-cart {
+    transform: translateY(-10%);
+    transform: translateX(-30%);
+  }
+}
+
+.gallery-modal {
+  &_container {
+    &_height {
+      height: 55rem;
+    }
+
+    &_width {
+      width: 90vw; /* Occupy the 90% of the screen width */
+      max-width: 90vw;
+    }
+  }
+
+  &_photos-contaier {
+    height: 500px;
+  }
+}
+
+.ceva {
+  height: 500px;
+  max-height: 500px;
 }

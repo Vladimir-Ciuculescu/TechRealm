@@ -1,18 +1,29 @@
-import { ADD_PRODUCT_TO_CART, SET_ACTIVE_IMAGE } from './actionTypes'
+import { SET_ACTIVE_IMAGE, TOGGLE_GALLERY_MODAL } from './actionTypes'
 
-const initialState = {
+const productState = {
   activeImage: {
     url: '',
     index: 0,
   },
+  galleryModal: {
+    visible: false,
+  },
 }
 
-export const productsReducer = (state = initialState, action: any) => {
+export const productsReducer = (state = productState, action: any) => {
   switch (action.type) {
     case SET_ACTIVE_IMAGE:
       return {
         ...state,
         activeImage: { url: action.payload.url, index: action.payload.index },
+      }
+    case TOGGLE_GALLERY_MODAL:
+      return {
+        ...state,
+        galleryModal: {
+          ...state.galleryModal,
+          visible: !state.galleryModal.visible,
+        },
       }
     default:
       return state

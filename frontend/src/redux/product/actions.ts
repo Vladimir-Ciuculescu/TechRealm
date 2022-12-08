@@ -1,10 +1,14 @@
-import { SET_ACTIVE_IMAGE } from './actionTypes'
+import { SET_ACTIVE_IMAGE, TOGGLE_GALLERY_MODAL } from './actionTypes'
 import { ActionCreator } from 'redux'
 
 export const setActiveImageAction: ActionCreator<any> = (
   url: string,
-  index,
+  index: number,
 ) => ({
   type: SET_ACTIVE_IMAGE,
   payload: { url, index },
+})
+
+export const toggleGalleryModalAction: ActionCreator<any> = () => ({
+  type: TOGGLE_GALLERY_MODAL,
 })

@@ -11,6 +11,7 @@
   &_mini-image {
     &_container {
       height: 7vh;
+      cursor: pointer;
       &:hover {
         border: 1px solid #6600cc;
       }

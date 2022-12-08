@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Image, Card, ListGroup, Button } from 'react-bootstrap'
+import {
+  Row,
+  Col,
+  Image,
+  Card,
+  ListGroup,
+  Button,
+  Modal,
+} from 'react-bootstrap'
 import Rating from '../components/Rating'
 import { useParams, Link } from 'react-router-dom'
 import { FaCartPlus } from 'react-icons/fa'
@@ -10,6 +18,7 @@ import { CommonSelect } from '../components/common/CommonSelect'
 import { SelectOption } from '../interfaces/SelectOption'
 import { ImageSet } from '../components/Product/ImageSet'
 import { ImageSlider } from '../components/Product/ImageSlider'
+import { GalleryModal } from '../components/Product/GalleryModal'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -116,6 +125,7 @@ const ProductScreen: React.FC<any> = () => {
             </ListGroup>
           </Col>
         </Row>
+        <GalleryModal />
       </>
     )
   }

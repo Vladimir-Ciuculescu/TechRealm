@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import { Image } from '../../interfaces/Image'
 import SwipeableViews from 'react-swipeable-views'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { productSelector } from '../../redux/product/selectors'
+import { useDispatch } from 'react-redux'
+import { toggleGalleryModalAction } from '../../redux/product/actions'
 
 interface ImageSliderProps {
   images: Image[]
@@ -11,20 +13,21 @@ interface ImageSliderProps {
 export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const { activeImage } = useSelector(productSelector)
 
+  const dispatch = useDispatch()
+
+  const openGalleryModal = () => {
+    dispatch(toggleGalleryModalAction())
+  }
+
   return (
-    // <div className="image-slider" ref={scrollRef}>
-    // {images?.map((image) => {
-    //   return (
-    //     <div key={image.id} className="image-slider_container">
-    //       <img src={image.url} className="image-slider_element" alt="" />
-    //     </div>
-    //   )
-    // })}
-    // </div>
     <SwipeableViews index={activeImage.index} enableMouseEvents>
       {images?.map((image) => {
         return (
-          <div key={image.id} className="image-slider_container">
+          <div
+            onClick={openGalleryModal}
+            key={image.id}
+            className="image-slider_container"
+          >
             <img src={image.url} className="image-slider_element" alt="" />
           </div>
         )

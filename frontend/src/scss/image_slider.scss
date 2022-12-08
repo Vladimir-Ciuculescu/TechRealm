@@ -1,10 +1,4 @@
 .image-slider {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow: auto;
-  white-space: nowrap;
-  width: 90%;
-
   &_container {
     display: inline-block;
     color: white;
@@ -15,9 +9,10 @@
 
   &_element {
     width: 100%;
+    cursor: pointer;
   }
 }
 
-.image-slider::-webkit-scrollbar {
-  display: none;
+.ceva {
+  height: 100px;
 }
