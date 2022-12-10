@@ -5,15 +5,20 @@ import { useSelector } from 'react-redux'
 import { productSelector } from '../../redux/product/selectors'
 import { useDispatch } from 'react-redux'
 import { toggleGalleryModalAction } from '../../redux/product/actions'
+import { useWindowWidth } from '../../hooks/useWindowWidth'
 
 interface ImageSliderProps {
   images: Image[]
+  activeImage: Image
 }
 
-export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
-  const { activeImage } = useSelector(productSelector)
-
+export const ImageSlider: React.FC<ImageSliderProps> = ({
+  images,
+  activeImage,
+}) => {
   const dispatch = useDispatch()
+
+  const innerWidth = useWindowWidth()
 
   const openGalleryModal = () => {
     dispatch(toggleGalleryModalAction())
@@ -28,7 +33,14 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
             key={image.id}
             className="image-slider_container"
           >
-            <img src={image.url} className="image-slider_element" alt="" />
+            <img
+              srcSet=""
+              src={image.url}
+              className="image-slider_element"
+              height={500}
+              width={500}
+              alt=""
+            />
           </div>
         )
       })}

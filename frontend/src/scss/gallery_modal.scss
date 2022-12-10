@@ -1,0 +1,49 @@
+.gallery-modal {
+  &_container {
+    &_height {
+      height: 55rem;
+    }
+
+    &_width {
+      width: 90vw; /* Occupy the 90% of the screen width */
+      max-width: 90vw;
+    }
+  }
+
+  &_photos-container {
+    width: 250px;
+    display: flex;
+    justify-content: center;
+
+    &_list {
+      height: 100%;
+      width: 85%;
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-auto-rows: 98px;
+      grid-gap: 20px;
+      padding-top: 10%;
+
+      justify-content: center;
+
+      &_element {
+        width: 98px;
+        height: 98px;
+      }
+    }
+  }
+
+  &_central {
+    width: 84%;
+
+    &_image {
+      background-color: green;
+      height: 88%;
+    }
+  }
+
+  &_actions {
+    background-color: pink;
+    height: 12%;
+  }
+}

@@ -12,13 +12,14 @@ import Rating from '../components/Rating'
 import { useParams, Link } from 'react-router-dom'
 import { FaCartPlus } from 'react-icons/fa'
 import { Product } from '../interfaces/Product'
-import Select from 'react-select'
 import axios from 'axios'
 import { CommonSelect } from '../components/common/CommonSelect'
 import { SelectOption } from '../interfaces/SelectOption'
 import { ImageSet } from '../components/Product/ImageSet'
 import { ImageSlider } from '../components/Product/ImageSlider'
 import { GalleryModal } from '../components/Product/GalleryModal'
+import { useSelector } from 'react-redux'
+import { productSelector } from '../redux/product/selectors'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -33,6 +34,8 @@ const ProductScreen: React.FC<any> = () => {
   const [product, setProduct] = useState<Product>()
   const [quantity, setQuantity] = useState<number>()
   const [productImages, setProductImages] = useState<any[]>([])
+
+  const { activeImage } = useSelector(productSelector)
 
   const fetchProduct = async () => {
     try {
@@ -59,8 +62,8 @@ const ProductScreen: React.FC<any> = () => {
           Go back
         </Link>
         <Row>
-          <Col md={6} lg={6}>
-            <ImageSlider images={productImages} />
+          <Col md={5} lg={4}>
+            <ImageSlider images={productImages} activeImage={activeImage} />
             <ImageSet images={productImages} />
           </Col>
           <Col md={3}>
@@ -125,7 +128,7 @@ const ProductScreen: React.FC<any> = () => {
             </ListGroup>
           </Col>
         </Row>
-        <GalleryModal />
+        <GalleryModal images={productImages} activeImage={activeImage} />
       </>
     )
   }
