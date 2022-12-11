@@ -11,15 +11,9 @@ import { productSelector } from '../../redux/product/selectors'
 
 interface ImageSetProps {
   images: Image[]
-  setActiveImage?: (index: number) => void
 }
 
-export const ImageSet: React.FC<ImageSetProps> = ({
-  images,
-  setActiveImage,
-}) => {
-  var scrollContainer = document.getElementById('image-set_container_list')
-
+export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
   const scrollRef = useRef<any>()
 
   const imagesToDisplay = images.map((item, key) => {
@@ -29,11 +23,7 @@ export const ImageSet: React.FC<ImageSetProps> = ({
     }
   })
 
-  const { activeImage } = useSelector(productSelector)
-
   const [currentIndex, setCurrentIndex] = useState(0)
-
-  const { index } = activeImage
 
   const dispatch = useDispatch()
 
@@ -74,8 +64,8 @@ export const ImageSet: React.FC<ImageSetProps> = ({
       <button
         disabled={currentIndex === 0 ? true : false}
         onClick={() => scrollHorizontal('left')}
-        className={`arrow_left-container${
-          currentIndex === 0 ? '_disabled' : ''
+        className={`arrow_left-container ${
+          currentIndex === 0 ? 'disabled' : ''
         }`}
       >
         <IoIosArrowBack style={{ color: '#7300e6' }} size={30} />
@@ -88,7 +78,9 @@ export const ImageSet: React.FC<ImageSetProps> = ({
               onClick={openGalleryModal}
               onMouseEnter={() => changeCurrentImage(image.url, key)}
               key={key}
-              className="image-set_mini-image_container"
+              className={`image-set_mini-image_container ${
+                currentIndex === key ? 'selected' : ''
+              }`}
               width={70}
               height={70}
               src={image.url}
@@ -101,8 +93,8 @@ export const ImageSet: React.FC<ImageSetProps> = ({
       <button
         disabled={currentIndex === imagesToDisplay.length - 1 ? true : false}
         onClick={() => scrollHorizontal('right')}
-        className={`arrow_right-container${
-          currentIndex === imagesToDisplay.length - 1 ? '_disabled' : ''
+        className={`arrow_right-container ${
+          currentIndex === imagesToDisplay.length - 1 ? 'disabled' : ''
         }`}
       >
         <IoIosArrowForward style={{ color: '#7300e6' }} size={30} />
