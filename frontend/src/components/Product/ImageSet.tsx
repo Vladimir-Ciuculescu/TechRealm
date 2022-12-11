@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { Image } from '../../interfaces/Image'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   setActiveImageAction,
   toggleGalleryModalAction,
 } from '../../redux/product/actions'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import { productSelector } from '../../redux/product/selectors'
 
 interface ImageSetProps {
   images: Image[]

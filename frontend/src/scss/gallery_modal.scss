@@ -10,40 +10,111 @@
     }
   }
 
-  &_photos-container {
-    width: 250px;
-    display: flex;
+  // &_photos-container {
+  //   width: 250px;
+  //   height: 100%;
+  //   display: flex;
+  //   justify-content: center;
+
+  //   &_list {
+  //     height: 100%;
+  //     width: 85%;
+  //     display: grid;
+  //     grid-template-columns: auto auto;
+  //     grid-auto-rows: 98px;
+  //     grid-gap: 20px;
+  //     padding-top: 10%;
+
+  //     justify-content: center;
+
+  //     &_element {
+  //       width: 98px;
+  //       height: 98px;
+  //       border-radius: 5px;
+  //     }
+  //   }
+  // }
+
+  // &_central {
+  //   display: flex;
+  //   flex-direction: column;
+  //   width: 100%;
+
+  //   &_image {
+  //     background-color: green;
+  //     height: 88%;
+
+  //     display: flex;
+  //     flex-direction: row;
+  //     align-items: center;
+  //     justify-content: space-between;
+  //   }
+  // }
+
+  // &_arrow-left-container {
+  //   height: 13%;
+  //   border-radius: 5px;
+  //   border-color: transparent;
+  // }
+
+  // &_arrow-right-container {
+  // }
+}
+
+.photos-container {
+  height: 100%;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+
+  &_list {
+    height: 100%;
+    width: 85%;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-auto-rows: 98px;
+    grid-gap: 20px;
+    padding-top: 10%;
+
     justify-content: center;
 
-    &_list {
-      height: 100%;
-      width: 85%;
-      display: grid;
-      grid-template-columns: auto auto;
-      grid-auto-rows: 98px;
-      grid-gap: 20px;
-      padding-top: 10%;
-
-      justify-content: center;
-
-      &_element {
-        width: 98px;
-        height: 98px;
-      }
+    &_element {
+      width: 90%;
+      height: 90%;
+      border-radius: 5px;
     }
   }
+}
 
-  &_central {
-    width: 84%;
-
-    &_image {
-      background-color: green;
-      height: 88%;
-    }
+.image-display {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &_container {
+    height: 88%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &_actions {
     background-color: pink;
     height: 12%;
+  }
+
+  &_arrow-left-container {
+    height: 13%;
+    border-radius: 5px;
+    border-color: transparent;
+    margin-left: 2%;
+  }
+
+  &_arrow-right-container {
+    height: 13%;
+    border-radius: 5px;
+    border-color: transparent;
+    margin-right: 2%;
   }
 }

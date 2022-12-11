@@ -6,6 +6,7 @@ import { useWindowWidth } from '../../hooks/useWindowWidth'
 import { Image } from '../../interfaces/Image'
 import { toggleGalleryModalAction } from '../../redux/product/actions'
 import { productSelector } from '../../redux/product/selectors'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
 interface GalleryModalProps {
   images: Image[]
@@ -41,34 +42,29 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
       dialogClassName={!displayFullModal ? 'gallery-modal_container_width' : ''}
     >
       <Modal.Header closeButton onClick={closeGalleryModal}></Modal.Header>
-      <Modal.Body className="d-flex flex-row bg-danger p-0">
-        <div className="gallery-modal_photos-container">
-          <div className="bg-info gallery-modal_photos-container_list">
+      <Modal.Body className="d-flex flex-row p-0">
+        <div className="photos-container">
+          <div className="photos-container_list">
             {images.map((image) => (
               <img
                 src={image.url}
                 alt=""
-                className="gallery-modal_photos-container_list_element"
+                className="photos-container_list_element"
               />
             ))}
           </div>
-          {/* <Container className="">
-            <Row>
-              {images.map((image) => (
-                <Col>
-                  <img
-                    src={image.url}
-                    alt=""
-                    className="gallery-modal_photos-container_list_element"
-                  />
-                </Col>
-              ))}
-            </Row>
-          </Container> */}
         </div>
-        <div className="gallery-modal_central d-flex flex-column">
-          <div className="gallery-modal_central_image">awd</div>
-          <div className="gallery-modal_actions">awdwad</div>
+        <div className="image-display">
+          <div className="image-display_container">
+            <button className="image-display_arrow-left-container">
+              <IoIosArrowBack style={{ color: '#7300e6' }} size={30} />
+            </button>
+            <img src={activeImage?.url} alt="" />
+            <button className="image-display_arrow-right-container">
+              <IoIosArrowForward style={{ color: '#7300e6' }} size={30} />
+            </button>
+          </div>
+          <div className="image-display_actions">adww</div>
         </div>
       </Modal.Body>
     </Modal>
