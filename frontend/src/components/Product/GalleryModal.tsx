@@ -1,10 +1,13 @@
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Row, Col, Modal, Container } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { MIN_WIDTH_FULLSCREEN_MODAL } from '../../constants'
 import { useWindowWidth } from '../../hooks/useWindowWidth'
 import { Image } from '../../interfaces/Image'
-import { toggleGalleryModalAction } from '../../redux/product/actions'
+import {
+  setActiveImageAction,
+  toggleGalleryModalAction,
+} from '../../redux/product/actions'
 import { productSelector } from '../../redux/product/selectors'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 
@@ -19,6 +22,11 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
 }) => {
   const innerWidth = useWindowWidth()
   const dispatch = useDispatch()
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const imagesToDisplay = images.map((item, key) => {
+    return { ...item, index: key }
+  })
 
   const displayFullModal = innerWidth < MIN_WIDTH_FULLSCREEN_MODAL
 
@@ -29,6 +37,22 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
   const closeGalleryModal = () => {
     dispatch(toggleGalleryModalAction())
   }
+
+  const changeCurrentImage = (imageUrl: string, index: number) => {
+    dispatch(setActiveImageAction(imageUrl, index))
+    setCurrentIndex(index)
+  }
+
+  useEffect(() => {
+    dispatch(
+      setActiveImageAction(
+        imagesToDisplay[currentIndex].url,
+        images[currentIndex].index,
+      ),
+    )
+  }, [currentIndex])
+
+  const renderActionButtons = () => {}
 
   return (
     <Modal
@@ -45,26 +69,54 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
       <Modal.Body className="d-flex flex-row p-0">
         <div className="photos-container">
           <div className="photos-container_list">
-            {images.map((image) => (
+            {imagesToDisplay.map((image) => (
               <img
+                onClick={() => changeCurrentImage(image.url, image.index)}
                 src={image.url}
                 alt=""
-                className="photos-container_list_element"
+                className={`photos-container_list_element ${
+                  currentIndex === image.index ? 'selected' : ''
+                }`}
               />
             ))}
           </div>
         </div>
         <div className="image-display">
           <div className="image-display_container">
-            <button className="image-display_arrow-left-container">
+            <button
+              onClick={() => setCurrentIndex(currentIndex - 1)}
+              className={`image-display_arrow-left-container ${
+                currentIndex === 0 ? 'disabled' : ''
+              }`}
+              disabled={currentIndex === 0 ? true : false}
+            >
               <IoIosArrowBack style={{ color: '#7300e6' }} size={30} />
             </button>
-            <img src={activeImage?.url} alt="" />
-            <button className="image-display_arrow-right-container">
+            <img
+              src={activeImage?.url}
+              alt=""
+              className="image-display_container_photo"
+            />
+            <button
+              onClick={() => setCurrentIndex(currentIndex + 1)}
+              className={`image-display_arrow-right-container ${
+                currentIndex === imagesToDisplay.length - 1 ? 'disabled' : ''
+              }`}
+              disabled={
+                currentIndex === imagesToDisplay.length - 1 ? true : false
+              }
+            >
               <IoIosArrowForward style={{ color: '#7300e6' }} size={30} />
             </button>
           </div>
-          <div className="image-display_actions">adww</div>
+          <div className="image-display_actions">
+            <button className="ceva">Add to cart</button>
+            <div className="altceva">
+              <button>awdwa</button>
+              <button>awdwa</button>
+              <button>awdwa</button>
+            </div>
+          </div>
         </div>
       </Modal.Body>
     </Modal>
