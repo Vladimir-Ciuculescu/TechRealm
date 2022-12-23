@@ -42,21 +42,16 @@ interface Props {
 const NavBar = (props: Props) => {
   const { window } = props
 
-  const [mobileOpen, setMobileOpen] = useState<boolean>(false)
-
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState)
-  }
+  const [toggleDrawer, setToggleDrawer] = useState<boolean>(false)
 
   const container =
     window !== undefined ? () => window().document.body : undefined
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
-      </Typography>
-      <Divider />
+    <Box
+      onClick={() => setToggleDrawer(!toggleDrawer)}
+      sx={{ textAlign: 'center' }}
+    >
       <List>
         {pages.map((item, key) => (
           <ListItem key={key} disablePadding>
@@ -69,119 +64,6 @@ const NavBar = (props: Props) => {
     </Box>
   )
 
-  // return (
-  //   <Box sx={{ display: 'flex' }}>
-  // <AppBar
-  //   //sx={{ backgroundColor: '#7300e6' }}
-  //   className="nav-bar"
-  //   component={'nav'}
-  //   color="primary"
-  // >
-  //   <Toolbar>
-  //     <Container>
-  //       <Typography
-  //         variant="h6"
-  //         noWrap
-  //         component="a"
-  //         className="test"
-  //         href="/"
-  //         sx={{
-  //           mr: 2,
-  //           display: { xs: 'none', sm: 'block', md: 'block' },
-  //           fontFamily: 'monospace',
-  //           fontWeight: 700,
-  //           letterSpacing: '.3rem',
-  //           color: 'inherit',
-  //           textDecoration: 'none',
-  //           '&:hover': {
-  //             color: 'inherit',
-  //           },
-  //         }}
-  //       >
-  //         TechRealm
-  //       </Typography>
-  //       <Box
-  //         sx={{
-  //           flexGrow: 1,
-  //           display: {
-  //             xs: 'block',
-  //             md: 'none',
-  //             sm: 'none',
-  //             color: 'white',
-  //           },
-  //         }}
-  //       >
-  //         <IconButton
-  //           size="large"
-  //           aria-label="account of current user"
-  //           aria-controls="menu-appbar"
-  //           aria-haspopup="true"
-  //           onClick={handleDrawerToggle}
-  //           color="inherit"
-  //         >
-  //           <MenuIcon />
-  //         </IconButton>
-  //       </Box>
-  //     </Container>
-
-  //     <Box
-  //       sx={{
-  //         mr: 10,
-  //         display: { xs: 'none', sm: 'flex', md: 'flex' },
-  //       }}
-  //     >
-  //       <Grid container spacing={4}>
-  //         {pages.map((page, key) => (
-  //           <Grid item xs={6}>
-  //             <Link
-  //               key={key}
-  //               color="inherit"
-  //               href="#"
-  //               underline="none"
-  //               justifyContent={'center'}
-  //               noWrap
-  //             >
-  //               {page.icon}
-  //               <Typography
-  //                 component="a"
-  //                 href={page.path}
-  //                 sx={{
-  //                   ml: 1,
-  //                   textDecoration: 'none',
-  //                   color: 'inherit',
-  //                 }}
-  //               >
-  //                 {page.title}
-  //               </Typography>
-  //             </Link>
-  //           </Grid>
-  //         ))}
-  //       </Grid>
-  //     </Box>
-  //   </Toolbar>
-  // </AppBar>
-  //     <Box component="nav">
-  //       <Drawer
-  //         container={container}
-  //         variant="temporary"
-  //         open={mobileOpen}
-  //         onClose={handleDrawerToggle}
-  //         ModalProps={{
-  //           keepMounted: true,
-  //         }}
-  //         sx={{
-  //           display: { xs: 'block', sm: 'none' },
-  //           '& .MuiDrawer-paper': {
-  //             boxSizing: 'border-box',
-  //             width: drawerWidth,
-  //           },
-  //         }}
-  //       >
-  //         {drawer}
-  //       </Drawer>
-  //     </Box>
-  //   </Box>
-  // )
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -194,7 +76,6 @@ const NavBar = (props: Props) => {
               className="test"
               href="/"
               sx={{
-                mr: 2,
                 display: { xs: 'none', sm: 'block', md: 'block' },
                 fontFamily: 'monospace',
                 fontWeight: 700,
@@ -210,13 +91,14 @@ const NavBar = (props: Props) => {
             </Typography>
             <Box
               sx={{
-                flexGrow: 1,
                 display: {
-                  xs: 'block',
+                  xs: 'flex',
                   md: 'none',
                   sm: 'none',
                   color: 'white',
                 },
+
+                alignItems: 'center',
               }}
             >
               <IconButton
@@ -224,11 +106,34 @@ const NavBar = (props: Props) => {
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleDrawerToggle}
+                onClick={() => setToggleDrawer(!toggleDrawer)}
                 color="inherit"
+                disableRipple
               >
                 <MenuIcon />
               </IconButton>
+
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                className="test"
+                href="/"
+                sx={{
+                  position: 'absolute',
+                  left: '40%',
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  '&:hover': {
+                    color: 'inherit',
+                  },
+                }}
+              >
+                TechRealm
+              </Typography>
             </Box>
           </Container>
 
@@ -268,6 +173,18 @@ const NavBar = (props: Props) => {
           </Box>
         </Toolbar>
       </AppBar>
+      <Drawer
+        onClose={() => setToggleDrawer(!toggleDrawer)}
+        container={container}
+        variant="temporary"
+        open={toggleDrawer}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+      >
+        {drawer}
+      </Drawer>
     </Box>
   )
 }
