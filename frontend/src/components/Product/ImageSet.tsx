@@ -7,6 +7,7 @@ import {
   toggleGalleryModalAction,
 } from '../../redux/product/actions'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { Box, IconButton } from '@mui/material'
 
 interface ImageSetProps {
   images: Image[]
@@ -14,26 +15,10 @@ interface ImageSetProps {
 
 export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
   const scrollRef = useRef<any>()
-
-  const imagesToDisplay = images.map((item, key) => {
-    return {
-      ...item,
-      index: key,
-    }
-  })
-
   const [currentIndex, setCurrentIndex] = useState(0)
-
   const dispatch = useDispatch()
 
-  const changeCurrentImage = (imageUrl: string, index: number) => {
-    dispatch(setActiveImageAction(imageUrl, index))
-    setCurrentIndex(index)
-  }
-
   useEffect(() => {
-    console.log(currentIndex)
-
     dispatch(
       setActiveImageAction(
         imagesToDisplay[currentIndex].url,
@@ -46,30 +31,71 @@ export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
     }
   }, [currentIndex])
 
+  const imagesToDisplay = images.map((item, key) => {
+    return {
+      ...item,
+      index: key,
+    }
+  })
+
+  const isFirstImage = currentIndex === 0
+  const isLastImage = currentIndex === images.length - 1
+
+  const changeCurrentImage = (imageUrl: string, index: number) => {
+    dispatch(setActiveImageAction(imageUrl, index))
+    setCurrentIndex(index)
+  }
+
   const openGalleryModal = () => {
     dispatch(toggleGalleryModalAction())
   }
 
   const scrollHorizontal = (direction: string) => {
-    if (direction === 'right') {
-      setCurrentIndex(currentIndex + 1)
-    } else if (direction === 'left') {
-      setCurrentIndex(currentIndex - 1)
+    switch (direction) {
+      case 'left':
+        setCurrentIndex(currentIndex - 1)
+        break
+      case 'right':
+        setCurrentIndex(currentIndex + 1)
+        break
+      default:
+        setCurrentIndex(0)
+        break
     }
   }
 
   return (
-    <div className="image-set_container">
-      <button
-        disabled={currentIndex === 0 ? true : false}
+    <Box
+      width="100%"
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: 2,
+      }}
+    >
+      <IconButton
+        disabled={isFirstImage}
         onClick={() => scrollHorizontal('left')}
-        className={`arrow_left-container ${
-          currentIndex === 0 ? 'disabled' : ''
-        }`}
+        color="primary"
+        sx={{
+          width: '12%',
+          borderRadius: 2,
+          '&:hover': { boxShadow: 2 },
+        }}
+        disableRipple
       >
-        <IoIosArrowBack style={{ color: '#7300e6' }} size={30} />
-      </button>
-      <div className="image-set_container_list" id="image-set_container_list">
+        <IoIosArrowBack />
+      </IconButton>
+
+      <Box
+        sx={{
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'row',
+
+          columnGap: 2,
+        }}
+      >
         {imagesToDisplay?.map((image, key) => {
           return (
             <img
@@ -87,17 +113,21 @@ export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
             />
           )
         })}
-      </div>
+      </Box>
 
-      <button
-        disabled={currentIndex === imagesToDisplay.length - 1 ? true : false}
+      <IconButton
         onClick={() => scrollHorizontal('right')}
-        className={`arrow_right-container ${
-          currentIndex === imagesToDisplay.length - 1 ? 'disabled' : ''
-        }`}
+        sx={{
+          width: '12%',
+          borderRadius: 2,
+          '&:hover': { boxShadow: 2 },
+        }}
+        disableRipple
+        color="primary"
+        disabled={isLastImage}
       >
-        <IoIosArrowForward style={{ color: '#7300e6' }} size={30} />
-      </button>
-    </div>
+        <IoIosArrowForward />
+      </IconButton>
+    </Box>
   )
 }

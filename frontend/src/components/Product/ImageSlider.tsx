@@ -34,11 +34,10 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
             className="image-slider_container"
           >
             <img
-              srcSet=""
               src={image.url}
               className="image-slider_element"
-              height={500}
-              width={500}
+              height={300}
+              width={300}
               alt=""
             />
           </div>

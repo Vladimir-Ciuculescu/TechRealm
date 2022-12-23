@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col } from 'react-bootstrap'
 import ProductCard from '../components/Product/ProductCard'
 import { Product } from '../interfaces/Product'
 import axios from 'axios'
+import { Container } from '@mui/system'
+import { Box, Grid, Typography } from '@mui/material'
 
 interface IProps {}
 
@@ -20,16 +21,18 @@ const HomeScreen: React.FC<IProps> = () => {
   }, [])
 
   return (
-    <>
-      <h1>Latest Products </h1>
-      <Row className="product_card_container">
-        {products.map((product: Product) => (
-          <Col sm={12} md={6} lg={4} xl={3}>
+    <Container maxWidth="xl" sx={{ mt: 4 }}>
+      <Typography variant="h3" sx={{ fontFamily: 'monospace' }}>
+        Latest Products
+      </Typography>
+      <Grid container spacing={2} columns={4}>
+        {products.map((product: Product, key) => (
+          <Grid item xs={4} sm={2} md={1} key={key}>
             <ProductCard key={product.id} product={product} />
-          </Col>
+          </Grid>
         ))}
-      </Row>
-    </>
+      </Grid>
+    </Container>
   )
 }
 

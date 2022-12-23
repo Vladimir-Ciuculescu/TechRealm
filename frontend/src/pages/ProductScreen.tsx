@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Row,
-  Col,
-  Image,
-  Card,
-  ListGroup,
-  Button,
-  Modal,
-} from 'react-bootstrap'
-import Rating from '../components/Rating'
-import { useParams, Link } from 'react-router-dom'
-import { FaCartPlus } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 import { Product } from '../interfaces/Product'
 import axios from 'axios'
 import { CommonSelect } from '../components/common/CommonSelect'
@@ -20,6 +9,27 @@ import { ImageSlider } from '../components/Product/ImageSlider'
 import { GalleryModal } from '../components/Product/GalleryModal'
 import { useSelector } from 'react-redux'
 import { productSelector } from '../redux/product/selectors'
+import { Container } from '@mui/system'
+import Button from '@mui/material/Button'
+
+import {
+  AiFillCheckCircle,
+  AiOutlineShoppingCart,
+  AiFillHeart,
+} from 'react-icons/ai'
+
+import {
+  Typography,
+  Grid,
+  Rating,
+  CardContent,
+  CardActions,
+  Chip,
+  List,
+  ListItem,
+  Card,
+  Divider,
+} from '@mui/material'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -57,79 +67,135 @@ const ProductScreen: React.FC<any> = () => {
       product
 
     return (
-      <>
-        <Link to="/" className="btn btn-light my-3">
-          Go back
-        </Link>
-        <Row>
-          <Col md={5} lg={4}>
+      <Container maxWidth={false} sx={{ width: '85%', mt: 6 }}>
+        <Grid container direction="row" columnSpacing={3} rowSpacing={4}>
+          <Grid item xs={12} md={12} lg={4}>
             <ImageSlider images={productImages} activeImage={activeImage} />
             <ImageSet images={productImages} />
-          </Col>
-          <Col md={3}>
-            <ListGroup>
-              <ListGroup.Item>
-                <h3>{name}</h3>
-              </ListGroup.Item>
+          </Grid>
 
-              <ListGroup.Item>
-                <Rating
-                  numberOfStars={rating}
-                  numberOfReviews={numberOfReviews}
-                />
-              </ListGroup.Item>
-              <ListGroup.Item>Price : {price} $</ListGroup.Item>
-              <ListGroup.Item>{description}</ListGroup.Item>
-            </ListGroup>
-          </Col>
-          <Col md={3}>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <Row>
-                  <Col>Price :</Col>
-                  <Col>
-                    <strong>{price}$</strong>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Status :</Col>
-                  <Col>
-                    <strong>
-                      {countInStock > 0 ? 'In Stock' : 'Out of stock'}
-                    </strong>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-              {countInStock > 0 && (
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Quantity:</Col>
-                    <Col>
-                      <CommonSelect
-                        defaultValue={options[0]}
-                        options={options}
-                      />
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              )}
-              <ListGroup.Item>
-                <Button
-                  className="button__add-to-cart"
-                  type="button"
-                  disabled={countInStock === 0}
+          <Grid container item xs={12} md={12} lg={4}>
+            <List sx={{ paddingTop: 10 }}>
+              <ListItem sx={{ gap: 1 }}>
+                <Rating size="large" value={rating} precision={0.5} readOnly />
+                <Typography sx={{ fontSize: 20, transform: 'translateY(-5%)' }}>
+                  {rating}
+                </Typography>
+                <Typography sx={{ fontSize: 20, transform: 'translateY(-5%)' }}>
+                  ({numberOfReviews})
+                </Typography>
+              </ListItem>
+              <Divider
+                sx={{
+                  pt: 1,
+
+                  borderBottomWidth: 1,
+                  borderColor: 'black',
+                  opacity: 0.3,
+                }}
+              />
+              <ListItem sx={{ pt: 2, pb: 2 }}>
+                <Grid container direction="row" columnSpacing={2}>
+                  <Grid item>
+                    <Typography variant="h6">Availability: </Typography>
+                  </Grid>
+                  <Grid item>
+                    <Chip
+                      icon={<AiFillCheckCircle size="25" />}
+                      color="success"
+                      label="In stock"
+                    />
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <Divider
+                sx={{
+                  borderBottomWidth: 1,
+                  borderColor: 'black',
+                  opacity: 0.3,
+                }}
+              />
+              <ListItem>
+                <Typography
+                  sx={{
+                    fontSize: '18px',
+                    fontWeight: '500',
+                  }}
                 >
-                  <FaCartPlus className="icon__add-to-cart" size={23} />
-                  ADD TO CART
-                </Button>
-              </ListGroup.Item>
-            </ListGroup>
-          </Col>
-        </Row>
+                  {description}
+                </Typography>
+              </ListItem>
+            </List>
+          </Grid>
+          <Grid item xs={12} md={12} lg={4}>
+            <Card>
+              <CardContent>
+                <Grid container direction="row">
+                  <Grid item lg={6} xs={6}>
+                    <Typography
+                      gutterBottom
+                      textAlign="left"
+                      variant="h5"
+                      component="div"
+                    >
+                      Price
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={6} xs={6}>
+                    {price}$
+                  </Grid>
+                </Grid>
+                <Grid container direction="row">
+                  <Grid item lg={6} xs={6}>
+                    <Typography
+                      gutterBottom
+                      textAlign="left"
+                      variant="h5"
+                      component="div"
+                    >
+                      Quantity
+                    </Typography>
+                  </Grid>
+                  <Grid item lg={6} xs={6}>
+                    <CommonSelect defaultValue={options[0]} options={options} />
+                  </Grid>
+                </Grid>
+              </CardContent>
+
+              <CardActions>
+                <Grid
+                  container
+                  direction="column"
+                  justifyContent="center"
+                  rowSpacing={1}
+                >
+                  <Grid item>
+                    <Button
+                      sx={{ width: '100%' }}
+                      variant="contained"
+                      startIcon={<AiOutlineShoppingCart />}
+                      disableRipple
+                    >
+                      Add to cart
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      disableRipple
+                      sx={{ width: '100%' }}
+                      variant="outlined"
+                      startIcon={<AiFillHeart />}
+                    >
+                      Add to favorites
+                    </Button>
+                  </Grid>
+                </Grid>
+              </CardActions>
+            </Card>
+          </Grid>
+        </Grid>
         <GalleryModal images={productImages} activeImage={activeImage} />
-      </>
+      </Container>
     )
   }
 
