@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Product } from '../interfaces/Product'
-import axios from 'axios'
 import { CommonSelect } from '../components/common/CommonSelect'
 import { SelectOption } from '../interfaces/SelectOption'
 import { ImageSet } from '../components/Product/ImageSet'
@@ -11,6 +10,8 @@ import { useSelector } from 'react-redux'
 import { productSelector } from '../redux/product/selectors'
 import { Container } from '@mui/system'
 import Button from '@mui/material/Button'
+
+import { axiosInstance } from '../services/axiosInstance'
 
 import {
   AiFillCheckCircle,
@@ -49,7 +50,7 @@ const ProductScreen: React.FC<any> = () => {
 
   const fetchProduct = async () => {
     try {
-      const { data } = await axios.get(`/products/${id}`)
+      const { data } = await axiosInstance.get(`api/products/${id}`)
       const { product, images } = data
       setProduct(product)
       setProductImages(images)

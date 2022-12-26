@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import ProductCard from '../components/Product/ProductCard'
 import { Product } from '../interfaces/Product'
-import axios from 'axios'
 import { Container } from '@mui/system'
 import { Grid, Typography } from '@mui/material'
+import { axiosInstance } from '../services/axiosInstance'
 
 interface IProps {}
 
@@ -11,7 +11,7 @@ const HomeScreen: React.FC<IProps> = () => {
   const [products, setProducts] = useState<Product[]>([])
 
   const fetchProducts = async () => {
-    const { data } = await axios.get('/products')
+    const { data } = await axiosInstance.get('/api/products')
 
     setProducts(data)
   }
