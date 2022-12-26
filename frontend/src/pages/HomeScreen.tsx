@@ -3,7 +3,7 @@ import ProductCard from '../components/Product/ProductCard'
 import { Product } from '../interfaces/Product'
 import axios from 'axios'
 import { Container } from '@mui/system'
-import { Box, Grid, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 
 interface IProps {}
 

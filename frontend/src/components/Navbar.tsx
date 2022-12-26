@@ -1,32 +1,34 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useNavigate } from 'react-router-dom'
 
 import Container from '@mui/material/Container'
 
 import {
-  Button,
-  CssBaseline,
-  Divider,
   Drawer,
   Grid,
   Link,
   List,
   ListItem,
-  ListItemButton,
-  ListItemText,
+  ListItemAvatar,
 } from '@mui/material'
 import { BiLogIn } from 'react-icons/bi'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
+import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 
 const ICON_DIMENSION = 30
 
 const pages = [
-  { title: 'Cart', path: '/cart', icon: <BiLogIn fontSize={ICON_DIMENSION} /> },
+  {
+    title: 'Cart',
+    path: '/cart',
+    icon: <BiLogIn fontSize={ICON_DIMENSION} />,
+  },
   {
     title: 'Sign In',
     path: '/signin',
@@ -40,9 +42,10 @@ interface Props {
 }
 
 const NavBar = (props: Props) => {
-  const { window } = props
-
+  const navigate = useNavigate()
   const [toggleDrawer, setToggleDrawer] = useState<boolean>(false)
+
+  const { window } = props
 
   const container =
     window !== undefined ? () => window().document.body : undefined
@@ -52,12 +55,23 @@ const NavBar = (props: Props) => {
       onClick={() => setToggleDrawer(!toggleDrawer)}
       sx={{ textAlign: 'center' }}
     >
-      <List>
+      <List dense={false}>
         {pages.map((item, key) => (
-          <ListItem key={key} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item.title} />
-            </ListItemButton>
+          <ListItem
+            sx={{ marginBottom: 1 }}
+            dense={false}
+            key={key}
+            disablePadding
+            secondaryAction={<MdOutlineKeyboardArrowRight size={25} />}
+          >
+            <ListItemAvatar>{item.icon}</ListItemAvatar>
+
+            <Link
+              sx={{ textDecoration: 'none' }}
+              onClick={() => navigate(item.path)}
+            >
+              {item.title}
+            </Link>
           </ListItem>
         ))}
       </List>
