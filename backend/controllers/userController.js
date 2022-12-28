@@ -5,13 +5,7 @@ const { generateToken } = require("../utils/generateToken");
 const authUser = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email);
-
   const user = await userRepository.getUserByEmail(email);
-
-  console.log("user:", user);
-
-  console.log("compare:", await comparePassword(password, user.password));
 
   if (user && (await comparePassword(password, user.password))) {
     res.json({
@@ -33,4 +27,20 @@ const registerUser = async (req, res) => {
   res.status(200).json(response);
 };
 
-module.exports = { authUser, registerUser };
+// TODO : Temporary
+const getUserProfile = async (req, res) => {
+  const { user } = req;
+
+  if (user) {
+    res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found !");
+  }
+};
+
+module.exports = { authUser, registerUser, getUserProfile };

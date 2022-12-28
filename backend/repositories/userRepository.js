@@ -1,15 +1,13 @@
 const pool = require("../../db");
-const bcrypt = require("bcrypt");
+const { cryptPassword } = require("../utils/cryptPassword");
 
 const registerUser = async (email, password) => {
   try {
-    const salt = await bcrypt.genSalt(10);
-
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const cryptedPassword = await cryptPassword(password);
 
     const registeredUser =
       await pool.query(`INSERT into USERS (name, email, password, role)
-    VALUES ('vladi', '${email}', '${hashedPassword}', 'admin')`);
+    VALUES ('vladi', '${email}', '${cryptedPassword}', 'admin')`);
 
     return registeredUser;
   } catch (error) {
@@ -18,9 +16,6 @@ const registerUser = async (email, password) => {
 };
 
 const getUserByEmail = async (email) => {
-  const query = `SELECT * from USERS u where email = '${email}'`;
-  console.log(query);
-
   try {
     const user = await pool.query(
       `SELECT * from USERS u where email = '${email}'`

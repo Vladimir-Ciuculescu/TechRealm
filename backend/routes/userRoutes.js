@@ -1,6 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { authUser, registerUser } = require("../controllers/userController");
+const {
+  authUser,
+  registerUser,
+  getUserProfile,
+} = require("../controllers/userController");
+
+const { authMiddleware } = require("../middleware/authMiddleware");
 
 // * @desc   Authenticate user and get token
 // * @route  POST /api/users/login
@@ -11,5 +17,11 @@ router.route("/users/login").post(authUser);
 // * @route  POST /api/users/register
 // * @access Public
 router.route("/users/register").post(registerUser);
+
+// TODO : Temporary
+// * @desc   Get user profile
+// * @route  GET /api/users/profile
+// * @access Public
+router.route("/users/profile").get(authMiddleware, getUserProfile);
 
 module.exports = router;
