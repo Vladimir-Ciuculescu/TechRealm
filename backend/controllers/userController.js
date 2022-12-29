@@ -22,9 +22,27 @@ const authUser = async (req, res) => {
 const registerUser = async (req, res) => {
   const { email, password } = req.body;
 
-  const response = await userRepository.registerUser(email, password);
+  const user = await userRepository.getUserByEmail(email);
 
-  res.status(200).json(response);
+  if (user) {
+    res.status(400);
+    throw new Error("User already exists !");
+  } else {
+    const registeredUser = await userRepository.registerUser(email, password);
+
+    if (registeredUser) {
+      res.status(200).json({
+        name: registeredUser.name,
+        email: registeredUser.email,
+        token: generateToken(registeredUser.email),
+      });
+    } else {
+      res.status(400);
+      throw new Error("Invalid user data !");
+    }
+
+    // const response = await userRepository.registerUser(email, password);
+  }
 };
 
 // TODO : Temporary

@@ -7,9 +7,9 @@ const registerUser = async (email, password) => {
 
     const registeredUser =
       await pool.query(`INSERT into USERS (name, email, password, role)
-    VALUES ('vladi', '${email}', '${cryptedPassword}', 'admin')`);
+    VALUES ('vladi', '${email}', '${cryptedPassword}', 'admin') RETURNING *`);
 
-    return registeredUser;
+    return registeredUser.rows[0];
   } catch (error) {
     console.error(error);
   }
