@@ -9,7 +9,8 @@ export interface Product {
   brand: string
   category: string
   price: number
-  countInStock: number
+  countInStock?: number
+  quantity?: number
   rating: number
   numberOfReviews: number
 }
