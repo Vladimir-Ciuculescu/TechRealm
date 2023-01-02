@@ -13,6 +13,8 @@ import {
   CardActionArea,
 } from '@mui/material'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
+import { addProductAction } from '../../redux/cart/actions'
 
 interface ProductCardProps {
   product: Product
@@ -20,6 +22,8 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { name, defaultImage, id, price, numberOfReviews, rating } = product
+
+  const dispatch = useDispatch()
 
   return (
     <Card sx={{ boxShadow: 'none' }} className="product_card">
@@ -60,6 +64,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             sx={{ width: '90%', textTransform: 'none', fontSize: '16px' }}
             disableRipple
             startIcon={<AiOutlineShoppingCart />}
+            onClick={() => dispatch(addProductAction(product))}
           >
             Add to cart
           </Button>

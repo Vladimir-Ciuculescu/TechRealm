@@ -1,25 +1,18 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
-import { productsReducer } from './product/productReducer'
-import { userReducer } from './user/userReducer'
-import { productListReducer } from './productList/productListReducer'
 
-const reducer = combineReducers({
-  product: productsReducer,
-  //user: userReducer,
-  productList: productListReducer,
-})
+import { persistStore } from 'redux-persist'
+
+import rootReducer from './rootReducer'
 
 const middleWare = [thunk]
 
-const initialState = {}
-
-const store = createStore(
-  reducer,
-  initialState,
+export const store = createStore(
+  rootReducer,
   composeWithDevTools(applyMiddleware(...middleWare)),
 )
 
-export default store
+export const persistor = persistStore(store)
+
+export default { store, persistStore }
