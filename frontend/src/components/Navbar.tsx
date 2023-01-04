@@ -11,7 +11,9 @@ import { HiChevronDoubleRight } from 'react-icons/hi'
 import Container from '@mui/material/Container'
 
 import {
+  Badge,
   Button,
+  CssBaseline,
   Drawer,
   Link,
   List,
@@ -35,6 +37,8 @@ const accountTooltipContent = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        boxShadow: 1,
+        borderRadius: 2,
       }}
     >
       <Box
@@ -111,6 +115,8 @@ const cartTooltip = () => {
         paddingTop: 1,
         paddingBottom: 1,
         gap: 2,
+        boxShadow: 1,
+        borderRadius: 2,
       }}
     >
       <Typography sx={{ color: 'black' }}>
@@ -121,6 +127,7 @@ const cartTooltip = () => {
         variant="contained"
         sx={{ textTransform: 'none', fontSize: 16 }}
         startIcon={<HiChevronDoubleRight />}
+        //startIcon={<HiChevronDoubleRight />}
         size="small"
       >
         See cart details
@@ -145,7 +152,11 @@ const pages = [
   {
     title: 'Cart',
     path: '/cart',
-    icon: <AiOutlineShoppingCart fontSize={ICON_DIMENSION} />,
+    icon: (
+      <Badge badgeContent={4} color="error">
+        <AiOutlineShoppingCart fontSize={ICON_DIMENSION} />
+      </Badge>
+    ),
     tooltipContent: cartTooltip(),
   },
 ]
@@ -193,10 +204,11 @@ const NavBar = (props: Props) => {
   )
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
       <AppBar position="static">
         <Container maxWidth="xl">
-          <Toolbar>
+          <Toolbar sx={{ height: '100%' }}>
             <Container>
               <Typography
                 variant="h6"
@@ -270,6 +282,8 @@ const NavBar = (props: Props) => {
               sx={{
                 mr: 10,
                 display: { xs: 'none', sm: 'flex', md: 'flex' },
+
+                height: '100%',
                 gap: 5,
               }}
             >

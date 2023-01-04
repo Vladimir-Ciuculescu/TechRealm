@@ -69,6 +69,9 @@ const ProductScreen: React.FC<any> = () => {
 
     return (
       <Container maxWidth={false} sx={{ width: '85%', mt: 6 }}>
+        <Typography sx={{ paddingBottom: 5 }} variant="h4">
+          {name}
+        </Typography>
         <Grid container direction="row" columnSpacing={3} rowSpacing={4}>
           <Grid item xs={12} md={12} lg={4}>
             <ImageSlider images={productImages} activeImage={activeImage} />

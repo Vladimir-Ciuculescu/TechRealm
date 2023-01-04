@@ -4,7 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 
 dotenv.config();
 
@@ -23,6 +23,19 @@ app.use("/api", userRoutes);
 //   );
 //   next();
 // });
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, PATCH, POST, DELETE, PUT, OPTIONS"
+  );
+  next();
+});
 
 app.listen(
   process.env.PORT,

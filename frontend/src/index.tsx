@@ -9,7 +9,7 @@ import { store, persistor } from './redux/store'
 
 import reportWebVitals from './reportWebVitals'
 import { ThemeProvider } from '@mui/material'
-import { theme } from './theme'
+import theme from './theme'
 import { PersistGate } from 'redux-persist/integration/react'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
