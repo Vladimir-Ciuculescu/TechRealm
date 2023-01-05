@@ -7,6 +7,8 @@ interface CommonSelectProps {
   defaultValue?: SelectOption
   width?: string | number
   placeholder?: string
+  displayDropdownIndicator?: string
+  displayindicatorSeparator?: string
 }
 
 export const CommonSelect: React.FC<CommonSelectProps> = ({
@@ -14,11 +16,21 @@ export const CommonSelect: React.FC<CommonSelectProps> = ({
   defaultValue,
   width,
   placeholder,
+  displayDropdownIndicator,
+  displayindicatorSeparator,
 }) => {
   const styles = {
     container: (base: any) => ({
       ...base,
       width: width,
+    }),
+    dropdownIndicator: (base: any) => ({
+      ...base,
+      display: displayDropdownIndicator,
+    }),
+    indicatorSeparator: (base: any) => ({
+      ...base,
+      display: displayindicatorSeparator,
     }),
   }
 

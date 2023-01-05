@@ -3,12 +3,11 @@ import { Container } from '@mui/system'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { cartSelector } from '../redux/cart/selectors'
-import CheckoutProductCard from '../components/Product/CheckoutProductCard'
+import CheckoutProductCard from '../components/Cart/CheckoutProductCard'
+import { SummaryCart } from '../components/Cart/SummaryCart'
 
 const CartScreen: React.FC<any> = () => {
   const { cartProducts } = useSelector(cartSelector)
-
-  console.log(cartProducts)
 
   return (
     <Container
@@ -17,17 +16,21 @@ const CartScreen: React.FC<any> = () => {
     >
       <Typography
         variant="h3"
-        sx={{ paddingBottom: 5, fontWeight: '500', fontFamily: 'sans-serif' }}
+        sx={{
+          paddingBottom: 5,
+          fontWeight: '700',
+          fontFamily: 'Source Sans Pro',
+        }}
       >
         Your products
       </Typography>
-      <Grid container direction="row">
+      <Grid container direction="row" columnGap={2}>
         <Grid item xs={12} md={9}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              //background: '#4a148c',
+
               background: '#e3f1f9',
               borderRadius: 2,
               opacity: 0.8,
@@ -42,8 +45,8 @@ const CartScreen: React.FC<any> = () => {
             ))}
           </Box>
         </Grid>
-        <Grid item xs={12} md={3}>
-          <Box sx={{ background: '#4a148c', borderRadius: 2 }}>AWD</Box>
+        <Grid container item xs={12} md={2.5} sm={12} direction="column">
+          <SummaryCart />
         </Grid>
       </Grid>
     </Container>

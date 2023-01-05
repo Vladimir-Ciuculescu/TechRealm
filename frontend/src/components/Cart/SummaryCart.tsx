@@ -1,0 +1,151 @@
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  Grid,
+  Paper,
+  Typography,
+} from '@mui/material'
+import React from 'react'
+
+export const SummaryCart: React.FC<any> = () => {
+  return (
+    // <Box sx={{ background: 'white', borderRadius: 2 }}>
+    //   <Typography>Your total</Typography>
+    // </Box>
+
+    <Paper elevation={1}>
+      <Card
+        variant="outlined"
+        sx={{ paddingX: 2, borderColor: 'transparent', borderRadius: 2 }}
+      >
+        <CardContent>
+          <Typography
+            sx={{ fontWeight: 600, color: '#404040' }}
+            variant="h5"
+            component="div"
+          >
+            Order summary
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                pt: 3,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  color: '#404040',
+                  fontFamily: 'Source Sans Pro',
+                  fontWeight: 700,
+                }}
+              >
+                Subtotal
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  color: '#404040',
+                  fontFamily: 'Source Sans Pro',
+                  fontWeight: 700,
+                }}
+              >
+                45$
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  color: '#404040',
+                  fontFamily: 'Source Sans Pro',
+                  fontWeight: 700,
+                }}
+              >
+                Shipping
+              </Typography>
+
+              <Typography
+                sx={{
+                  fontSize: 18,
+                  color: '#404040',
+                  fontFamily: 'Source Sans Pro',
+                  fontWeight: 700,
+                }}
+              >
+                10$
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Divider
+              sx={{
+                borderBottomWidth: 2,
+                background: '#cfcfcf',
+                mt: 2,
+                mb: 2,
+                width: '100%',
+              }}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 24,
+                color: '#404040',
+                fontFamily: 'Source Sans Pro',
+                fontWeight: '1000',
+              }}
+            >
+              Your total
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 24,
+                color: '#404040',
+                fontFamily: 'Source Sans Pro',
+                fontWeight: '1000',
+              }}
+            >
+              $awdwad
+            </Typography>
+          </Box>
+        </CardContent>
+
+        <CardActions sx={{ display: 'flex', justifyContent: 'center', pb: 2 }}>
+          <Button
+            sx={{ textTransform: 'none', width: '100%' }}
+            variant="contained"
+          >
+            Proceed to checkout
+          </Button>
+        </CardActions>
+      </Card>
+    </Paper>
+  )
+}
