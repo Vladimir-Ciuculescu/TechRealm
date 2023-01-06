@@ -11,6 +11,7 @@ interface CommonSelectProps {
   displayindicatorSeparator?: boolean
   alignSingleValueText?: boolean
   value?: string | number | undefined
+  onChange?: (e: any) => any
 }
 
 export const CommonSelect: React.FC<CommonSelectProps> = ({
@@ -22,6 +23,7 @@ export const CommonSelect: React.FC<CommonSelectProps> = ({
   displayindicatorSeparator,
   alignSingleValueText,
   value,
+  onChange,
 }) => {
   const styles = {
     container: (base: any, state: any) => ({
@@ -55,6 +57,7 @@ export const CommonSelect: React.FC<CommonSelectProps> = ({
       placeholder={placeholder}
       value={selectValue}
       components={{ IndicatorSeparator: () => null }}
+      onChange={onChange}
     />
   )
 }

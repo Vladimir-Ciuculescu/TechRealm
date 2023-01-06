@@ -1,4 +1,8 @@
-import { ADD_PRODUCT, REMOVE_PRODUCT } from './actionTypes'
+import {
+  ADD_PRODUCT,
+  REMOVE_PRODUCT,
+  SET_QUANTITY_PRODUCT,
+} from './actionTypes'
 import { Product } from '../../interfaces/Product'
 
 interface cartStateProps {
@@ -28,18 +32,14 @@ const addProductToCart = (cartProducts: Product[], payload: any) => {
 
 const removeProductFromCart = (cartProducts: Product[], payload: any) => {
   const { product } = payload
-  const alreadyInCart = cartProducts.find(
-    (cartItem) => cartItem.id === product.id,
-  )
+  return cartProducts.filter((cartItem) => cartItem.id !== product.id)
+}
 
-  if (alreadyInCart?.quantity && alreadyInCart.quantity === 1) {
-    return cartProducts.filter((cartItem) => cartItem.id !== product.id)
-  }
+const setQuantityProductFromCart = (cartProducts: Product[], payload: any) => {
+  const { product, quantity } = payload
 
   return cartProducts.map((cartItem) =>
-    cartItem.id === product.id && cartItem.quantity
-      ? { ...cartItem, quantity: cartItem.quantity - 1 }
-      : cartItem,
+    cartItem.id === product.id ? { ...cartItem, quantity: quantity } : cartItem,
   )
 }
 
@@ -54,6 +54,16 @@ export const cartReducer = (state = cartState, action: any) => {
       return {
         ...state,
         cartProducts: removeProductFromCart(state.cartProducts, action.payload),
+      }
+
+    case SET_QUANTITY_PRODUCT:
+      console.log('awdaw')
+      return {
+        ...state,
+        cartProducts: setQuantityProductFromCart(
+          state.cartProducts,
+          action.payload,
+        ),
       }
     default:
       return state

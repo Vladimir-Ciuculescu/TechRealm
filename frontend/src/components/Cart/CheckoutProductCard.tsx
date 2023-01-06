@@ -7,11 +7,17 @@ import { FiHeart } from 'react-icons/fi'
 import { useTheme } from '@mui/material/styles'
 import { IoCloseOutline } from 'react-icons/io5'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { useDispatch } from 'react-redux'
+import {
+  removeProductAction,
+  setQuantityProductAction,
+} from '../../redux/cart/actions'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
   { value: 2, label: '2' },
   { value: 3, label: '3' },
+  { value: 4, label: '4' },
   { value: 5, label: '5' },
 ]
 
@@ -23,12 +29,13 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
   cartItem,
 }) => {
   const theme = useTheme()
-
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
-
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
+  const dispatch = useDispatch()
 
   const { name, defaultImage, price, quantity } = cartItem
+
+  const totalCost = quantity ? quantity * price : 0
 
   return (
     <Paper
@@ -100,6 +107,9 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
             alignSingleValueText={true}
             width="60%"
             value={quantity}
+            onChange={(e: any) =>
+              dispatch(setQuantityProductAction(cartItem, e.value))
+            }
           />
         </Grid>
         <Grid
@@ -123,7 +133,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
               fontWeight: 700,
             }}
           >
-            $45454
+            {totalCost.toFixed(2)}$
           </Typography>
         </Grid>
 
@@ -151,6 +161,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
               style={{ cursor: 'pointer' }}
               fontSize={isSmallScreen ? 25 : 35}
               color="#4a148c"
+              onClick={() => dispatch(removeProductAction(cartItem))}
             />
           </Grid>
         </Grid>
