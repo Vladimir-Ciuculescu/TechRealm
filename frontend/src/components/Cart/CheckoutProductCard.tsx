@@ -26,30 +26,30 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const isLessThan1500px = useMediaQuery('(min-width:1500px)')
+  const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
 
-  const { name, defaultImage, price } = cartItem
+  const { name, defaultImage, price, quantity } = cartItem
 
   return (
     <Paper
       elevation={1}
-      sx={{ width: '100%', background: 'white', borderRadius: 2, padding: 2 }}
+      sx={{
+        width: '100%',
+        background: 'white',
+        borderRadius: 2,
+        padding: 2,
+      }}
     >
       <Grid container direction="row" columnGap={{ md: 1 }} rowGap={{ xs: 1 }}>
-        <Grid
-          item
-          sx={{ background: 'red' }}
-          md={isLessThan1500px ? 2 : 4}
-          sm={6}
-          xs={6}
-        >
+        <Grid item md={isBiggerThan1500px ? 2 : 4} sm={6} xs={6}>
           <img src={defaultImage} width="100%" alt="" />
         </Grid>
-        <Grid item md={isLessThan1500px ? 3 : 5} sm={6} xs={6}>
+        <Grid item md={isBiggerThan1500px ? 3 : 5} sm={6} xs={6}>
           <Typography
             whiteSpace={'break-spaces'}
             fontWeight="bold"
             variant="h4"
+            sx={{ fontFamily: 'Source Sans Pro' }}
           >
             {name}
           </Typography>
@@ -57,7 +57,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
         <Grid
           container
           item
-          md={isLessThan1500px ? 1.5 : 3}
+          md={isBiggerThan1500px ? 1.5 : 3}
           xs={3}
           sm={3}
           sx={{
@@ -81,11 +81,13 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
         <Grid
           container
           item
-          md={isLessThan1500px ? 1 : 2}
+          md={isBiggerThan1500px ? 1 : 2}
           xs={3}
           sm={3}
           sx={{
             alignItems: 'center',
+
+            justifyContent: 'center',
           }}
           direction="row"
           columnGap={2}
@@ -93,15 +95,17 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
           <CommonSelect
             options={options}
             placeholder=""
-            displayDropdownIndicator="none"
-            displayindicatorSeparator="none"
-            width="100%"
+            displayDropdownIndicator={false}
+            displayindicatorSeparator={false}
+            alignSingleValueText={true}
+            width="60%"
+            value={quantity}
           />
         </Grid>
         <Grid
           container
           item
-          md={isLessThan1500px ? 1.5 : 3}
+          md={isBiggerThan1500px ? 1.5 : 3}
           xs={3}
           sm={3}
           sx={{
@@ -126,21 +130,25 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
         <Grid
           container
           item
-          //md={3}
-          md={isLessThan1500px ? 1.5 : 3}
+          md={isBiggerThan1500px ? 1.5 : 3}
           sm={3}
           xs={3}
           direction="column"
-          justifyContent="center"
-          alignItems="flex-end"
           rowGap={3}
           pr={2}
+          ml={isBiggerThan1500px ? 6 : 0}
+          sx={{ justifyContent: 'space-evenly', alignItems: 'flex-end' }}
         >
           <Grid item>
-            <FiHeart color="red" fontSize={isSmallScreen ? 25 : 35} />
+            <FiHeart
+              style={{ cursor: 'pointer' }}
+              color="red"
+              fontSize={isSmallScreen ? 25 : 35}
+            />
           </Grid>
           <Grid item>
             <IoCloseOutline
+              style={{ cursor: 'pointer' }}
               fontSize={isSmallScreen ? 25 : 35}
               color="#4a148c"
             />

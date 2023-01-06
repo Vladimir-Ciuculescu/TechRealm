@@ -13,10 +13,6 @@ import React from 'react'
 
 export const SummaryCart: React.FC<any> = () => {
   return (
-    // <Box sx={{ background: 'white', borderRadius: 2 }}>
-    //   <Typography>Your total</Typography>
-    // </Box>
-
     <Paper elevation={1}>
       <Card
         variant="outlined"

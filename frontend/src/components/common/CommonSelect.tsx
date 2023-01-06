@@ -7,8 +7,10 @@ interface CommonSelectProps {
   defaultValue?: SelectOption
   width?: string | number
   placeholder?: string
-  displayDropdownIndicator?: string
-  displayindicatorSeparator?: string
+  displayDropdownIndicator?: boolean
+  displayindicatorSeparator?: boolean
+  alignSingleValueText?: boolean
+  value?: string | number | undefined
 }
 
 export const CommonSelect: React.FC<CommonSelectProps> = ({
@@ -18,28 +20,41 @@ export const CommonSelect: React.FC<CommonSelectProps> = ({
   placeholder,
   displayDropdownIndicator,
   displayindicatorSeparator,
+  alignSingleValueText,
+  value,
 }) => {
   const styles = {
-    container: (base: any) => ({
+    container: (base: any, state: any) => ({
       ...base,
       width: width,
     }),
+    valueContainer: (base: any, state: any) => ({
+      ...base,
+      width: width,
+      justifyContent: alignSingleValueText ? 'center' : 'inherit',
+      alignItems: alignSingleValueText ? 'center' : 'inherit',
+    }),
     dropdownIndicator: (base: any) => ({
       ...base,
-      display: displayDropdownIndicator,
+      display: displayDropdownIndicator ? 'flex' : 'none',
     }),
     indicatorSeparator: (base: any) => ({
       ...base,
-      display: displayindicatorSeparator,
+      display: displayindicatorSeparator ? 'flex' : 'none',
     }),
   }
 
+  const selectValue: SelectOption = { label: value, value: value }
+
   return (
     <Select
+      autoFocus={false}
       styles={styles}
       defaultValue={defaultValue}
       options={options}
       placeholder={placeholder}
+      value={selectValue}
+      components={{ IndicatorSeparator: () => null }}
     />
   )
 }

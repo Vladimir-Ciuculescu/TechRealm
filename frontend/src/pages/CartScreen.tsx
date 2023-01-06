@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid, Paper, Typography, useMediaQuery } from '@mui/material'
 import { Container } from '@mui/system'
 import React from 'react'
 import { useSelector } from 'react-redux'
@@ -8,6 +8,7 @@ import { SummaryCart } from '../components/Cart/SummaryCart'
 
 const CartScreen: React.FC<any> = () => {
   const { cartProducts } = useSelector(cartSelector)
+  const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
 
   return (
     <Container
@@ -40,11 +41,114 @@ const CartScreen: React.FC<any> = () => {
               paddingBottom: 3,
             }}
           >
+            <Paper
+              elevation={1}
+              sx={{
+                width: '100%',
+                background: 'white',
+                borderRadius: 2,
+                padding: 2,
+                display: isBiggerThan1500px ? 'flex' : 'none',
+              }}
+            >
+              <Grid container direction="row" columnGap={{ md: 1 }}>
+                <Grid item md={isBiggerThan1500px ? 2 : 4}></Grid>
+                <Grid item md={isBiggerThan1500px ? 3 : 5}>
+                  <Typography
+                    fontWeight="bold"
+                    variant="h4"
+                    sx={{ fontFamily: 'Source Sans Pro' }}
+                  >
+                    Product
+                  </Typography>
+                </Grid>
+
+                <Grid
+                  container
+                  item
+                  md={isBiggerThan1500px ? 1.5 : 3}
+                  sx={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 18,
+                      color: '#404040',
+                      fontFamily: 'Source Sans Pro',
+                      fontWeight: '1000',
+                    }}
+                  >
+                    Unit price
+                  </Typography>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  md={isBiggerThan1500px ? 1 : 2}
+                  sx={{ justifyContent: 'center' }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 18,
+                      color: '#404040',
+                      fontFamily: 'Source Sans Pro',
+                      fontWeight: '1000',
+                    }}
+                  >
+                    Pieces
+                  </Typography>
+                </Grid>
+                <Grid
+                  container
+                  item
+                  md={isBiggerThan1500px ? 1.5 : 3}
+                  sx={{
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 18,
+                      color: '#404040',
+                      fontFamily: 'Source Sans Pro',
+                      fontWeight: '1000',
+                    }}
+                  >
+                    Total Cost
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  direction="column"
+                  md={isBiggerThan1500px ? 1.5 : 3}
+                  ml={isBiggerThan1500px ? 6 : 0}
+                  sx={{
+                    justifyContent: 'space-evenly',
+                    alignItems: 'flex-end',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 18,
+                      color: '#404040',
+                      fontFamily: 'Source Sans Pro',
+                      fontWeight: '1000',
+                    }}
+                  >
+                    Actions
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>
             {cartProducts.map((cartItem: any) => (
               <CheckoutProductCard cartItem={cartItem} />
             ))}
           </Box>
         </Grid>
+
         <Grid container item xs={12} md={2.5} sm={12} direction="column">
           <SummaryCart />
         </Grid>

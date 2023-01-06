@@ -4,7 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
-// const bcrypt = require("bcrypt");
+const types = require("pg").types;
 
 dotenv.config();
 
@@ -13,16 +13,6 @@ app.use(cors());
 
 app.use("/api", productRoutes);
 app.use("/api", userRoutes);
-
-// app.use(function (req, res, next) {
-//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-//   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Content-Type, Access-Control-Allow-Headers"
-//   );
-//   next();
-// });
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -35,6 +25,11 @@ app.use((req, res, next) => {
     "GET, PATCH, POST, DELETE, PUT, OPTIONS"
   );
   next();
+});
+
+//Numeric columns from postgreSQL database come as string to fronted. So this fixes it
+types.setTypeParser(1700, function (val) {
+  return parseFloat(val);
 });
 
 app.listen(

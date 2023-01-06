@@ -1,4 +1,5 @@
 const pool = require("../../db");
+const types = require("pg").types;
 
 const getProducts = async () => {
   try {
