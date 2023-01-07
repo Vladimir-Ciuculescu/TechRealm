@@ -1,5 +1,3 @@
-import { Image } from './Image'
-
 export interface Product {
   id: number
   name: string
@@ -10,7 +8,6 @@ export interface Product {
   category: string
   price: number
   countInStock?: number
-  quantity?: number
   rating: number
   numberOfReviews: number
 }

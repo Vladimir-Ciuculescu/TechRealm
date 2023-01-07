@@ -1,6 +1,5 @@
 import { Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
-import { Product } from '../../interfaces/Product'
 import { SelectOption } from '../../interfaces/SelectOption'
 import { CommonSelect } from '../common/CommonSelect'
 import { FiHeart } from 'react-icons/fi'
@@ -12,6 +11,7 @@ import {
   removeProductAction,
   setQuantityProductAction,
 } from '../../redux/cart/actions'
+import { CartProduct } from '../../interfaces/CartProduct'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -22,7 +22,7 @@ const options: SelectOption[] = [
 ]
 
 interface CheckoutProductCardProps {
-  cartItem: Product
+  cartItem: CartProduct
 }
 
 const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({

@@ -2,13 +2,14 @@ import { Box, Grid, Paper, Typography, useMediaQuery } from '@mui/material'
 import { Container } from '@mui/system'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { cartSelector } from '../redux/cart/selectors'
+import { cartProductsSelector } from '../redux/cart/selectors'
 import CheckoutProductCard from '../components/Cart/CheckoutProductCard'
 import { SummaryCart } from '../components/Cart/SummaryCart'
 
 const CartScreen: React.FC<any> = () => {
-  const { cartProducts } = useSelector(cartSelector)
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
+
+  const cartProducts = useSelector(cartProductsSelector)
 
   return (
     <Container

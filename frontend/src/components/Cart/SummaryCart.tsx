@@ -5,13 +5,18 @@ import {
   CardActions,
   CardContent,
   Divider,
-  Grid,
   Paper,
   Typography,
 } from '@mui/material'
 import React from 'react'
+import { cartTotalCost } from '../../redux/cart/selectors'
+import { useSelector } from 'react-redux'
 
 export const SummaryCart: React.FC<any> = () => {
+  const totalCost = useSelector(cartTotalCost)
+
+  console.log(totalCost)
+
   return (
     <Paper elevation={1}>
       <Card
@@ -53,7 +58,7 @@ export const SummaryCart: React.FC<any> = () => {
                   fontWeight: 700,
                 }}
               >
-                45$
+                {totalCost.toFixed(2)}$
               </Typography>
             </Box>
 
@@ -83,7 +88,7 @@ export const SummaryCart: React.FC<any> = () => {
                   fontWeight: 700,
                 }}
               >
-                10$
+                {(totalCost / 10).toFixed(2)}$
               </Typography>
             </Box>
           </Box>
@@ -128,7 +133,7 @@ export const SummaryCart: React.FC<any> = () => {
                 fontWeight: '1000',
               }}
             >
-              $awdwad
+              {(totalCost + totalCost / 10).toFixed(2)}$
             </Typography>
           </Box>
         </CardContent>

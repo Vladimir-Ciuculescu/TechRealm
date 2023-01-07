@@ -7,7 +7,7 @@ import { ImageSet } from '../components/Product/ImageSet'
 import { ImageSlider } from '../components/Product/ImageSlider'
 import { GalleryModal } from '../components/Product/GalleryModal'
 import { useSelector } from 'react-redux'
-import { productSelector } from '../redux/product/selectors'
+import { activeImageSelector } from '../redux/product/selectors'
 import { Container } from '@mui/system'
 import Button from '@mui/material/Button'
 
@@ -46,7 +46,7 @@ const ProductScreen: React.FC<any> = () => {
   const [quantity, setQuantity] = useState<number>()
   const [productImages, setProductImages] = useState<any[]>([])
 
-  const { activeImage } = useSelector(productSelector)
+  const activeImage = useSelector(activeImageSelector)
 
   const fetchProduct = async () => {
     try {

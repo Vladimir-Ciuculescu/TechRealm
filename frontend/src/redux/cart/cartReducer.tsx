@@ -3,17 +3,17 @@ import {
   REMOVE_PRODUCT,
   SET_QUANTITY_PRODUCT,
 } from './actionTypes'
-import { Product } from '../../interfaces/Product'
+import { CartProduct } from '../../interfaces/CartProduct'
 
 interface cartStateProps {
-  cartProducts: Product[]
+  cartProducts: CartProduct[]
 }
 
 const cartState: cartStateProps = {
   cartProducts: [],
 }
 
-const addProductToCart = (cartProducts: Product[], payload: any) => {
+const addProductToCart = (cartProducts: CartProduct[], payload: any) => {
   const { product } = payload
   const alreadyInCart = cartProducts.find(
     (cartItem) => cartItem.id === product.id,
@@ -21,7 +21,7 @@ const addProductToCart = (cartProducts: Product[], payload: any) => {
 
   if (alreadyInCart) {
     return cartProducts.map((cartItem) =>
-      cartItem.id === product.id && cartItem.quantity
+      cartItem.id === product.id
         ? { ...cartItem, quantity: cartItem.quantity + 1 }
         : cartItem,
     )
@@ -30,12 +30,15 @@ const addProductToCart = (cartProducts: Product[], payload: any) => {
   return [...cartProducts, { ...product, quantity: 1 }]
 }
 
-const removeProductFromCart = (cartProducts: Product[], payload: any) => {
+const removeProductFromCart = (cartProducts: CartProduct[], payload: any) => {
   const { product } = payload
   return cartProducts.filter((cartItem) => cartItem.id !== product.id)
 }
 
-const setQuantityProductFromCart = (cartProducts: Product[], payload: any) => {
+const setQuantityProductFromCart = (
+  cartProducts: CartProduct[],
+  payload: any,
+) => {
   const { product, quantity } = payload
 
   return cartProducts.map((cartItem) =>
@@ -57,7 +60,6 @@ export const cartReducer = (state = cartState, action: any) => {
       }
 
     case SET_QUANTITY_PRODUCT:
-      console.log('awdaw')
       return {
         ...state,
         cartProducts: setQuantityProductFromCart(

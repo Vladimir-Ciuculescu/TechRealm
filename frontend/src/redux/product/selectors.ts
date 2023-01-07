@@ -1,8 +1,13 @@
 import { Selector, createSelector } from '@reduxjs/toolkit'
 
-const product = (state: any) => state.product
+const productSelector = (state: any) => state.product
 
-export const productSelector: Selector<any, any> = createSelector(
-  [product],
-  ({ ...args }) => args,
+export const activeImageSelector: Selector<any, any> = createSelector(
+  [productSelector],
+  (product) => product.activeImage,
+)
+
+export const galleryModalSelector: Selector<any, any> = createSelector(
+  [productSelector],
+  (product) => product.galleryModal,
 )

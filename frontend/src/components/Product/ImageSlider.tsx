@@ -1,11 +1,8 @@
 import React from 'react'
 import { Image } from '../../interfaces/Image'
 import SwipeableViews from 'react-swipeable-views'
-import { useSelector } from 'react-redux'
-import { productSelector } from '../../redux/product/selectors'
 import { useDispatch } from 'react-redux'
 import { toggleGalleryModalAction } from '../../redux/product/actions'
-import { useWindowWidth } from '../../hooks/useWindowWidth'
 
 interface ImageSliderProps {
   images: Image[]
@@ -17,8 +14,6 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
   activeImage,
 }) => {
   const dispatch = useDispatch()
-
-  const innerWidth = useWindowWidth()
 
   const openGalleryModal = () => {
     dispatch(toggleGalleryModalAction())

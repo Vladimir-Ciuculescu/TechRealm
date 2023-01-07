@@ -8,7 +8,7 @@ import {
 } from '../../redux/product/actions'
 import CloseIcon from '@mui/icons-material/Close'
 
-import { productSelector } from '../../redux/product/selectors'
+import { galleryModalSelector } from '../../redux/product/selectors'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
@@ -55,9 +55,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
     return { ...item, index: key }
   })
 
-  const {
-    galleryModal: { visible },
-  } = useSelector(productSelector)
+  const { visible } = useSelector(galleryModalSelector)
 
   const closeGalleryModal = () => {
     dispatch(toggleGalleryModalAction())
