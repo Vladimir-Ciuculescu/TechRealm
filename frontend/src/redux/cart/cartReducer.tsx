@@ -14,7 +14,7 @@ const cartState: cartStateProps = {
 }
 
 const addProductToCart = (cartProducts: CartProduct[], payload: any) => {
-  const { product } = payload
+  const { product, quantity } = payload
   const alreadyInCart = cartProducts.find(
     (cartItem) => cartItem.id === product.id,
   )
@@ -22,12 +22,12 @@ const addProductToCart = (cartProducts: CartProduct[], payload: any) => {
   if (alreadyInCart) {
     return cartProducts.map((cartItem) =>
       cartItem.id === product.id
-        ? { ...cartItem, quantity: cartItem.quantity + 1 }
+        ? { ...cartItem, quantity: cartItem.quantity + quantity }
         : cartItem,
     )
   }
 
-  return [...cartProducts, { ...product, quantity: 1 }]
+  return [...cartProducts, { ...product, quantity: quantity }]
 }
 
 const removeProductFromCart = (cartProducts: CartProduct[], payload: any) => {
@@ -49,6 +49,7 @@ const setQuantityProductFromCart = (
 export const cartReducer = (state = cartState, action: any) => {
   switch (action.type) {
     case ADD_PRODUCT:
+      console.log(action.payload)
       return {
         ...state,
         cartProducts: addProductToCart(state.cartProducts, action.payload),

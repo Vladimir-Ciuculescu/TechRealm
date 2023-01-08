@@ -1,10 +1,16 @@
 import React from 'react'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 import { styled } from '@mui/material/styles'
+import Grow from '@mui/material/Grow'
 
 const CustomToolTip: React.FC<any> = styled(
   ({ className, ...props }: TooltipProps) => (
-    <Tooltip {...props} arrow classes={{ popper: className }} />
+    <Tooltip
+      TransitionComponent={Grow}
+      {...props}
+      arrow
+      classes={{ popper: className }}
+    />
   ),
 )(({ theme }) => ({
   [`& .${tooltipClasses.arrow}`]: {

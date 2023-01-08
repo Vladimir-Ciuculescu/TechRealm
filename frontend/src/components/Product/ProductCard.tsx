@@ -1,20 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Product } from '../../interfaces/Product'
 import {
-  CardHeader,
   Card,
   CardContent,
   CardMedia,
   Typography,
   Rating,
-  Button,
   Grid,
   CardActionArea,
+  CircularProgress,
 } from '@mui/material'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { addProductAction } from '../../redux/cart/actions'
+import { toast } from 'react-toastify'
+import { LoadingButton } from '@mui/lab'
 
 interface ProductCardProps {
   product: Product
@@ -23,7 +24,13 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { name, defaultImage, id, price, numberOfReviews, rating } = product
 
+  const [loading, setLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
+
+  const addProduct = () => {
+    dispatch(addProductAction(product, 1))
+    toast.info('Product added to cart !')
+  }
 
   return (
     <Card sx={{ boxShadow: 'none' }} className="product_card">
@@ -59,15 +66,36 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Button
+          {/* <Button
             variant="contained"
             sx={{ width: '90%', textTransform: 'none', fontSize: '16px' }}
             disableRipple
             startIcon={<AiOutlineShoppingCart />}
-            onClick={() => dispatch(addProductAction(product))}
+            onClick={() => dispatch(addProductAction(product, 1))}
           >
             Add to cart
-          </Button>
+          </Button> */}
+          <LoadingButton
+            onClick={addProduct}
+            variant="contained"
+            sx={{ width: '90%', textTransform: 'none', fontSize: '16px' }}
+            disableRipple
+            startIcon={
+              loading ? (
+                <CircularProgress size={16} />
+              ) : (
+                <AiOutlineShoppingCart />
+              )
+            }
+            loading={loading}
+            loadingIndicator={
+              <Typography sx={{ pl: 3.3, fontSize: 15 }}>
+                Add to cart
+              </Typography>
+            }
+          >
+            Add to cart
+          </LoadingButton>
         </Grid>
       </CardContent>
     </Card>

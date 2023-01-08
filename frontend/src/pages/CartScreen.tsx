@@ -26,7 +26,7 @@ const CartScreen: React.FC<any> = () => {
       >
         Your products
       </Typography>
-      <Grid container direction="row" columnGap={2}>
+      <Grid container direction="row" columnGap={2} rowGap={3}>
         <Grid item xs={12} md={9}>
           <Box
             sx={{

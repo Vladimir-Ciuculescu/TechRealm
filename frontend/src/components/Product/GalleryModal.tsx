@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
 import { Image } from '../../interfaces/Image'
 import {
   setActiveImageAction,
   toggleGalleryModalAction,
 } from '../../redux/product/actions'
 import CloseIcon from '@mui/icons-material/Close'
-
 import { galleryModalSelector } from '../../redux/product/selectors'
 import useMediaQuery from '@mui/material/useMediaQuery'
-
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import {
   AiOutlinePlus,
@@ -27,10 +24,15 @@ import {
   IconButton,
   Button,
 } from '@mui/material'
+import { addProductAction } from '../../redux/cart/actions'
+import { Product } from '../../interfaces/Product'
+import { toast } from 'react-toastify'
 
 interface GalleryModalProps {
   images: Image[]
-  activeImage?: Image
+  activeImage: Image
+  quantity: number
+  product: Product
 }
 
 interface DialogTitleProps {
@@ -42,6 +44,8 @@ interface DialogTitleProps {
 export const GalleryModal: React.FC<GalleryModalProps> = ({
   images,
   activeImage,
+  quantity,
+  product,
 }) => {
   const dispatch = useDispatch()
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -78,6 +82,14 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
         setCurrentIndex(0)
         break
     }
+  }
+
+  const addProduct = () => {
+    dispatch(
+      addProductAction({ ...product, defaultImage: activeImage.url }, quantity),
+    )
+    closeGalleryModal()
+    toast.info('Product added to cart')
   }
 
   useEffect(() => {
@@ -254,6 +266,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
                 <Button
                   variant="contained"
                   startIcon={<AiOutlineShoppingCart />}
+                  onClick={addProduct}
                 >
                   Add to cart
                 </Button>

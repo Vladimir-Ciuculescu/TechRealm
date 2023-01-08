@@ -11,6 +11,8 @@ import reportWebVitals from './reportWebVitals'
 import { ThemeProvider } from '@mui/material'
 import theme from './theme'
 import { PersistGate } from 'redux-persist/integration/react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
@@ -18,6 +20,7 @@ root.render(
     <PersistGate persistor={persistor}>
       <ThemeProvider theme={theme}>
         <App />
+        <ToastContainer />
       </ThemeProvider>
     </PersistGate>
   </Provider>,

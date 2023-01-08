@@ -15,8 +15,6 @@ import { useSelector } from 'react-redux'
 export const SummaryCart: React.FC<any> = () => {
   const totalCost = useSelector(cartTotalCost)
 
-  console.log(totalCost)
-
   return (
     <Paper elevation={1}>
       <Card

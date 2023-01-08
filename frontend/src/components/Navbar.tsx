@@ -7,14 +7,15 @@ import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useNavigate } from 'react-router-dom'
 import { HiChevronDoubleRight } from 'react-icons/hi'
-
 import Container from '@mui/material/Container'
+import { cartTotalProductsSelector } from '../redux/cart/selectors'
 
 import {
   Badge,
   Button,
   CssBaseline,
   Drawer,
+  Grow,
   Link,
   List,
   ListItem,
@@ -26,6 +27,7 @@ import { BsPerson } from 'react-icons/bs'
 import { FiHeart } from 'react-icons/fi'
 
 import CustomToolTip from './common/CustomTooltip'
+import { useSelector } from 'react-redux'
 
 const ICON_DIMENSION = 30
 
@@ -127,7 +129,6 @@ const cartTooltip = () => {
         variant="contained"
         sx={{ textTransform: 'none', fontSize: 16 }}
         startIcon={<HiChevronDoubleRight />}
-        //startIcon={<HiChevronDoubleRight />}
         size="small"
       >
         See cart details
@@ -136,31 +137,6 @@ const cartTooltip = () => {
   )
 }
 
-const pages = [
-  {
-    title: 'Account',
-    path: '/login',
-    icon: <BsPerson fontSize={ICON_DIMENSION} />,
-    tooltipContent: accountTooltipContent(),
-  },
-  {
-    title: 'Favorites',
-    path: '/favorites',
-    icon: <FiHeart fontSize={ICON_DIMENSION} />,
-    tooltipContent: favouritesToolTip(),
-  },
-  {
-    title: 'Cart',
-    path: '/cart',
-    icon: (
-      <Badge badgeContent={4} color="error">
-        <AiOutlineShoppingCart fontSize={ICON_DIMENSION} />
-      </Badge>
-    ),
-    tooltipContent: cartTooltip(),
-  },
-]
-
 interface Props {
   window?: () => Window
 }
@@ -168,11 +144,38 @@ interface Props {
 const NavBar = (props: Props) => {
   const navigate = useNavigate()
   const [toggleDrawer, setToggleDrawer] = useState<boolean>(false)
+  const totalProducts = useSelector(cartTotalProductsSelector)
 
   const { window } = props
 
   const container =
     window !== undefined ? () => window().document.body : undefined
+
+  const pages = [
+    {
+      title: 'Account',
+      path: '/login',
+      icon: <BsPerson fontSize={ICON_DIMENSION} />,
+      tooltipContent: accountTooltipContent(),
+      badge: null,
+    },
+    {
+      title: 'Favorites',
+      path: '/favorites',
+      icon: <FiHeart fontSize={ICON_DIMENSION} />,
+      tooltipContent: favouritesToolTip(),
+      badge: null,
+    },
+    {
+      title: 'Cart',
+      path: '/cart',
+      icon: <AiOutlineShoppingCart fontSize={ICON_DIMENSION} />,
+      tooltipContent: cartTooltip(),
+      badge: {
+        value: totalProducts,
+      },
+    },
+  ]
 
   const drawer = (
     <Box
@@ -180,7 +183,7 @@ const NavBar = (props: Props) => {
       sx={{ textAlign: 'center' }}
     >
       <List dense={false}>
-        {pages.map((item, key) => (
+        {pages.map((page, key) => (
           <ListItem
             sx={{ marginBottom: 1 }}
             dense={false}
@@ -188,14 +191,22 @@ const NavBar = (props: Props) => {
             disablePadding
             secondaryAction={<MdOutlineKeyboardArrowRight size={25} />}
           >
-            <ListItemAvatar>{item.icon}</ListItemAvatar>
+            <ListItemAvatar>
+              {page.badge ? (
+                <Badge badgeContent={page.badge.value} color="error">
+                  {page.icon}
+                </Badge>
+              ) : (
+                page.icon
+              )}
+            </ListItemAvatar>
 
             <Link
-              href={item.path}
+              href={page.path}
               sx={{ textDecoration: 'none' }}
-              onClick={() => navigate(item.path)}
+              onClick={() => navigate(page.path)}
             >
-              {item.title}
+              {page.title}
             </Link>
           </ListItem>
         ))}
@@ -305,7 +316,13 @@ const NavBar = (props: Props) => {
                       },
                     }}
                   >
-                    {page.icon}
+                    {page.badge ? (
+                      <Badge badgeContent={page.badge.value} color="error">
+                        {page.icon}
+                      </Badge>
+                    ) : (
+                      page.icon
+                    )}
                     <Typography
                       component="a"
                       sx={{

@@ -6,9 +6,12 @@ import {
 import { ActionCreator } from 'redux'
 import { Product } from '../../interfaces/Product'
 
-export const addProductAction: ActionCreator<any> = (product: Product) => ({
+export const addProductAction: ActionCreator<any> = (
+  product: Product,
+  quantity: number,
+) => ({
   type: ADD_PRODUCT,
-  payload: { product },
+  payload: { product, quantity },
 })
 
 export const removeProductAction: ActionCreator<any> = (product: Product) => ({
