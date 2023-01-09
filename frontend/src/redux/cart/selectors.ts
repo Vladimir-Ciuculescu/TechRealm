@@ -18,7 +18,7 @@ export const cartTotalProductsSelector: Selector<any, any> = createSelector(
     ),
 )
 
-export const cartTotalCost: Selector<any, any> = createSelector(
+export const cartTotalCostSelector: Selector<any, any> = createSelector(
   [cartProductsSelector],
   (cartProducts) =>
     cartProducts.reduce(

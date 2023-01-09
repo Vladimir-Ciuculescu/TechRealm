@@ -9,11 +9,11 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
-import { cartTotalCost } from '../../redux/cart/selectors'
+import { cartTotalCostSelector } from '../../redux/cart/selectors'
 import { useSelector } from 'react-redux'
 
 export const SummaryCart: React.FC<any> = () => {
-  const totalCost = useSelector(cartTotalCost)
+  const totalCost = useSelector(cartTotalCostSelector)
 
   return (
     <Paper elevation={1}>

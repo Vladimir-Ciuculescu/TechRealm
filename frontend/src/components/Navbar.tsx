@@ -8,65 +8,60 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useNavigate } from 'react-router-dom'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 import Container from '@mui/material/Container'
-import { cartTotalProductsSelector } from '../redux/cart/selectors'
+import {
+  cartProductsSelector,
+  cartTotalProductsSelector,
+} from '../redux/cart/selectors'
 
 import {
   Badge,
   Button,
   CssBaseline,
+  Divider,
   Drawer,
-  Grow,
   Link,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemText,
 } from '@mui/material'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { BsPerson } from 'react-icons/bs'
 import { FiHeart } from 'react-icons/fi'
 
-import CustomToolTip from './common/CustomTooltip'
+import CommonTooltip from './common/CommonTooltip'
 import { useSelector } from 'react-redux'
+import { CartProduct } from '../interfaces/CartProduct'
+import { IoCloseOutline, IoCode } from 'react-icons/io5'
 
 const ICON_DIMENSION = 30
 
 const drawerWidth = 240
 
-const accountTooltipContent = () => {
+const AccountTooltipContent = () => {
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        boxShadow: 1,
-        borderRadius: 2,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          paddingLeft: 2,
-          paddingRight: 2,
-          paddingTop: 1,
-          paddingBottom: 1,
-        }}
-      >
-        <Typography sx={{ color: 'black' }}>
-          Here you can manage your account
-        </Typography>
+      <Box sx={{ px: 2, py: 1 }}>
+        <Typography>Here you can manage your account </Typography>
       </Box>
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'space-evenly',
+          alignItems: 'center',
           background: '#F0F8FF',
-          paddingLeft: 2,
-          paddingRight: 2,
-          paddingTop: 1,
-          paddingBottom: 1,
+          width: '100%',
+          px: 2,
+          py: 1,
+
+          borderBottomLeftRadius: 3,
+          borderBottomRightRadius: 3,
         }}
       >
         <Button
@@ -89,25 +84,69 @@ const accountTooltipContent = () => {
   )
 }
 
-const favouritesToolTip = () => {
+const FavouritesToolTip = () => {
   return (
-    <Typography
-      sx={{
-        width: '350px',
-        paddingLeft: 2,
-        paddingRight: 2,
-        paddingTop: 1,
-        paddingBottom: 1,
-        color: 'black',
-      }}
-    >
-      Add the products you like to favorites
-    </Typography>
+    <Box sx={{ px: 2, py: 1 }}>
+      <Typography>Add your favourite products here !</Typography>
+    </Box>
   )
 }
 
-const cartTooltip = () => {
-  return (
+const CartTooltip = () => {
+  const totalProducts = useSelector(cartTotalProductsSelector)
+  const cartProducts = useSelector(cartProductsSelector)
+
+  const [removeIcon, toggleRemoveIcon] = useState(false)
+
+  return totalProducts !== 0 ? (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+
+        py: 1,
+      }}
+    >
+      <Box
+        sx={{
+          px: 4,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Typography sx={{ textTransform: 'uppercase', color: '#50148c' }}>
+          Your products
+        </Typography>
+      </Box>
+
+      <List component="nav" aria-label="mailbox folders">
+        <Divider sx={{ background: '#e0e0e0' }} />
+        {cartProducts.map((cartItem: CartProduct) => (
+          // <ListItem
+          //   //onMouseOver={() => toggleRemoveIcon(true)}
+          //   //onMouseDown={() => toggleRemoveIcon(false)}
+          //   onFocus={() => console.log('awdaw')}
+          //   button
+          //   divider
+          //   sx={{ gap: 2 }}
+          // >
+          //   <img width="20%" src={cartItem.defaultImage} alt={cartItem.name} />
+          //   <ListItemText sx={{ width: '47%' }} primary={cartItem.name} />
+          //   <ListItemText primary={`x${cartItem.quantity}`} />
+          //   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          //     <ListItemText
+          //       primary={`${(cartItem.price * cartItem.quantity).toFixed(2)}$`}
+          //     />
+          //     {removeIcon ? <IoCloseOutline /> : null}
+          //   </Box>
+          // </ListItem>
+          <CartTooltipProduct cartItem={cartItem} />
+        ))}
+      </List>
+    </Box>
+  ) : (
     <Box
       sx={{
         display: 'flex',
@@ -127,13 +166,44 @@ const cartTooltip = () => {
       <Button
         href="/cart"
         variant="contained"
-        sx={{ textTransform: 'none', fontSize: 16 }}
+        sx={{ textTransform: 'none', fontSize: 16, mb: 1 }}
         startIcon={<HiChevronDoubleRight />}
         size="small"
       >
         See cart details
       </Button>
     </Box>
+  )
+}
+
+interface CartTooltipProductProps {
+  cartItem: CartProduct
+}
+
+const CartTooltipProduct: React.FC<CartTooltipProductProps> = ({
+  cartItem,
+}) => {
+  const [removeIcon, toggleRemoveIcon] = useState(false)
+
+  return (
+    <ListItem
+      onMouseOver={() => toggleRemoveIcon(true)}
+      onMouseOut={() => toggleRemoveIcon(false)}
+      onFocus={() => console.log('awdaw')}
+      button
+      divider
+      sx={{ gap: 2 }}
+    >
+      <img width="20%" src={cartItem.defaultImage} alt={cartItem.name} />
+      <ListItemText sx={{ width: '47%' }} primary={cartItem.name} />
+      <ListItemText primary={`x${cartItem.quantity}`} />
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <ListItemText
+          primary={`${(cartItem.price * cartItem.quantity).toFixed(2)}$`}
+        />
+        {removeIcon ? <IoCloseOutline /> : null}
+      </Box>
+    </ListItem>
   )
 }
 
@@ -156,21 +226,24 @@ const NavBar = (props: Props) => {
       title: 'Account',
       path: '/login',
       icon: <BsPerson fontSize={ICON_DIMENSION} />,
-      tooltipContent: accountTooltipContent(),
+      tooltipContent: AccountTooltipContent(),
+      tooltipPaddingSpace: 0,
       badge: null,
     },
     {
       title: 'Favorites',
       path: '/favorites',
       icon: <FiHeart fontSize={ICON_DIMENSION} />,
-      tooltipContent: favouritesToolTip(),
+      tooltipContent: FavouritesToolTip(),
+      tooltipPaddingSpace: 'none',
       badge: null,
     },
     {
       title: 'Cart',
       path: '/cart',
       icon: <AiOutlineShoppingCart fontSize={ICON_DIMENSION} />,
-      tooltipContent: cartTooltip(),
+      tooltipContent: CartTooltip(),
+      tooltipPaddingSpace: 0,
       badge: {
         value: totalProducts,
       },
@@ -299,7 +372,11 @@ const NavBar = (props: Props) => {
               }}
             >
               {pages.map((page, key) => (
-                <CustomToolTip title={page.tooltipContent}>
+                <CommonTooltip
+                  containerSpace={-12}
+                  title={page.tooltipContent}
+                  paddingSpace={page.tooltipPaddingSpace}
+                >
                   <Link
                     key={key}
                     color="inherit"
@@ -337,7 +414,7 @@ const NavBar = (props: Props) => {
                       {page.title}
                     </Typography>
                   </Link>
-                </CustomToolTip>
+                </CommonTooltip>
               ))}
             </Box>
           </Toolbar>
