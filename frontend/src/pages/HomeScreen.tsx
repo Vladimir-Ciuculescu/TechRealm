@@ -3,7 +3,7 @@ import ProductCard from '../components/Product/ProductCard'
 import { Product } from '../interfaces/Product'
 import { Container } from '@mui/system'
 import { Box, Grid, Typography } from '@mui/material'
-import { axiosInstance } from '../services/axiosInstance'
+import { getProductsApi } from '../services/productApi'
 
 interface IProps {}
 
@@ -11,9 +11,10 @@ const HomeScreen: React.FC<IProps> = () => {
   const [products, setProducts] = useState<Product[]>([])
 
   const fetchProducts = async () => {
-    const { data } = await axiosInstance.get('/api/products')
-
-    setProducts(data)
+    const products = await getProductsApi()
+    if (products) {
+      setProducts(products)
+    }
   }
 
   useEffect(() => {

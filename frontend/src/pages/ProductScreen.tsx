@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Product } from '../interfaces/Product'
 import { CommonSelect } from '../components/common/CommonSelect'
 import { SelectOption } from '../interfaces/SelectOption'
-import { ImageSet } from '../components/Product/ImageSet'
 import { ImageSlider } from '../components/Product/ImageSlider'
 import { GalleryModal } from '../components/Product/GalleryModal'
 import { useSelector, useDispatch } from 'react-redux'
@@ -12,8 +11,7 @@ import { Container } from '@mui/system'
 import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { toast } from 'react-toastify'
-
-import { axiosInstance } from '../services/axiosInstance'
+import { ImageSet } from '../components/Product/ImageSet'
 
 import {
   AiFillCheckCircle,
@@ -35,6 +33,8 @@ import {
   CircularProgress,
 } from '@mui/material'
 import { addProductAction } from '../redux/cart/actions'
+import { getProductApi } from '../services/productApi'
+import { Image } from '../interfaces/Image'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -48,26 +48,25 @@ const ProductScreen: React.FC<any> = () => {
   const { id } = useParams()
   const [product, setProduct] = useState<Product>()
   const [quantity, setQuantity] = useState<number>(1)
-  const [productImages, setProductImages] = useState<any[]>([])
+  const [productImages, setProductImages] = useState<Image[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   const dispatch = useDispatch()
 
   const activeImage = useSelector(activeImageSelector)
 
-  const fetchProduct = async () => {
-    try {
-      const { data } = await axiosInstance.get(`api/products/${id}`)
-      const { product, images } = data
-      setProduct(product)
-      setProductImages(images)
-    } catch (error) {
-      console.error(error)
+  const getProduct = async () => {
+    if (id) {
+      const data = await getProductApi(id)
+      if (data) {
+        setProduct(data?.product)
+        setProductImages(data?.images)
+      }
     }
   }
 
   useEffect(() => {
-    fetchProduct()
+    getProduct()
   }, [])
 
   const addProduct = () => {
