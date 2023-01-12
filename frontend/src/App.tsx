@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProductScreen from './pages/ProductScreen'
 import NavBar from './components/Navbar'
 import CartScreen from './pages/CartScreen'
+import { CART_PATH, PRODUCTS_PATH, ROOT_PATH } from './constants/paths'
 
 const App = () => {
   return (
@@ -11,9 +12,9 @@ const App = () => {
       <BrowserRouter>
         <NavBar />
         <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="/products/:id" element={<ProductScreen />} />
-          <Route path="/cart" element={<CartScreen />} />
+          <Route path={ROOT_PATH} element={<HomeScreen />} />
+          <Route path={`${PRODUCTS_PATH}/:id`} element={<ProductScreen />} />
+          <Route path={CART_PATH} element={<CartScreen />} />
         </Routes>
 
         <Footer />

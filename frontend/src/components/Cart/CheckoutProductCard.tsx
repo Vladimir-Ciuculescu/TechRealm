@@ -12,6 +12,8 @@ import {
   setQuantityProductAction,
 } from '../../redux/cart/actions'
 import { CartProduct } from '../../interfaces/CartProduct'
+import { useNavigate } from 'react-router-dom'
+import { PRODUCTS_PATH } from '../../constants/paths'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -32,8 +34,9 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const { name, defaultImage, price, quantity } = cartItem
+  const { name, defaultImage, price, quantity, id } = cartItem
 
   const totalCost = quantity ? quantity * price : 0
 
@@ -49,14 +52,21 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
     >
       <Grid container direction="row" columnGap={{ md: 1 }} rowGap={{ xs: 1 }}>
         <Grid item md={isBiggerThan1500px ? 2 : 4} sm={6} xs={6}>
-          <img src={defaultImage} width="100%" alt="" />
+          <img
+            src={defaultImage}
+            style={{ cursor: 'pointer' }}
+            width="100%"
+            alt=""
+            onClick={() => navigate(`${PRODUCTS_PATH}/${id}`)}
+          />
         </Grid>
         <Grid item md={isBiggerThan1500px ? 3 : 5} sm={6} xs={6}>
           <Typography
             whiteSpace={'break-spaces'}
             fontWeight="bold"
             variant="h4"
-            sx={{ fontFamily: 'Source Sans Pro' }}
+            sx={{ fontFamily: 'Source Sans Pro', cursor: 'pointer' }}
+            onClick={() => navigate(`${PRODUCTS_PATH}/${id}`)}
           >
             {name}
           </Typography>

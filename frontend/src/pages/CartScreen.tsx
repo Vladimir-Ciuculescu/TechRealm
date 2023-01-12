@@ -16,6 +16,7 @@ import {
 import CheckoutProductCard from '../components/Cart/CheckoutProductCard'
 import { SummaryCart } from '../components/Cart/SummaryCart'
 import { useNavigate } from 'react-router-dom'
+import { ROOT_PATH } from '../constants/paths'
 
 const CartScreen: React.FC<any> = () => {
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
@@ -194,7 +195,7 @@ const CartScreen: React.FC<any> = () => {
         <Typography variant="h3">
           You don't have any products added to cart
         </Typography>
-        <Button onClick={() => navigate('/')} variant="contained">
+        <Button onClick={() => navigate(ROOT_PATH)} variant="contained">
           Go to Shop
         </Button>
       </Box>

@@ -36,6 +36,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CartProduct } from '../interfaces/CartProduct'
 import { IoCloseOutline } from 'react-icons/io5'
 import { removeProductAction } from '../redux/cart/actions'
+import { CART_PATH, FAVORITES_PATH, LOGIN_PATH } from '../constants/paths'
 
 const ICON_DIMENSION = 30
 
@@ -313,7 +314,7 @@ const NavBar = (props: Props) => {
   const pages = [
     {
       title: 'Account',
-      path: '/login',
+      path: LOGIN_PATH,
       icon: <BsPerson fontSize={ICON_DIMENSION} />,
       tooltipContent: AccountTooltipContent(),
       tooltipPaddingSpace: 0,
@@ -321,7 +322,7 @@ const NavBar = (props: Props) => {
     },
     {
       title: 'Favorites',
-      path: '/favorites',
+      path: FAVORITES_PATH,
       icon: <FiHeart fontSize={ICON_DIMENSION} />,
       tooltipContent: FavouritesToolTip(),
       tooltipPaddingSpace: 'none',
@@ -329,7 +330,7 @@ const NavBar = (props: Props) => {
     },
     {
       title: 'Cart',
-      path: '/cart',
+      path: CART_PATH,
       icon: <AiOutlineShoppingCart fontSize={ICON_DIMENSION} />,
       tooltipContent: CartTooltip(),
       tooltipPaddingSpace: 0,
