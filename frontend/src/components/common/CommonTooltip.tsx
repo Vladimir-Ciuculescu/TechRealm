@@ -44,7 +44,7 @@ const CommonTooltip: React.FC<CommonTooltipProps> = styled(
     padding: paddingSpace,
     fontSize: theme.typography.pxToRem(12),
     maxWidth: '400px',
-    //border: '1px solid red',
+
     boxShadow: theme.shadows[2],
   },
 }))

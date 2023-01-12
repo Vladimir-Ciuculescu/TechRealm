@@ -1,17 +1,31 @@
-import { Box, Grid, Paper, Typography, useMediaQuery } from '@mui/material'
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  Typography,
+  useMediaQuery,
+} from '@mui/material'
 import { Container } from '@mui/system'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { cartProductsSelector } from '../redux/cart/selectors'
+import {
+  cartProductsSelector,
+  cartTotalProductsSelector,
+} from '../redux/cart/selectors'
 import CheckoutProductCard from '../components/Cart/CheckoutProductCard'
 import { SummaryCart } from '../components/Cart/SummaryCart'
+import { useNavigate } from 'react-router-dom'
 
 const CartScreen: React.FC<any> = () => {
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
 
   const cartProducts = useSelector(cartProductsSelector)
+  const totalProducts = useSelector(cartTotalProductsSelector)
 
-  return (
+  const navigate = useNavigate()
+
+  return totalProducts !== 0 ? (
     <Container
       maxWidth={false}
       sx={{ width: { xs: '100%', md: '80%' }, mt: 6 }}
@@ -154,6 +168,36 @@ const CartScreen: React.FC<any> = () => {
           <SummaryCart />
         </Grid>
       </Grid>
+    </Container>
+  ) : (
+    <Container
+      maxWidth={false}
+      sx={{
+        width: { xs: '100%', md: '80%' },
+        height: '88%',
+        mt: 6,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          pb: 40,
+          gap: 6,
+        }}
+      >
+        <Typography variant="h3">
+          You don't have any products added to cart
+        </Typography>
+        <Button onClick={() => navigate('/')} variant="contained">
+          Go to Shop
+        </Button>
+      </Box>
     </Container>
   )
 }

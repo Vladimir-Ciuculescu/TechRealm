@@ -10,6 +10,7 @@ import { HiChevronDoubleRight } from 'react-icons/hi'
 import Container from '@mui/material/Container'
 import {
   cartProductsSelector,
+  cartTotalCostSelector,
   cartTotalProductsSelector,
 } from '../redux/cart/selectors'
 
@@ -31,9 +32,10 @@ import { BsPerson } from 'react-icons/bs'
 import { FiHeart } from 'react-icons/fi'
 
 import CommonTooltip from './common/CommonTooltip'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { CartProduct } from '../interfaces/CartProduct'
-import { IoCloseOutline, IoCode } from 'react-icons/io5'
+import { IoCloseOutline } from 'react-icons/io5'
+import { removeProductAction } from '../redux/cart/actions'
 
 const ICON_DIMENSION = 30
 
@@ -95,56 +97,91 @@ const FavouritesToolTip = () => {
 const CartTooltip = () => {
   const totalProducts = useSelector(cartTotalProductsSelector)
   const cartProducts = useSelector(cartProductsSelector)
-
-  const [removeIcon, toggleRemoveIcon] = useState(false)
+  const totalCost = useSelector(cartTotalCostSelector)
 
   return totalProducts !== 0 ? (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: '100%',
-
-        py: 1,
       }}
     >
       <Box
         sx={{
-          px: 4,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          py: 2,
         }}
       >
         <Typography sx={{ textTransform: 'uppercase', color: '#50148c' }}>
           Your products
         </Typography>
       </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
 
-      <List component="nav" aria-label="mailbox folders">
-        <Divider sx={{ background: '#e0e0e0' }} />
-        {cartProducts.map((cartItem: CartProduct) => (
-          // <ListItem
-          //   //onMouseOver={() => toggleRemoveIcon(true)}
-          //   //onMouseDown={() => toggleRemoveIcon(false)}
-          //   onFocus={() => console.log('awdaw')}
-          //   button
-          //   divider
-          //   sx={{ gap: 2 }}
-          // >
-          //   <img width="20%" src={cartItem.defaultImage} alt={cartItem.name} />
-          //   <ListItemText sx={{ width: '47%' }} primary={cartItem.name} />
-          //   <ListItemText primary={`x${cartItem.quantity}`} />
-          //   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          //     <ListItemText
-          //       primary={`${(cartItem.price * cartItem.quantity).toFixed(2)}$`}
-          //     />
-          //     {removeIcon ? <IoCloseOutline /> : null}
-          //   </Box>
-          // </ListItem>
-          <CartTooltipProduct cartItem={cartItem} />
-        ))}
-      </List>
+          width: '100%',
+
+          borderBottomLeftRadius: 3,
+          borderBottomRightRadius: 3,
+        }}
+      >
+        <List
+          component="nav"
+          aria-label="mailbox folders"
+          sx={{ mt: -1, mb: -2 }}
+        >
+          <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
+          {cartProducts.map((cartItem: CartProduct) => (
+            <CartTooltipProduct cartItem={cartItem} />
+          ))}
+          <ListItem
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+
+              height: '100%',
+            }}
+          >
+            <Typography sx={{ fontSize: 16 }}>
+              TOTAL: {totalProducts} products
+            </Typography>
+            <Typography>{totalCost.toFixed(2)}$</Typography>
+          </ListItem>
+          <Divider sx={{ background: '#b7b7c2' }} />
+          <ListItem
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          >
+            <Button
+              href="/cart"
+              variant="contained"
+              sx={{
+                textTransform: 'none',
+                fontSize: 16,
+                mb: 1,
+                my: 1,
+                width: '100%',
+                ':hover': {
+                  color: 'white',
+                },
+              }}
+              startIcon={<HiChevronDoubleRight />}
+              size="small"
+            >
+              See cart details
+            </Button>
+          </ListItem>
+        </List>
+      </Box>
     </Box>
   ) : (
     <Box
@@ -156,7 +193,6 @@ const CartTooltip = () => {
         paddingTop: 1,
         paddingBottom: 1,
         gap: 2,
-        boxShadow: 1,
         borderRadius: 2,
       }}
     >
@@ -183,25 +219,78 @@ interface CartTooltipProductProps {
 const CartTooltipProduct: React.FC<CartTooltipProductProps> = ({
   cartItem,
 }) => {
+  const { id } = cartItem
+
   const [removeIcon, toggleRemoveIcon] = useState(false)
+  const dispatch = useDispatch()
+
+  const goToProductPage = (productId: number) => {
+    window.location.href = `/products/${productId}`
+  }
 
   return (
     <ListItem
       onMouseOver={() => toggleRemoveIcon(true)}
       onMouseOut={() => toggleRemoveIcon(false)}
-      onFocus={() => console.log('awdaw')}
       button
       divider
-      sx={{ gap: 2 }}
+      disableRipple
+      sx={{ gap: 2, cursor: 'inherit' }}
     >
-      <img width="20%" src={cartItem.defaultImage} alt={cartItem.name} />
-      <ListItemText sx={{ width: '47%' }} primary={cartItem.name} />
-      <ListItemText primary={`x${cartItem.quantity}`} />
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <img
+        width="20%"
+        src={cartItem.defaultImage}
+        alt={cartItem.name}
+        style={{ cursor: 'pointer' }}
+        onClick={() => goToProductPage(id)}
+      />
+      <ListItemText
+        sx={{ width: '47%', cursor: 'pointer' }}
+        primary={cartItem.name}
+        onClick={() => goToProductPage(id)}
+      />
+      <ListItemText
+        sx={{ mt: -4 }}
+        primaryTypographyProps={{
+          letterSpacing: '.2rem',
+        }}
+        primary={`x${cartItem.quantity}`}
+      />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          background: 'red',
+          pl: 4,
+        }}
+      >
         <ListItemText
+          sx={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            color: '#50148c',
+          }}
+          primaryTypographyProps={{
+            fontWeight: 'bold',
+            fontSize: 16,
+          }}
           primary={`${(cartItem.price * cartItem.quantity).toFixed(2)}$`}
         />
-        {removeIcon ? <IoCloseOutline /> : null}
+        {removeIcon ? (
+          <IoCloseOutline
+            style={{
+              position: 'absolute',
+              bottom: 15,
+              right: 20,
+              width: '25px',
+              height: '25px',
+              cursor: 'pointer',
+              background: 'white',
+            }}
+            onClick={() => dispatch(removeProductAction(cartItem))}
+          />
+        ) : null}
       </Box>
     </ListItem>
   )

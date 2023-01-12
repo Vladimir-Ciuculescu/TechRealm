@@ -4,13 +4,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProductScreen from './pages/ProductScreen'
 import NavBar from './components/Navbar'
 import CartScreen from './pages/CartScreen'
-import { ToastContainer, toast } from 'react-toastify'
 
 const App = () => {
   return (
-    // <Box sx={{ background: '#f2f2f8' }}>
-
-    // </Box>
     <div style={{ height: '100vh', background: '#f2f2f8' }}>
       <BrowserRouter>
         <NavBar />

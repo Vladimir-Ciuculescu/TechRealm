@@ -66,15 +66,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           justifyContent="center"
           alignItems="center"
         >
-          {/* <Button
-            variant="contained"
-            sx={{ width: '90%', textTransform: 'none', fontSize: '16px' }}
-            disableRipple
-            startIcon={<AiOutlineShoppingCart />}
-            onClick={() => dispatch(addProductAction(product, 1))}
-          >
-            Add to cart
-          </Button> */}
           <LoadingButton
             onClick={addProduct}
             variant="contained"

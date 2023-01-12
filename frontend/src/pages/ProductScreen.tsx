@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { Product } from '../interfaces/Product'
 import { CommonSelect } from '../components/common/CommonSelect'
 import { SelectOption } from '../interfaces/SelectOption'
