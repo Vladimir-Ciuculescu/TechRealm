@@ -8,26 +8,53 @@ import {
   Paper,
   Radio,
   RadioGroup,
+  TextField,
   Typography,
 } from '@mui/material'
 import { Container } from '@mui/system'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import register3 from '../assets/images/register3.svg'
-import TextField from '@mui/material/TextField'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import { AiOutlineMail } from 'react-icons/ai'
 import CustomInputIcon from '../components/common/CustomInputIcon'
 import { FaUserAlt } from 'react-icons/fa'
-import styled from '@emotion/styled'
 import { IoMdMail } from 'react-icons/io'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { ImLock } from 'react-icons/im'
 import CustomRadioButton from '../components/common/CustomRadioButton'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 const RegisterScreen: React.FC<any> = () => {
-  const [firstName, setFirstName] = useState<string>('')
-  const [lastName, setLastName] = useState<string>('')
   const [passwordVisible, togglePasswordVisible] = useState<boolean>(false)
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      repeatPassword: '',
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required('First name required !'),
+      password: Yup.string()
+        .required('password is required')
+        .min(6, 'password must be of 6 characters'),
+    }),
+    onSubmit: (values) => {},
+  })
+
+  const { values, errors, submitForm, isSubmitting, handleChange, touched } =
+    formik
+
+  const handleInputChange = (e: any) => {
+    formik.setFieldValue('firstName', e)
+
+    if (e !== '') {
+      formik.setFieldTouched('firstName', false)
+    } else {
+      formik.setFieldTouched('firstName', true)
+    }
+  }
 
   return (
     <div
@@ -96,44 +123,64 @@ const RegisterScreen: React.FC<any> = () => {
             >
               <Grid item xs={10} sm={10} md={5}>
                 <CustomInputIcon
+                  value={values.firstName}
+                  // onChange={(e) =>
+                  //   formik.setFieldValue('firstName', e.target.value)
+                  // }
+                  onChange={(e) => handleInputChange(e.target.value)}
                   type="text"
                   placeholder="First Name"
-                  value=""
                   icon={<FaUserAlt />}
+                  error={touched.firstName && errors.firstName}
+                  isValid={touched.firstName && !errors.firstName}
                 />
               </Grid>
               <Grid item xs={10} sm={10} md={5}>
                 <CustomInputIcon
+                  value={values.lastName}
+                  onChange={(e) =>
+                    formik.setFieldValue('lastName', e.target.value)
+                  }
                   type="text"
                   placeholder="Last Name"
-                  value=""
                   icon={<FaUserAlt />}
+                  error={errors.firstName}
                 />
               </Grid>
             </Grid>
             <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
+                value={values.email}
+                onChange={(e) => formik.setFieldValue('email', e.target.value)}
                 type="text"
                 placeholder="Email"
-                value=""
                 icon={<IoMdMail />}
+                error={errors.firstName}
               />
             </Grid>
             <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
+                value={values.password}
+                onChange={(e) =>
+                  formik.setFieldValue('password', e.target.value)
+                }
                 type={passwordVisible ? 'text' : 'password'}
                 placeholder="Password"
-                value=""
                 toggleIcon={() => togglePasswordVisible(!passwordVisible)}
                 icon={passwordVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
+                error={errors.firstName}
               />
             </Grid>
             <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
+                value={values.repeatPassword}
+                onChange={(e) =>
+                  formik.setFieldValue('repeatPassword', e.target.value)
+                }
                 type="text"
                 placeholder="Re-type Password"
-                value=""
                 icon={<ImLock />}
+                error={errors.firstName}
               />
             </Grid>
           </Grid>
@@ -176,6 +223,7 @@ const RegisterScreen: React.FC<any> = () => {
               <Grid item xs={10} sm={10} md={5}></Grid>
               <Grid item md={10} sm={10} xs={10}>
                 <Button
+                  onClick={() => submitForm()}
                   sx={{ width: '100%', textTransform: 'none', fontSize: 16 }}
                   variant="contained"
                 >
