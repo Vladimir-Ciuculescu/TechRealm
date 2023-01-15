@@ -14,7 +14,7 @@ interface CommonSelectProps {
   onChange?: (e: any) => any
 }
 
-export const CommonSelect: React.FC<CommonSelectProps> = ({
+const CustomSelect: React.FC<CommonSelectProps> = ({
   options,
   defaultValue,
   width,
@@ -61,3 +61,5 @@ export const CommonSelect: React.FC<CommonSelectProps> = ({
     />
   )
 }
+
+export default CustomSelect

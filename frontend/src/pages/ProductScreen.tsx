@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Product } from '../interfaces/Product'
-import { CommonSelect } from '../components/common/CommonSelect'
+import CustomSelect from '../components/common/CustomSelect'
 import { SelectOption } from '../interfaces/SelectOption'
 import { ImageSlider } from '../components/Product/ImageSlider'
 import { GalleryModal } from '../components/Product/GalleryModal'
@@ -182,7 +182,7 @@ const ProductScreen: React.FC<any> = () => {
                     </Typography>
                   </Grid>
                   <Grid item lg={6} xs={6}>
-                    <CommonSelect
+                    <CustomSelect
                       value={quantity}
                       onChange={(e: any) => setQuantity(e.value)}
                       options={options}

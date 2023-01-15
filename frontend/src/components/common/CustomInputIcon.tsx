@@ -20,7 +20,7 @@ const CustomInputIcon: React.FC<CustomInputIconProps> = ({
   return (
     <Box
       sx={{
-        width: '80%',
+        width: '100%',
         display: 'flex',
         flexDirection: 'row',
       }}

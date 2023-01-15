@@ -31,7 +31,7 @@ import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { BsPerson } from 'react-icons/bs'
 import { FiHeart } from 'react-icons/fi'
 
-import CommonTooltip from './common/CommonTooltip'
+import CommonTooltip from './common/CustomTooltip'
 import { useDispatch, useSelector } from 'react-redux'
 import { CartProduct } from '../interfaces/CartProduct'
 import { IoCloseOutline } from 'react-icons/io5'

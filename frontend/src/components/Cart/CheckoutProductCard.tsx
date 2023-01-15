@@ -1,7 +1,7 @@
 import { Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { SelectOption } from '../../interfaces/SelectOption'
-import { CommonSelect } from '../common/CommonSelect'
+import CustomSelect from '../common/CustomSelect'
 import { FiHeart } from 'react-icons/fi'
 import { useTheme } from '@mui/material/styles'
 import { IoCloseOutline } from 'react-icons/io5'
@@ -109,7 +109,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
           direction="row"
           columnGap={2}
         >
-          <CommonSelect
+          <CustomSelect
             options={options}
             placeholder=""
             displayDropdownIndicator={false}

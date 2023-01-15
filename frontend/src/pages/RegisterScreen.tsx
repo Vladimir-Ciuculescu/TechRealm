@@ -1,4 +1,15 @@
-import { Box, Button, Grid, Paper, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Paper,
+  Radio,
+  RadioGroup,
+  Typography,
+} from '@mui/material'
 import { Container } from '@mui/system'
 import React, { useState } from 'react'
 import register3 from '../assets/images/register3.svg'
@@ -7,6 +18,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import { AiOutlineMail } from 'react-icons/ai'
 import CustomInputIcon from '../components/common/CustomInputIcon'
 import { FaUserAlt } from 'react-icons/fa'
+import styled from '@emotion/styled'
+import { IoMdMail } from 'react-icons/io'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { ImLock } from 'react-icons/im'
+import CustomRadioButton from '../components/common/CustomRadioButton'
 
 const RegisterScreen: React.FC<any> = () => {
   const [firstName, setFirstName] = useState<string>('')
@@ -35,7 +51,7 @@ const RegisterScreen: React.FC<any> = () => {
           sx={{
             mt: 10,
             width: {
-              md: '500px',
+              md: '600px',
               sm: '70%',
               xs: '80%',
             },
@@ -61,77 +77,114 @@ const RegisterScreen: React.FC<any> = () => {
             Create a new account
           </Typography>
 
-          <Grid container rowSpacing={1} justifyContent="center">
+          <Grid
+            container
+            rowSpacing={2}
+            direction="row"
+            justifyContent="center"
+            mt={2}
+          >
             <Grid
-              item
-              xs={9}
-              sm={9}
-              md={6}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
+              container
+              direction="row"
+              columnSpacing={2}
+              rowSpacing={2}
+              justifyContent="center"
             >
+              <Grid item xs={10} sm={10} md={5}>
+                <CustomInputIcon
+                  placeholder="First Name"
+                  value=""
+                  icon={<FaUserAlt />}
+                />
+              </Grid>
+              <Grid item xs={10} sm={10} md={5}>
+                <CustomInputIcon
+                  placeholder="Last Name"
+                  value=""
+                  icon={<FaUserAlt />}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
-                placeholder={'First Name'}
+                placeholder="Email"
                 value=""
-                icon={<FaUserAlt />}
+                icon={<IoMdMail />}
               />
             </Grid>
-            <Grid
-              item
-              xs={9}
-              sm={9}
-              md={6}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
+            <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
-                placeholder={'Last Name'}
+                placeholder="Password"
                 value=""
-                icon={<FaUserAlt />}
+                icon={<AiFillEye />}
+              />
+            </Grid>
+            <Grid item xs={10} sm={10} md={10}>
+              <CustomInputIcon
+                placeholder="Re-type Password"
+                value=""
+                icon={<ImLock />}
               />
             </Grid>
           </Grid>
-          <Grid container justifyContent="center"></Grid>
+          <Grid
+            container
+            rowSpacing={2}
+            direction="row"
+            justifyContent="center"
+            mt={4}
+            mb={4}
+          >
+            <Grid
+              container
+              direction="row"
+              columnSpacing={2}
+              rowSpacing={2}
+              justifyContent="center"
+            >
+              <Grid item xs={10} sm={10} md={5}>
+                <FormControl>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="disabled"
+                      control={<CustomRadioButton />}
+                      label="Male"
+                    />
+                    <FormControlLabel
+                      value="male"
+                      control={<CustomRadioButton />}
+                      label="Female"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+              <Grid item xs={10} sm={10} md={5}></Grid>
+              <Grid item md={10}>
+                <Button
+                  sx={{ width: '100%', textTransform: 'none', fontSize: 16 }}
+                  variant="contained"
+                >
+                  Register
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </Paper>
       </Container>
     </div>
   )
 }
 
-interface CustomInputIconProps {
-  value: string
-  icon: JSX.Element
-}
+const Item = styled(Paper)(({ theme: any }) => ({
+  backgroundColor: '#1A2027',
 
-const TestInput: React.FC<CustomInputIconProps> = ({ value, icon }) => {
-  return (
-    //<Typography sx={{ textAlign: 'center', background: 'red' }}>1</Typography>
-    <Box sx={{ display: 'flex', flexDirection: 'row' }} width="100%">
-      <Box
-        sx={{
-          display: 'flex',
-          color: 'action.active',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderTop: '3px solid #e2e2e2',
-          borderBottom: '3px solid #e2e2e2',
-          borderLeft: '3px solid #e2e2e2',
-        }}
-      >
-        {icon}
-      </Box>
-      <TextField
-        sx={{ border: '3px solid #e2e2e2', pl: 1, py: 0.5 }}
-        label=""
-        variant="standard"
-        InputProps={{ disableUnderline: true }}
-      />
-    </Box>
-  )
-}
+  textAlign: 'center',
+  color: 'red',
+}))
 
 export default RegisterScreen
