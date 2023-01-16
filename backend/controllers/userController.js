@@ -20,13 +20,14 @@ const authUser = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const {
+    registerData: { firstName, lastName, email, password, gender },
+  } = req.body;
 
   const user = await userRepository.getUserByEmail(email);
 
   if (user) {
-    res.status(400);
-    throw new Error("User already exists !");
+    res.status(400).json({ error: "User already exists !" });
   } else {
     const registeredUser = await userRepository.registerUser(email, password);
 

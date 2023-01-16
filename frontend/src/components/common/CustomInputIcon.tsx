@@ -1,11 +1,6 @@
-import {
-  ButtonBase,
-  FormHelperText,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { ButtonBase, FormHelperText, TextField } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
+import React from 'react'
 
 interface CustomInputIconProps {
   value: string
@@ -16,7 +11,6 @@ interface CustomInputIconProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error: string | undefined | boolean
   isValid?: boolean | undefined
-  touched?: boolean
 }
 
 const CustomInputIcon: React.FC<CustomInputIconProps> = ({

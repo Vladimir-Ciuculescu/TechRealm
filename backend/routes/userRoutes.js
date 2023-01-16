@@ -22,6 +22,6 @@ router.route("/users/register").post(registerUser);
 // * @desc   Get user profile
 // * @route  GET /api/users/profile
 // * @access Public
-router.route("/users/profile").get(authMiddleware, getUserProfile);
+router.route("api/users/profile").get(authMiddleware, getUserProfile);
 
 module.exports = router;
