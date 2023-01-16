@@ -3,16 +3,14 @@ import {
   Button,
   FormControl,
   FormControlLabel,
-  FormLabel,
+  FormHelperText,
   Grid,
   Paper,
-  Radio,
   RadioGroup,
-  TextField,
   Typography,
 } from '@mui/material'
 import { Container } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import register3 from '../assets/images/register3.svg'
 import CustomInputIcon from '../components/common/CustomInputIcon'
 import { FaUserAlt } from 'react-icons/fa'
@@ -33,12 +31,21 @@ const RegisterScreen: React.FC<any> = () => {
       email: '',
       password: '',
       repeatPassword: '',
+      gender: '',
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required('First name required !'),
+      firstName: Yup.string().required('First name required '),
+      lastName: Yup.string().required('Last name required '),
+      email: Yup.string()
+        .email(`That's not a proper email address !`)
+        .required('Email required '),
       password: Yup.string()
-        .required('password is required')
-        .min(6, 'password must be of 6 characters'),
+        .required('Password is required')
+        .min(6, 'Password must be of 6 characters'),
+      repeatPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], "Passwords don't match!")
+        .required('Retype your password '),
+      gender: Yup.string().required('Please select you gender '),
     }),
     onSubmit: (values) => {},
   })
@@ -46,14 +53,10 @@ const RegisterScreen: React.FC<any> = () => {
   const { values, errors, submitForm, isSubmitting, handleChange, touched } =
     formik
 
-  const handleInputChange = (e: any) => {
-    formik.setFieldValue('firstName', e)
+  const handleInputChange = (value: any, label: string) => {
+    formik.setFieldValue(label, value)
 
-    if (e !== '') {
-      formik.setFieldTouched('firstName', false)
-    } else {
-      formik.setFieldTouched('firstName', true)
-    }
+    formik.setFieldTouched(label, value !== '' ? false : true)
   }
 
   return (
@@ -124,63 +127,65 @@ const RegisterScreen: React.FC<any> = () => {
               <Grid item xs={10} sm={10} md={5}>
                 <CustomInputIcon
                   value={values.firstName}
-                  // onChange={(e) =>
-                  //   formik.setFieldValue('firstName', e.target.value)
-                  // }
-                  onChange={(e) => handleInputChange(e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange(e.target.value, 'firstName')
+                  }
                   type="text"
                   placeholder="First Name"
                   icon={<FaUserAlt />}
                   error={touched.firstName && errors.firstName}
                   isValid={touched.firstName && !errors.firstName}
+                  touched={touched.firstName}
                 />
               </Grid>
               <Grid item xs={10} sm={10} md={5}>
                 <CustomInputIcon
                   value={values.lastName}
                   onChange={(e) =>
-                    formik.setFieldValue('lastName', e.target.value)
+                    handleInputChange(e.target.value, 'lastName')
                   }
                   type="text"
                   placeholder="Last Name"
                   icon={<FaUserAlt />}
-                  error={errors.firstName}
+                  error={touched.lastName && errors.lastName}
+                  isValid={touched.lastName && !errors.lastName}
                 />
               </Grid>
             </Grid>
             <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
                 value={values.email}
-                onChange={(e) => formik.setFieldValue('email', e.target.value)}
+                onChange={(e) => handleInputChange(e.target.value, 'email')}
                 type="text"
                 placeholder="Email"
                 icon={<IoMdMail />}
-                error={errors.firstName}
+                error={touched.email && errors.email}
+                isValid={touched.email && !errors.email}
               />
             </Grid>
             <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
                 value={values.password}
-                onChange={(e) =>
-                  formik.setFieldValue('password', e.target.value)
-                }
+                onChange={(e) => handleInputChange(e.target.value, 'password')}
                 type={passwordVisible ? 'text' : 'password'}
                 placeholder="Password"
                 toggleIcon={() => togglePasswordVisible(!passwordVisible)}
                 icon={passwordVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
-                error={errors.firstName}
+                error={touched.password && errors.password}
+                isValid={touched.password && !errors.password}
               />
             </Grid>
             <Grid item xs={10} sm={10} md={10}>
               <CustomInputIcon
                 value={values.repeatPassword}
                 onChange={(e) =>
-                  formik.setFieldValue('repeatPassword', e.target.value)
+                  handleInputChange(e.target.value, 'repeatPassword')
                 }
-                type="text"
+                type="password"
                 placeholder="Re-type Password"
                 icon={<ImLock />}
-                error={errors.firstName}
+                error={touched.repeatPassword && errors.repeatPassword}
+                isValid={touched.repeatPassword && !errors.repeatPassword}
               />
             </Grid>
           </Grid>
@@ -203,26 +208,35 @@ const RegisterScreen: React.FC<any> = () => {
               <Grid item xs={10} sm={10} md={5}>
                 <FormControl>
                   <RadioGroup
+                    onChange={(e) =>
+                      handleInputChange(e.target.value, 'gender')
+                    }
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
                     name="row-radio-buttons-group"
                   >
                     <FormControlLabel
-                      value="disabled"
+                      value="male"
                       control={<CustomRadioButton />}
                       label="Male"
                     />
                     <FormControlLabel
-                      value="male"
+                      value="female"
                       control={<CustomRadioButton />}
                       label="Female"
                     />
                   </RadioGroup>
+                  {errors.gender && touched.gender && (
+                    <FormHelperText sx={{ color: '#d3302f', fontSize: 15 }}>
+                      {errors.gender}
+                    </FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={10} sm={10} md={5}></Grid>
               <Grid item md={10} sm={10} xs={10}>
                 <Button
+                  disableRipple
                   onClick={() => submitForm()}
                   sx={{ width: '100%', textTransform: 'none', fontSize: 16 }}
                   variant="contained"

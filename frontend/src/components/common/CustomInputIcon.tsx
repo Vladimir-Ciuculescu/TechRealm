@@ -1,16 +1,11 @@
 import {
   ButtonBase,
-  styled,
+  FormHelperText,
   TextField,
   Typography,
-  useFormControl,
 } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { ChangeEventHandler, useEffect, useState } from 'react'
-
-import { AccountCircle } from '@mui/icons-material'
-import { IconType } from 'react-icons'
-import { FaUserAlt } from 'react-icons/fa'
+import React, { useState } from 'react'
 
 interface CustomInputIconProps {
   value: string
@@ -21,6 +16,7 @@ interface CustomInputIconProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   error: string | undefined | boolean
   isValid?: boolean | undefined
+  touched?: boolean
 }
 
 const CustomInputIcon: React.FC<CustomInputIconProps> = ({
@@ -33,10 +29,12 @@ const CustomInputIcon: React.FC<CustomInputIconProps> = ({
   error,
   isValid,
 }) => {
-  const [focused, setFocused] = useState(false)
+  const borderColor = () => {
+    return value === '' && !error ? '#e2e2e2' : error ? '#d3302f' : '#339933'
+  }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
       <Box
         sx={{
           width: '100%',
@@ -47,9 +45,9 @@ const CustomInputIcon: React.FC<CustomInputIconProps> = ({
         <Box
           sx={{
             width: '40px',
-            borderTop: `2px solid ${focused ? '#50148c' : '#e2e2e2'}`,
-            borderBottom: `2px solid ${focused ? '#50148c' : '#e2e2e2'}`,
-            borderLeft: `2px solid ${focused ? '#50148c' : '#e2e2e2'}`,
+            borderTop: `2px solid ${borderColor()}`,
+            borderBottom: `2px solid ${borderColor()}`,
+            borderLeft: `2px solid ${borderColor()}`,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -70,11 +68,9 @@ const CustomInputIcon: React.FC<CustomInputIconProps> = ({
           value={value}
           onChange={onChange}
           type={type}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
           placeholder={placeholder}
           sx={{
-            border: `2px solid ${focused ? '#50148c' : '#e2e2e2'}`,
+            border: `2px solid ${borderColor()}`,
             pl: 1,
             py: 0.5,
             width: '100%',
@@ -85,8 +81,12 @@ const CustomInputIcon: React.FC<CustomInputIconProps> = ({
           InputProps={{ disableUnderline: true }}
         />
       </Box>
-      {/* {error && <Typography>{error}</Typography>} */}
-      {isValid ? null : <Typography sx={{ color: 'red' }}>{error}</Typography>}
+
+      {isValid ? null : (
+        <FormHelperText sx={{ color: '#d3302f', fontSize: 13 }}>
+          {error}
+        </FormHelperText>
+      )}
     </Box>
   )
 }
