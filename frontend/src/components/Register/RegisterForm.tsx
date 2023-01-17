@@ -213,7 +213,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ showConfirmation }) => {
                 />
               </RadioGroup>
               {errors.gender && touched.gender && (
-                <FormHelperText sx={{ color: '#d3302f', fontSize: 15 }}>
+                <FormHelperText sx={{ color: '#d3302f', fontSize: 13 }}>
                   {errors.gender}
                 </FormHelperText>
               )}

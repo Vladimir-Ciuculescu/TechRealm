@@ -9,7 +9,7 @@ const config = {
 }
 
 export const registerUserApi = async (registerData: RegisterData) => {
-  await axiosInstance.post<any>(`/api/users/${REGISTER_PATH}`, {
+  await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
     registerData,
     config,
   })

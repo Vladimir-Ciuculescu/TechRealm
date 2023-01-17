@@ -20,16 +20,19 @@ const authUser = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-  const {
-    registerData: { firstName, lastName, email, password, gender },
-  } = req.body;
+  // const {
+  //   registerData: { firstName, lastName, email, password, gender },
+  // } = req.body;
 
-  const user = await userRepository.getUserByEmail(email);
+  const { registerData } = req.body;
+  console.log(registerData);
+
+  const user = await userRepository.getUserByEmail(registerData.email);
 
   if (user) {
     res.status(400).json({ error: "User already exists !" });
   } else {
-    const registeredUser = await userRepository.registerUser(email, password);
+    const registeredUser = await userRepository.registerUser(registerData);
 
     if (registeredUser) {
       res.status(200).json({
