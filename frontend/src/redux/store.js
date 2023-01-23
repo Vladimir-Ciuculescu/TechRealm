@@ -5,11 +5,17 @@ import thunk from 'redux-thunk'
 import { persistStore } from 'redux-persist'
 
 import rootReducer from './rootReducer'
+import { configureStore } from '@reduxjs/toolkit'
 
 const middleWare = [thunk]
 
-export const store = createStore(
-  rootReducer,
+// export const store = createStore(
+//   rootReducer,
+//   composeWithDevTools(applyMiddleware(...middleWare)),
+// )
+
+export const store = configureStore(
+  { reducer: rootReducer },
   composeWithDevTools(applyMiddleware(...middleWare)),
 )
 

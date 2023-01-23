@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   FormHelperText,
   Grid,
+  Link,
   Paper,
   RadioGroup,
   Typography,
@@ -19,6 +20,7 @@ import CustomInputIcon from '../common/CustomInputIcon'
 import CustomRadioButton from '../common/CustomRadioButton'
 import * as Yup from 'yup'
 import { registerUserApi } from '../../services/userApi'
+import { LOGIN_PATH } from '../../constants/paths'
 
 interface RegisterFormProps {
   showConfirmation: () => void
@@ -26,8 +28,9 @@ interface RegisterFormProps {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ showConfirmation }) => {
   const [passwordVisible, togglePasswordVisible] = useState<boolean>(false)
-  const [userExists, setUserExists] = useState<boolean>(false)
+
   const [loading, setLoading] = useState<boolean>(false)
+  const [errorResponse, setErrorResponse] = useState<boolean>(false)
 
   const formik = useFormik({
     initialValues: {
@@ -57,8 +60,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ showConfirmation }) => {
       try {
         await registerUserApi(values)
         showConfirmation()
-      } catch (error) {
-        setUserExists(true)
+      } catch (error: any) {
+        setErrorResponse(error.response.data.error)
       }
       setLoading(false)
     },
@@ -221,11 +224,30 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ showConfirmation }) => {
           </Grid>
           <Grid item xs={10} sm={10} md={5}></Grid>
           <Grid item md={10} sm={10} xs={10}>
-            {userExists && (
+            {errorResponse && (
               <FormHelperText sx={{ color: '#d3302f', fontSize: 15 }}>
-                The user already exists !
+                {errorResponse}
               </FormHelperText>
             )}
+          </Grid>
+          <Grid
+            item
+            md={10}
+            sm={10}
+            xs={10}
+            sx={{ display: 'flex', justifyContent: 'center' }}
+          >
+            <Link
+              href={`${LOGIN_PATH}`}
+              underline="none"
+              sx={{
+                cursor: 'pointer',
+                color: 'black',
+                '&:hover': { color: '#4a148c' },
+              }}
+            >
+              Already have an account ?
+            </Link>
           </Grid>
           <Grid item md={10} sm={10} xs={10}>
             <LoadingButton

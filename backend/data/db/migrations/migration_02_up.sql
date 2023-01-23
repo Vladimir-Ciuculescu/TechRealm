@@ -15,3 +15,9 @@ CREATE TABLE public.users (
 	CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
+alter table public.users 
+add column photo varchar(250)
+
+alter table public.users 
+add column avatar_color varchar(20)
+

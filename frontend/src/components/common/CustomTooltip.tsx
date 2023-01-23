@@ -6,6 +6,7 @@ import Grow from '@mui/material/Grow'
 interface CommonTooltipProps extends TooltipProps {
   containerSpace?: number | string
   paddingSpace?: number | string
+  tooltipWidth?: number | string | null
 }
 
 const CommonTooltip: React.FC<CommonTooltipProps> = styled(
@@ -13,6 +14,7 @@ const CommonTooltip: React.FC<CommonTooltipProps> = styled(
     className,
     containerSpace,
     paddingSpace,
+    tooltipWidth,
     ...props
   }: CommonTooltipProps) => (
     <Tooltip
@@ -32,7 +34,7 @@ const CommonTooltip: React.FC<CommonTooltipProps> = styled(
       classes={{ popper: className }}
     />
   ),
-)(({ theme, paddingSpace }) => ({
+)(({ theme, paddingSpace, tooltipWidth }) => ({
   [`& .${tooltipClasses.arrow}`]: {
     color: '#ffffff',
     boxShadow: 2,
@@ -43,8 +45,8 @@ const CommonTooltip: React.FC<CommonTooltipProps> = styled(
     color: 'rgba(0, 0, 0, 0.87)',
     padding: paddingSpace,
     fontSize: theme.typography.pxToRem(12),
-    maxWidth: '400px',
-
+    //maxWidth: '400px',
+    width: tooltipWidth,
     boxShadow: theme.shadows[2],
   },
 }))

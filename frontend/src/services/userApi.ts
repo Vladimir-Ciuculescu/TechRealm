@@ -16,14 +16,28 @@ export const registerUserApi = async (registerData: RegisterData) => {
 }
 
 export const loginUserApi = async (email: string, password: string) => {
-  try {
-    const { data } = await axiosInstance.post<any>(`/api/${LOGIN_PATH}`, {
-      email,
-      password,
-      config,
-    })
-    return data
-  } catch (error) {
-    console.log(error)
-  }
+  // try {
+  //   const { data } = await axiosInstance.post<any>(`/api/${LOGIN_PATH}`, {
+  //     email,
+  //     password,
+  //     config,
+  //   })
+  //   return data
+  // } catch (error) {
+  //   console.log(error)
+  // }
+
+  const { data } = await axiosInstance.post<any>(`/api/users${LOGIN_PATH}`, {
+    email,
+    password,
+    config,
+  })
+
+  return data
+
+  // await axiosInstance.post<any>(`/api/users${LOGIN_PATH}`, {
+  //   email,
+  //   password,
+  //   config,
+  // })
 }

@@ -1,13 +1,30 @@
-import { Box, Grid, Paper, Typography } from '@mui/material'
+import {
+  Box,
+  FormHelperText,
+  Grid,
+  Link,
+  Paper,
+  Typography,
+} from '@mui/material'
 import { useFormik } from 'formik'
 import React, { useState } from 'react'
 import CustomInputIcon from '../common/CustomInputIcon'
 import * as Yup from 'yup'
 import { IoMdMail } from 'react-icons/io'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { LoadingButton } from '@mui/lab'
+import { REGISTER_PATH, ROOT_PATH } from '../../constants/paths'
+import { loginUserApi } from '../../services/userApi'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setUserAction } from '../../redux/user/actions'
 
 const LoginForm: React.FC<any> = () => {
   const [passwordVisible, togglePasswordVisible] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [errorResponse, setErrorResponse] = useState<boolean>(false)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const formik = useFormik({
     initialValues: {
@@ -18,14 +35,25 @@ const LoginForm: React.FC<any> = () => {
       email: Yup.string().required('Email required '),
       password: Yup.string().required('Password required '),
     }),
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      const { email, password } = values
+      setLoading(true)
+      try {
+        const user = await loginUserApi(email, password)
+        console.log(user)
+        dispatch(setUserAction(user))
+        navigate(ROOT_PATH)
+      } catch (error: any) {
+        setErrorResponse(error.response.data.error)
+      }
+      setLoading(false)
+    },
   })
 
   const { values, errors, touched, submitForm } = formik
 
   const handleInputChange = (value: any, label: string) => {
     formik.setFieldValue(label, value)
-
     formik.setFieldTouched(label, value !== '' ? false : true)
   }
 
@@ -65,6 +93,7 @@ const LoginForm: React.FC<any> = () => {
         direction="row"
         justifyContent="center"
         mt={2}
+        mb={4}
       >
         <Grid item xs={10} sm={10} md={10}>
           <CustomInputIcon
@@ -80,12 +109,68 @@ const LoginForm: React.FC<any> = () => {
           <CustomInputIcon
             onChange={(e) => handleInputChange(e.target.value, 'password')}
             value={values.password}
-            type="password"
+            type={passwordVisible ? 'text' : 'password'}
             placeholder="Password"
             toggleIcon={() => togglePasswordVisible(!passwordVisible)}
             icon={passwordVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
             error={touched.password && errors.password}
           />
+        </Grid>
+        <Grid container direction="row" justifyContent="center" mt={2}>
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={5}
+            sx={{ display: 'flex', justifyContent: 'flex-start' }}
+          >
+            <Link
+              href={`${REGISTER_PATH}`}
+              underline="none"
+              sx={{
+                cursor: 'pointer',
+                color: 'black',
+                '&:hover': { color: '#4a148c' },
+              }}
+            >
+              Don't have an account ?
+            </Link>
+          </Grid>
+          <Grid
+            item
+            xs={10}
+            sm={10}
+            md={5}
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
+            <Link
+              underline="none"
+              sx={{
+                cursor: 'pointer',
+                color: 'black',
+                '&:hover': { color: '#4a148c' },
+              }}
+            >
+              Forgot password
+            </Link>
+          </Grid>
+        </Grid>
+        <Grid item md={10} sm={10} xs={10}>
+          {errorResponse && (
+            <FormHelperText sx={{ color: '#d3302f', fontSize: 15 }}>
+              {errorResponse}
+            </FormHelperText>
+          )}
+        </Grid>
+        <Grid item xs={10} sm={10} md={10}>
+          <LoadingButton
+            disableRipple
+            onClick={() => submitForm()}
+            sx={{ width: '100%', textTransform: 'none', fontSize: 16 }}
+            variant="contained"
+          >
+            Login
+          </LoadingButton>
         </Grid>
       </Grid>
     </Paper>

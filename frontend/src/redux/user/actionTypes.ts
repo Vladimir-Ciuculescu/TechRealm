@@ -1,3 +1,2 @@
-export const USER_LOGIN_REQUEST = 'USER_LOGN_REQUEST'
-export const USER_LOGIN_SUCCESS = 'USER_LOGN_SUCCESS'
-export const USER_LOGIN_FAIL = 'USER_LOGN_FAIL'
+export const SET_USER = 'SET_USER'
+export const LOGOUT_USER = 'LOGOUT_USER'

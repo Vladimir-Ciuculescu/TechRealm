@@ -9,21 +9,20 @@ const authUser = async (req, res) => {
 
   if (user && (await comparePassword(password, user.password))) {
     res.json({
-      name: user.name,
+      firstName: user.first_name,
+      lastName: user.last_name,
       email: user.email,
+      photo: user.photo,
+      role: user.role,
+      color: user.avatar_color,
       token: generateToken(user.email),
     });
   } else {
-    res.status(401);
-    throw new Error("Invalid email or password !");
+    res.status(401).json({ error: "Invalid email or password" });
   }
 };
 
 const registerUser = async (req, res) => {
-  // const {
-  //   registerData: { firstName, lastName, email, password, gender },
-  // } = req.body;
-
   const { registerData } = req.body;
   console.log(registerData);
 
@@ -32,6 +31,13 @@ const registerUser = async (req, res) => {
   if (user) {
     res.status(400).json({ error: "User already exists !" });
   } else {
+    registerData.firstName =
+      registerData.firstName.charAt(0).toUpperCase() +
+      registerData.firstName.slice(1);
+
+    registerData.lastName =
+      registerData.lastName.charAt(0).toUpperCase() +
+      registerData.lastName.slice(1);
     const registeredUser = await userRepository.registerUser(registerData);
 
     if (registeredUser) {

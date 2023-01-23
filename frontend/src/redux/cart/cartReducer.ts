@@ -49,7 +49,6 @@ const setQuantityProductFromCart = (
 export const cartReducer = (state = cartState, action: any) => {
   switch (action.type) {
     case ADD_PRODUCT:
-      console.log(action.payload)
       return {
         ...state,
         cartProducts: addProductToCart(state.cartProducts, action.payload),

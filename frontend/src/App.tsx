@@ -2,7 +2,7 @@ import Footer from './components/Footer'
 import HomeScreen from './pages/HomeScreen'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProductScreen from './pages/ProductScreen'
-import NavBar from './components/Navbar'
+import NavBar from './components/Navigation/Navbar'
 import CartScreen from './pages/CartScreen'
 import {
   CART_PATH,

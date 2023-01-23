@@ -1,5 +1,6 @@
 const pool = require("../../db");
 const { cryptPassword } = require("../utils/cryptPassword");
+const { generateAvatarColor } = require("../utils/generateAvatarColor");
 
 const registerUser = async (registerData) => {
   console.log(registerData);
@@ -7,11 +8,20 @@ const registerUser = async (registerData) => {
     const { firstName, lastName, email, password, gender } = registerData;
 
     const cryptedPassword = await cryptPassword(password);
+    const avatarColor = generateAvatarColor();
 
     const registeredUser = await pool.query(
-      `INSERT into USERS (first_name, last_name, email, password, gender, role)
-    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-      [firstName, lastName, email, cryptedPassword, gender, "client"]
+      `INSERT into USERS (first_name, last_name, email, password, gender, role, avatar_color)
+    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+      [
+        firstName,
+        lastName,
+        email,
+        cryptedPassword,
+        gender,
+        "client",
+        avatarColor,
+      ]
     );
 
     return registeredUser.rows[0];
