@@ -22,7 +22,6 @@ import {
 
 const AccountTooltip: React.FC<any> = () => {
   const user = useSelector(userSelector)
-  const userInitials = useSelector(userInitialsSelector)
   const dispatch = useDispatch()
 
   const logOut = () => {

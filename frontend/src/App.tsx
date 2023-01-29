@@ -13,12 +13,14 @@ import {
 } from './constants/paths'
 import RegisterScreen from './pages/RegisterScreen'
 import LoginScreen from './pages/LoginScreen'
+import OptionsBar from './components/Navigation/OptionsBar'
 
 const App = () => {
   return (
     <div style={{ height: '100vh', background: '#f2f2f8' }}>
       <BrowserRouter>
         <NavBar />
+        <OptionsBar />
         <Routes>
           <Route path={ROOT_PATH} element={<HomeScreen />} />
           <Route path={`${PRODUCTS_PATH}/:id`} element={<ProductScreen />} />
