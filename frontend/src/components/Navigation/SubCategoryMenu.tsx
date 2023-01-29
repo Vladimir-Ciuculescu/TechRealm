@@ -19,6 +19,8 @@ const SubCategoryMenu: React.FC<SubCategoryMenuProps> = ({
   const visibleSubMenu = useSelector(visibilitySelector)
   const subMenu = useSelector(subMenuSelector)
 
+  console.log(subMenu)
+
   return (
     <Collapse
       orientation="horizontal"
@@ -34,11 +36,6 @@ const SubCategoryMenu: React.FC<SubCategoryMenuProps> = ({
       }}
       in={visibleSubMenu}
     >
-      {/* <Box style={{ width: '100%', height: '100%', color: 'black' }}>
-        {subMenu.map((category: string) => (
-          <Typography>{category}</Typography>
-        ))}
-      </Box> */}
       <Stack direction={'column'} gap={2} px={2} py={2}>
         {subMenu.map((category: string) => (
           <Link href="#" underline="hover">
