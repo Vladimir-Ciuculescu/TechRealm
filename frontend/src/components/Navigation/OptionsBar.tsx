@@ -1,4 +1,3 @@
-import { TreeView } from '@mui/lab'
 import {
   AppBar,
   Box,
@@ -7,21 +6,23 @@ import {
   CssBaseline,
   Toolbar,
   Typography,
-  useMediaQuery,
 } from '@mui/material'
 import { Container } from '@mui/system'
 import React, { useState } from 'react'
 import { IoMdMenu } from 'react-icons/io'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleMenuAction } from '../../redux/category_menu/actions'
+import { visibilitySelector } from '../../redux/category_menu/selectors'
 import CategoriesMenu from './CategoriesMenu'
 
 const OptionsBar: React.FC<any> = () => {
-  const isBigScreen = useMediaQuery('(min-width:750px)')
-  const [toggleTreeView, setToggleTreeView] = useState<boolean>(false)
-  const [categoriesHovered, setCategoriesHovered] = useState<boolean>(false)
+  const [toggleProductsMenu, setToggleProductsMenu] = useState<boolean>(false)
+  const dispatch = useDispatch()
+  const visibleSubMenu = useSelector(visibilitySelector)
 
-  const openCategoriesMenu = () => {
-    setToggleTreeView(true)
-    setCategoriesHovered(true)
+  const closeProductsMenu = () => {
+    setToggleProductsMenu(false)
+    dispatch(toggleMenuAction(false))
   }
 
   return (
@@ -45,7 +46,7 @@ const OptionsBar: React.FC<any> = () => {
                 mt: 2,
                 overflow: 'auto',
                 border: '0px solid transparent',
-                background: toggleTreeView
+                background: toggleProductsMenu
                   ? 'rgba(254,254,255,255)'
                   : 'inherit',
                 '&:hover': {
@@ -63,14 +64,13 @@ const OptionsBar: React.FC<any> = () => {
                     background: 'white',
                   },
                 }}
-                onMouseEnter={openCategoriesMenu}
+                onMouseEnter={() => setToggleProductsMenu(true)}
                 startIcon={<IoMdMenu />}
-                onMouseLeave={() => setCategoriesHovered(false)}
               >
                 Products
               </Button>
               <Collapse
-                onMouseLeave={() => setToggleTreeView(false)}
+                onMouseLeave={closeProductsMenu}
                 sx={{
                   position: 'absolute',
                   mt: 1,
@@ -79,7 +79,7 @@ const OptionsBar: React.FC<any> = () => {
                     '0px, 0px 12px 17px 2px rgb(0 0 0 / 14%), 0px 5px 22px 4px rgb(0 0 0 / 12%)',
                   zIndex: 1300,
                 }}
-                in={toggleTreeView}
+                in={toggleProductsMenu}
               >
                 <CategoriesMenu />
               </Collapse>

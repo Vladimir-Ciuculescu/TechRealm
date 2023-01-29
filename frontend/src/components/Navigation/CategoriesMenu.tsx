@@ -1,7 +1,7 @@
 import TreeItem from '@mui/lab/TreeItem'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { TreeView } from '@mui/lab'
-import { Box, Typography } from '@mui/material'
+import { Box, Collapse, Menu, MenuItem, Typography } from '@mui/material'
 import { IoPhonePortraitOutline } from 'react-icons/io5'
 import { IoTvSharp } from 'react-icons/io5'
 import { GiVacuumCleaner } from 'react-icons/gi'
@@ -9,6 +9,11 @@ import { GiConsoleController } from 'react-icons/gi'
 import { BsMouse2 } from 'react-icons/bs'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import SubCategoryMenu from './SubCategoryMenu'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import { useDispatch, useSelector } from 'react-redux'
+import { visibilitySelector } from '../../redux/category_menu/selectors'
+import { toggleMenuAction } from '../../redux/category_menu/actions'
 
 interface CategoryItem {
   name: string
@@ -44,46 +49,67 @@ const categories: CategoryItem[] = [
 ]
 
 const CategoriesMenu: React.FC<any> = () => {
+  const categoryRef = useRef<any>(null)
+  const [offsetWidth, setOffsetWidth] = useState<number>(0)
+  const [offsetHeight, setOffsetHeight] = useState<number>(0)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    setOffsetWidth(categoryRef.current.offsetWidth)
+    setOffsetHeight(categoryRef.current.offsetHeight)
+  }, [])
+
+  const openSubMenu = () => {
+    dispatch(toggleMenuAction(true))
+  }
+
   return (
-    <TreeView
-      aria-label="file system navigator"
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpandIcon={<ChevronRightIcon />}
-      sx={{
-        overflowY: 'auto',
-        fontSize: 20,
-        background: 'rgba(254,254,255,255)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {categories.map((category) => (
-        <TreeItem
-          nodeId="1"
-          label={
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                p: 0.5,
-                pr: 0,
-                ml: -3,
-                gap: 1.5,
-                height: 50,
-              }}
-            >
-              {category.icon}
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: 'inherit', flexGrow: 1, color: 'black' }}
+    <Box>
+      <SubCategoryMenu offsetWidth={offsetWidth} offsetHeight={offsetHeight} />
+      <TreeView
+        ref={categoryRef}
+        aria-label="file system navigator"
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+        sx={{
+          overflowY: 'auto',
+          fontSize: 20,
+          background: 'rgba(254,254,255,255)',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {categories.map((category) => (
+          <TreeItem
+            onMouseEnter={openSubMenu}
+            nodeId="1"
+            sx={{}}
+            label={
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 0.5,
+                  pr: 0,
+                  ml: -3,
+                  gap: 1.5,
+                  height: 50,
+                }}
               >
-                {category.name}
-              </Typography>
-            </Box>
-          }
-        />
-      ))}
-    </TreeView>
+                {category.icon}
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 'inherit', flexGrow: 1, color: 'black' }}
+                >
+                  {category.name}
+                </Typography>
+                <ArrowForwardIosIcon sx={{ color: 'black' }} />
+              </Box>
+            }
+          />
+        ))}
+      </TreeView>
+    </Box>
   )
 }
 
