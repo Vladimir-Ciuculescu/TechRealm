@@ -33,19 +33,17 @@ const routes: RoutesProps[] = [
 
 const App = () => {
   return (
-    <div style={{ height: '100vh', background: '#f2f2f8' }}>
-      <BrowserRouter>
-        <NavBar />
-        <OptionsBar />
-        <Routes>
-          {routes.map((route) => (
-            <Route path={route.path} element={route.element} />
-          ))}
-        </Routes>
+    <BrowserRouter>
+      <NavBar />
+      <OptionsBar />
+      <Routes>
+        {routes.map((route) => (
+          <Route path={route.path} element={route.element} />
+        ))}
+      </Routes>
 
-        <Footer />
-      </BrowserRouter>
-    </div>
+      <Footer />
+    </BrowserRouter>
   )
 }
 

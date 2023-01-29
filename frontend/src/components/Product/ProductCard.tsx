@@ -34,8 +34,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Card sx={{ boxShadow: 'none' }} className="product_card">
-      <CardActionArea disableRipple href={`/products/${id}`}>
+      <CardActionArea
+        sx={{ overflow: 'hidden' }}
+        disableRipple
+        href={`/products/${id}`}
+      >
         <CardMedia
+          sx={{
+            '&:hover': {
+              transform: 'scale(1.3)',
+              transition: 'transform 1.5s',
+            },
+          }}
           component="img"
           height="300"
           alt="image"
