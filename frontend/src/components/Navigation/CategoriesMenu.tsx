@@ -13,11 +13,15 @@ import SubCategoryMenu from './SubCategoryMenu'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useDispatch, useSelector } from 'react-redux'
 import { visibilitySelector } from '../../redux/category_menu/selectors'
-import { toggleMenuAction } from '../../redux/category_menu/actions'
+import {
+  setSubMenuAction,
+  toggleMenuAction,
+} from '../../redux/category_menu/actions'
 
 interface CategoryItem {
   name: string
   icon: JSX.Element
+  submenu: string[]
 }
 
 const iconSize = 30
@@ -27,24 +31,29 @@ const categories: CategoryItem[] = [
     icon: (
       <IoPhonePortraitOutline style={{ fontSize: iconSize, color: 'black' }} />
     ),
+    submenu: ['Laptops', 'Tablets', 'Phones'],
   },
   {
     name: 'PC and Peripheral',
     icon: <BsMouse2 style={{ fontSize: iconSize, color: 'black' }} />,
+    submenu: ['Mouse', 'Headphones', 'Desktop PC'],
   },
   {
     name: 'TV, audio and video',
     icon: <IoTvSharp style={{ fontSize: iconSize, color: 'black' }} />,
+    submenu: ['TVs', 'Soundbar', 'Boxes'],
   },
   {
     name: 'Appliances',
     icon: <GiVacuumCleaner style={{ fontSize: iconSize, color: 'black' }} />,
+    submenu: ['Frigdes', 'Vaccums', 'Ovens'],
   },
   {
     name: 'Gaming',
     icon: (
       <GiConsoleController style={{ fontSize: iconSize, color: 'black' }} />
     ),
+    submenu: ['Consoles', 'Controllers', 'Games'],
   },
 ]
 
@@ -53,14 +62,19 @@ const CategoriesMenu: React.FC<any> = () => {
   const [offsetWidth, setOffsetWidth] = useState<number>(0)
   const [offsetHeight, setOffsetHeight] = useState<number>(0)
   const dispatch = useDispatch()
+  const visibleMenu = useSelector(visibilitySelector)
 
   useEffect(() => {
     setOffsetWidth(categoryRef.current.offsetWidth)
     setOffsetHeight(categoryRef.current.offsetHeight)
   }, [])
 
-  const openSubMenu = () => {
-    dispatch(toggleMenuAction(true))
+  const openSubMenu = (subMenu: string[]) => {
+    if (!visibleMenu) {
+      dispatch(toggleMenuAction(true))
+    }
+
+    dispatch(setSubMenuAction(subMenu))
   }
 
   return (
@@ -81,7 +95,7 @@ const CategoriesMenu: React.FC<any> = () => {
       >
         {categories.map((category) => (
           <TreeItem
-            onMouseEnter={openSubMenu}
+            onMouseEnter={() => openSubMenu(category.submenu)}
             nodeId="1"
             sx={{}}
             label={
