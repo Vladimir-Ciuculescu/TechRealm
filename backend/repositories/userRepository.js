@@ -1,4 +1,4 @@
-const pool = require("../../db");
+const pool = require("../database/config");
 const { cryptPassword } = require("../utils/cryptPassword");
 const { generateAvatarColor } = require("../utils/generateAvatarColor");
 

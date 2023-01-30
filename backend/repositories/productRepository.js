@@ -1,4 +1,4 @@
-const pool = require("../../db");
+const pool = require("../database/config");
 const types = require("pg").types;
 
 const getProducts = async () => {
@@ -55,8 +55,22 @@ const getProductImages = async (id) => {
   }
 };
 
+const getUserProducts = async (id) => {
+  try {
+    const products = await pool.query(`
+      SELECT p.* FROM products p 
+      INNER JOIN user_products up ON p.id  = up.product_id 
+      INNER JOIN users u ON up.user_id = u.id 
+      WHERE u.id  = ${id}`);
+    return products.rows;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
   getProductImages,
+  getUserProducts,
 };

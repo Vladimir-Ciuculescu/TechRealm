@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getProducts,
   getProductById,
+  getUserProducts,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -15,5 +16,10 @@ router.route("/products").get(getProducts);
 // * @route  GET /api/products/:id
 // * @access Public
 router.route("/products/:id").get(getProductById);
+
+// * @desc Get cart products for an user
+// * @route GET /api/products/user/:id
+// * @access Public
+router.route("/products/user/:id").get(getUserProducts);
 
 module.exports = router;
