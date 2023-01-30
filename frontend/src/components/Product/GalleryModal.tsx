@@ -23,10 +23,19 @@ import {
   Grid,
   IconButton,
   Button,
+  AppBar,
+  Toolbar,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  DialogActions,
 } from '@mui/material'
 import { addProductAction } from '../../redux/cart/actions'
 import { Product } from '../../interfaces/Product'
 import { toast } from 'react-toastify'
+import { GrClose } from 'react-icons/gr'
 
 interface GalleryModalProps {
   images: Image[]
@@ -54,6 +63,8 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
   const isLastImage = currentIndex === images.length - 1
 
   const matches = useMediaQuery('(min-width:1200px)')
+
+  const isBigScreen = useMediaQuery('(min-width:1300px)')
 
   const imagesToDisplay = images.map((item, key) => {
     return { ...item, index: key }
@@ -101,29 +112,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
     )
   }, [currentIndex])
 
-  const BootsDialogTitle = (props: DialogTitleProps) => {
-    const { children, onClose, ...other } = props
-
-    return (
-      <DialogTitle {...other}>
-        {children}
-        <IconButton
-          aria-label="close"
-          onClick={closeGalleryModal}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-    )
-  }
-
-  return (
+  return isBigScreen ? (
     <Dialog
       fullWidth
       maxWidth={false}
@@ -136,13 +125,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
         },
       }}
     >
-      <BootsDialogTitle
-        id="customized-dialog-title"
-        onClose={closeGalleryModal}
-      >
-        {' '}
-        Modal title
-      </BootsDialogTitle>
+      <DialogTitle>awda</DialogTitle>
       <DialogContent
         dividers
         sx={{
@@ -282,6 +265,100 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
           </Grid>
         </Grid>
       </DialogContent>
+    </Dialog>
+  ) : (
+    <Dialog
+      fullScreen
+      open={visible}
+      onClose={closeGalleryModal}
+      //TransitionComponent={Transition}
+    >
+      {/* <AppBar sx={{ position: 'relative' }}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={closeGalleryModal}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            Sound
+          </Typography>
+          <Button autoFocus color="inherit" onClick={closeGalleryModal}>
+            save
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <List>
+        <ListItem button>
+          <ListItemText primary="Phone ringtone" secondary="Titania" />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <ListItemText
+            primary="Default notification ringtone"
+            secondary="Tethys"
+          />
+        </ListItem>
+      </List> */}
+      <DialogTitle sx={{ height: '6%' }}>
+        {/* <IconButton
+          aria-label="close"
+          onClick={closeGalleryModal}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            fontSize: 30,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton> */}
+        <GrClose
+          style={{ position: 'absolute', fontSize: 30, right: 15, top: 15 }}
+        />
+      </DialogTitle>
+      <DialogContent>
+        <Box
+          sx={{
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <img src={activeImage?.url} width="80%" alt={'Product'} />
+        </Box>
+      </DialogContent>
+      <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          sx={{ py: 1.2, width: '95%' }}
+          variant="contained"
+          disableRipple
+          startIcon={
+            <AiOutlineShoppingCart
+              style={{
+                position: 'absolute',
+                left: 8,
+                bottom: 8,
+                fontSize: 30,
+              }}
+            />
+          }
+        >
+          Add to cart
+        </Button>
+        <IconButton
+          disableRipple
+          color="primary"
+          sx={{ border: '2px solid #4a148c', borderRadius: 2 }}
+        >
+          <AiOutlineHeart />
+        </IconButton>
+      </DialogActions>
     </Dialog>
   )
 }
