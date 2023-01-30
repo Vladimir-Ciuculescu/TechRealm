@@ -36,6 +36,8 @@ import { addProductAction } from '../../redux/cart/actions'
 import { Product } from '../../interfaces/Product'
 import { toast } from 'react-toastify'
 import { GrClose } from 'react-icons/gr'
+import { ImageSet } from './ImageSet'
+import { Stack } from '@mui/system'
 
 interface GalleryModalProps {
   images: Image[]
@@ -318,7 +320,14 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
           <CloseIcon />
         </IconButton> */}
         <GrClose
-          style={{ position: 'absolute', fontSize: 30, right: 15, top: 15 }}
+          onClick={closeGalleryModal}
+          style={{
+            position: 'absolute',
+            fontSize: 30,
+            right: 15,
+            top: 15,
+            cursor: 'pointer',
+          }}
         />
       </DialogTitle>
       <DialogContent>
@@ -326,6 +335,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
           sx={{
             height: '100%',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
           }}
@@ -334,30 +344,35 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
         </Box>
       </DialogContent>
       <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
-          sx={{ py: 1.2, width: '95%' }}
-          variant="contained"
-          disableRipple
-          startIcon={
-            <AiOutlineShoppingCart
-              style={{
-                position: 'absolute',
-                left: 8,
-                bottom: 8,
-                fontSize: 30,
-              }}
-            />
-          }
-        >
-          Add to cart
-        </Button>
-        <IconButton
-          disableRipple
-          color="primary"
-          sx={{ border: '2px solid #4a148c', borderRadius: 2 }}
-        >
-          <AiOutlineHeart />
-        </IconButton>
+        <Stack direction="column" width={'100%'} gap={2}>
+          <ImageSet images={images} />
+          <Stack width="100%" direction={'row'} gap={1}>
+            <Button
+              sx={{ py: 1.2, width: '95%' }}
+              variant="contained"
+              disableRipple
+              startIcon={
+                <AiOutlineShoppingCart
+                  style={{
+                    position: 'absolute',
+                    left: 8,
+                    bottom: 8,
+                    fontSize: 30,
+                  }}
+                />
+              }
+            >
+              Add to cart
+            </Button>
+            <IconButton
+              disableRipple
+              color="primary"
+              sx={{ border: '2px solid #4a148c', borderRadius: 2 }}
+            >
+              <AiOutlineHeart />
+            </IconButton>
+          </Stack>
+        </Stack>
       </DialogActions>
     </Dialog>
   )
