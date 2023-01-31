@@ -1,5 +1,4 @@
 const pool = require("../database/config");
-const types = require("pg").types;
 
 const getProducts = async () => {
   try {
@@ -36,7 +35,7 @@ const getProductById = async (id) => {
 
     return product.rows[0];
   } catch (error) {
-    console.error("Error", error);
+    console.error(error);
   }
 };
 
@@ -68,9 +67,24 @@ const getUserProducts = async (id) => {
   }
 };
 
+const addUserProducts = async (userId, productsIds) => {
+  try {
+    for (let product of productsIds) {
+      const { id, quantity } = product;
+      await pool.query(`
+        INSERT INTO user_products (user_id, product_id, product_quantity)
+        VALUES (${userId}, ${id}, ${quantity});
+  `);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
   getProductImages,
   getUserProducts,
+  addUserProducts,
 };

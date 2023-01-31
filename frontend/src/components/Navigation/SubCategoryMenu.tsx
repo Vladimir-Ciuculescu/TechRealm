@@ -19,8 +19,6 @@ const SubCategoryMenu: React.FC<SubCategoryMenuProps> = ({
   const visibleSubMenu = useSelector(visibilitySelector)
   const subMenu = useSelector(subMenuSelector)
 
-  console.log(subMenu)
-
   return (
     <Collapse
       orientation="horizontal"

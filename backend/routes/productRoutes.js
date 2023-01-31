@@ -3,6 +3,7 @@ const {
   getProducts,
   getProductById,
   getUserProducts,
+  addUserProducts,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -21,5 +22,10 @@ router.route("/products/:id").get(getProductById);
 // * @route GET /api/products/user/:id
 // * @access Public
 router.route("/products/user/:id").get(getUserProducts);
+
+// * @desc Add products to cart for an user
+// * @route POST /api/products/user/:id
+// * @access Public
+router.route("/products/user/:id").post(addUserProducts);
 
 module.exports = router;

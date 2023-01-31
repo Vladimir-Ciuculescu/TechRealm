@@ -1,4 +1,4 @@
-import { PRODUCTS_PATH } from '../constants/paths'
+import { PRODUCTS_PATH, USER_PATH } from '../constants/paths'
 import { Image } from '../interfaces/Image'
 import { Product } from '../interfaces/Product'
 import { axiosInstance } from './axiosInstance'
@@ -22,6 +22,30 @@ export const getProductApi = async (productId: number | string) => {
       `/api${PRODUCTS_PATH}/${productId}`,
     )
     return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getUserProductsApi = async (userId: number | string) => {
+  try {
+    const { data } = await axiosInstance.get<Product[]>(
+      `/api${PRODUCTS_PATH}${USER_PATH}/${userId}`,
+    )
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const addUserProductsApi = async (
+  userId: number | string,
+  productsIds: Product[],
+) => {
+  try {
+    await axiosInstance.post<any>(`api/products/user/${userId}`, {
+      productsIds,
+    })
   } catch (error) {
     console.log(error)
   }

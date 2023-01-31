@@ -13,3 +13,13 @@ export const userInitialsSelector: Selector<any, any> = createSelector(
     user.firstName.charAt(0).toUpperCase() +
     user.lastName.charAt(0).toUpperCase(),
 )
+
+export const isUserLoggedSelector: Selector<any, any> = createSelector(
+  [userSelector],
+  (user) => user.isLogged,
+)
+
+export const userIdSelector: Selector<any, any> = createSelector(
+  [userSelector],
+  (user) => user.id,
+)

@@ -16,3 +16,8 @@ insert into user_products (user_id, product_id) values (59, 10);
 insert into user_products (user_id, product_id) values (60, 10);
 
 
+--Add product quantity column to table user_products, to keep evidence of each user's product quantity
+--Need to truncate table first if it has entries 
+ALTER TABLE public.user_products
+ADD COLUMN product_quantity int4 NOT NULL;
+

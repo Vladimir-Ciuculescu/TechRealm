@@ -9,35 +9,26 @@ const config = {
 }
 
 export const registerUserApi = async (registerData: RegisterData) => {
-  await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
-    registerData,
-    config,
-  })
+  try {
+    await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
+      registerData,
+      config,
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const loginUserApi = async (email: string, password: string) => {
-  // try {
-  //   const { data } = await axiosInstance.post<any>(`/api/${LOGIN_PATH}`, {
-  //     email,
-  //     password,
-  //     config,
-  //   })
-  //   return data
-  // } catch (error) {
-  //   console.log(error)
-  // }
+  try {
+    const { data } = await axiosInstance.post<any>(`/api/users${LOGIN_PATH}`, {
+      email,
+      password,
+      config,
+    })
 
-  const { data } = await axiosInstance.post<any>(`/api/users${LOGIN_PATH}`, {
-    email,
-    password,
-    config,
-  })
-
-  return data
-
-  // await axiosInstance.post<any>(`/api/users${LOGIN_PATH}`, {
-  //   email,
-  //   password,
-  //   config,
-  // })
+    return data
+  } catch (error) {
+    console.log(error)
+  }
 }

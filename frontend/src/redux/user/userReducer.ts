@@ -8,9 +8,13 @@ interface userStateProps {
   role: Role | string
   photo: string
   color: string
+  isLogged: boolean
+  id: number
 }
 
 const userState: userStateProps = {
+  id: 0,
+  isLogged: false,
   firstName: '',
   lastName: '',
   email: '',
@@ -26,6 +30,8 @@ export const userReducer = (state = userState, action: any) => {
       console.log(user)
       return {
         ...state,
+        id: user.id,
+        isLogged: true,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -36,12 +42,14 @@ export const userReducer = (state = userState, action: any) => {
     case LOGOUT_USER:
       return {
         ...state,
+        id: 0,
         firstName: '',
         lastName: '',
         email: '',
         role: '',
         photo: '',
         color: '',
+        isLogged: false,
       }
     default:
       return state

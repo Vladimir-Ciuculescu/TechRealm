@@ -16,8 +16,13 @@ import { LoadingButton } from '@mui/lab'
 import { REGISTER_PATH, ROOT_PATH } from '../../constants/paths'
 import { loginUserApi } from '../../services/userApi'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setUserAction } from '../../redux/user/actions'
+import {
+  addUserProductsApi,
+  getUserProductsApi,
+} from '../../services/productApi'
+import { cartProductsIdsSelector } from '../../redux/cart/selectors'
 
 const LoginForm: React.FC<any> = () => {
   const [passwordVisible, togglePasswordVisible] = useState<boolean>(false)
@@ -25,6 +30,7 @@ const LoginForm: React.FC<any> = () => {
   const [errorResponse, setErrorResponse] = useState<boolean>(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const productsIds = useSelector(cartProductsIdsSelector)
 
   const formik = useFormik({
     initialValues: {
@@ -36,19 +42,33 @@ const LoginForm: React.FC<any> = () => {
       password: Yup.string().required('Password required '),
     }),
     onSubmit: async (values) => {
-      const { email, password } = values
-      setLoading(true)
-      try {
-        const user = await loginUserApi(email, password)
-        console.log(user)
-        dispatch(setUserAction(user))
-        navigate(ROOT_PATH)
-      } catch (error: any) {
-        setErrorResponse(error.response.data.error)
-      }
-      setLoading(false)
+      await handleLogin(values)
     },
   })
+
+  interface loginProps {
+    email: string
+    password: string
+  }
+
+  const handleCartProducts = async (userId: number | string) => {
+    //If there are are not cart products for the current user
+    await addUserProductsApi(userId, productsIds)
+  }
+
+  const handleLogin = async (values: loginProps) => {
+    const { email, password } = values
+    setLoading(true)
+    try {
+      const user = await loginUserApi(email, password)
+      dispatch(setUserAction(user))
+      handleCartProducts(user.id)
+      navigate(ROOT_PATH)
+    } catch (error: any) {
+      setErrorResponse(error.response.data.error)
+    }
+    setLoading(false)
+  }
 
   const { values, errors, touched, submitForm } = formik
 

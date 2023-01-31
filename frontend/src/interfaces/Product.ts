@@ -10,4 +10,5 @@ export interface Product {
   countInStock?: number
   rating: number
   numberOfReviews: number
+  quantity?: number
 }

@@ -9,6 +9,7 @@ const authUser = async (req, res) => {
 
   if (user && (await comparePassword(password, user.password))) {
     res.json({
+      id: user.id,
       firstName: user.first_name,
       lastName: user.last_name,
       email: user.email,

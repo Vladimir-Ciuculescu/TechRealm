@@ -32,12 +32,28 @@ const getUserProducts = async (req, res) => {
 
     const products = await productRepository.getUserProducts(id);
 
-    res.status(200).json({
-      products: products,
-    });
+    res.status(200).json(products);
   } catch (error) {
     console.error(error);
   }
 };
 
-module.exports = { getProducts, getProductById, getUserProducts };
+const addUserProducts = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { productsIds } = req.body;
+
+    await productRepository.addUserProducts(id, productsIds);
+
+    res.status(200).json({ message: "Products added succesfully !" });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = {
+  getProducts,
+  getProductById,
+  getUserProducts,
+  addUserProducts,
+};
