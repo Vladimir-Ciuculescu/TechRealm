@@ -24,7 +24,6 @@ import { getUserProductsApi } from '../services/productApi'
 const CartScreen: React.FC<any> = () => {
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
   const cartProducts = useSelector(cartProductsSelector)
-  const totalProducts = useSelector(cartTotalProductsSelector)
   const isLogged = useSelector(isUserLoggedSelector)
   const userId = useSelector(userIdSelector)
   const navigate = useNavigate()
@@ -34,7 +33,7 @@ const CartScreen: React.FC<any> = () => {
     const getUserProducts = async () => {
       if (isLogged) {
         const response = await getUserProductsApi(userId)
-        setProducts(response)
+        setProducts(response?.products)
       } else {
         setProducts(cartProducts)
       }
@@ -43,7 +42,7 @@ const CartScreen: React.FC<any> = () => {
     getUserProducts()
   }, [])
 
-  return totalProducts !== 0 ? (
+  return products?.length !== 0 ? (
     <Container
       maxWidth={false}
       sx={{ width: { xs: '100%', md: '80%' }, mt: 6 }}

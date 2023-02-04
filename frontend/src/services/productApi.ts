@@ -28,8 +28,13 @@ export const getProductApi = async (productId: number | string) => {
 }
 
 export const getUserProductsApi = async (userId: number | string) => {
+  interface UserProductsApiInterface {
+    products: Product[]
+    total: number
+  }
+
   try {
-    const { data } = await axiosInstance.get<Product[]>(
+    const { data } = await axiosInstance.get<UserProductsApiInterface>(
       `/api${PRODUCTS_PATH}${USER_PATH}/${userId}`,
     )
     return data

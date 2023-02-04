@@ -93,8 +93,9 @@ const CategoriesMenu: React.FC<any> = () => {
           flexDirection: 'column',
         }}
       >
-        {categories.map((category) => (
+        {categories.map((category, key) => (
           <TreeItem
+            key={key}
             onMouseEnter={() => openSubMenu(category.submenu)}
             nodeId="1"
             sx={{}}

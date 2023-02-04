@@ -7,17 +7,23 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 import { IoCloseOutline } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { CartProduct } from '../../../interfaces/CartProduct'
+import { Product } from '../../../interfaces/Product'
 import { removeProductAction } from '../../../redux/cart/actions'
 import {
   cartProductsSelector,
   cartTotalCostSelector,
   cartTotalProductsSelector,
 } from '../../../redux/cart/selectors'
+import {
+  isUserLoggedSelector,
+  userSelector,
+} from '../../../redux/user/selectors'
+import { getUserProductsApi } from '../../../services/productApi'
 
 interface CartTooltipProductProps {
   cartItem: CartProduct
@@ -103,12 +109,15 @@ const CartTooltipProduct: React.FC<CartTooltipProductProps> = ({
   )
 }
 
-const CartTooltip: React.FC<any> = () => {
-  const totalProducts = useSelector(cartTotalProductsSelector)
-  const cartProducts = useSelector(cartProductsSelector)
+interface CartTooltipProps {
+  products: Product[] | undefined
+  total: number | undefined
+}
+
+const CartTooltip: React.FC<CartTooltipProps> = ({ products, total }) => {
   const totalCost = useSelector(cartTotalCostSelector)
 
-  return totalProducts !== 0 ? (
+  return total !== 0 ? (
     <Box
       sx={{
         display: 'flex',
@@ -145,8 +154,8 @@ const CartTooltip: React.FC<any> = () => {
           sx={{ mt: -1, mb: -2 }}
         >
           <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
-          {cartProducts.map((cartItem: CartProduct) => (
-            <CartTooltipProduct cartItem={cartItem} />
+          {products?.map((cartProduct: any) => (
+            <CartTooltipProduct cartItem={cartProduct} />
           ))}
           <ListItem
             sx={{
@@ -158,7 +167,7 @@ const CartTooltip: React.FC<any> = () => {
             }}
           >
             <Typography sx={{ fontSize: 16 }}>
-              TOTAL: {totalProducts} products
+              TOTAL: {total} products
             </Typography>
             <Typography>{totalCost.toFixed(2)}$</Typography>
           </ListItem>

@@ -1,19 +1,45 @@
 import { Avatar } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { BsPerson } from 'react-icons/bs'
 import { FiHeart } from 'react-icons/fi'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { CART_PATH, FAVORITES_PATH, LOGIN_PATH } from '../../constants/paths'
-import { cartTotalProductsSelector } from '../../redux/cart/selectors'
-import { userInitialsSelector, userSelector } from '../../redux/user/selectors'
+import { Product } from '../../interfaces/Product'
+import { setCartAction } from '../../redux/cart/actions'
+import {
+  cartProductsSelector,
+  cartTotalProductsSelector,
+} from '../../redux/cart/selectors'
+import {
+  isUserLoggedSelector,
+  userInitialsSelector,
+  userSelector,
+} from '../../redux/user/selectors'
+import { getUserProductsApi } from '../../services/productApi'
 import AccountTooltip from './RoutesTooltips/AccountTooltip'
 import CartTooltip from './RoutesTooltips/CartTolltip'
 import FavoritesTooltip from './RoutesTooltips/FavoritesTooltip'
 
 const NavigationItems = () => {
   const user = useSelector(userSelector)
+  const isLogged = useSelector(isUserLoggedSelector)
   const totalProducts = useSelector(cartTotalProductsSelector)
   const userInitials = useSelector(userInitialsSelector)
+  const cartProducts = useSelector(cartProductsSelector)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const getProducts = async () => {
+      if (isLogged) {
+        const response = await getUserProductsApi(user.id)
+        dispatch(setCartAction(response?.products))
+      }
+    }
+    getProducts()
+  }, [navigate])
 
   const navItems = [
     {
@@ -45,7 +71,9 @@ const NavigationItems = () => {
       title: 'Cart',
       path: CART_PATH,
       icon: <AiOutlineShoppingCart fontSize={30} />,
-      tooltipContent: <CartTooltip />,
+      tooltipContent: (
+        <CartTooltip total={totalProducts} products={cartProducts} />
+      ),
       tooltipPaddingSpace: 0,
       badge: {
         value: totalProducts,

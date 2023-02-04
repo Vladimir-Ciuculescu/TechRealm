@@ -9,13 +9,15 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { ROOT_PATH } from '../../../constants/paths'
+import { clearCartAction } from '../../../redux/cart/actions'
 import { logoutUserAction } from '../../../redux/user/actions'
 import {
+  isUserLoggedSelector,
   userInitialsSelector,
   userSelector,
 } from '../../../redux/user/selectors'
@@ -23,13 +25,16 @@ import {
 const AccountTooltip: React.FC<any> = () => {
   const user = useSelector(userSelector)
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
 
   const logOut = () => {
-    window.location.href = ROOT_PATH
+    setLoading(true)
     dispatch(logoutUserAction())
+    dispatch(clearCartAction())
+    window.location.href = ROOT_PATH
   }
 
-  return user.email ? (
+  return loading ? null : user.isLogged ? (
     <Box
       sx={{
         display: 'flex',
@@ -106,7 +111,7 @@ const AccountTooltip: React.FC<any> = () => {
           </ListItem>
           <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
           <ListItem sx={{ px: 0 }}>
-            <ListItemButton sx={{ px: 0 }}>
+            <ListItemButton sx={{ px: 0 }} onClick={logOut}>
               <ListItemText
                 onClick={logOut}
                 sx={{

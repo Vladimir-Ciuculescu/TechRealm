@@ -56,11 +56,15 @@ const getProductImages = async (id) => {
 
 const getUserProducts = async (id) => {
   try {
-    const products = await pool.query(`
-      SELECT p.* FROM products p 
+    const products =
+      await pool.query(`SELECT p.*, up.product_quantity as quantity, 
+   (select url from product_images pi2 where pi2.product_id  = p.id limit 1 ) as "defaultImage"
+      FROM products p
       INNER JOIN user_products up ON p.id  = up.product_id 
       INNER JOIN users u ON up.user_id = u.id 
-      WHERE u.id  = ${id}`);
+      WHERE u.id  = ${id}
+
+`);
     return products.rows;
   } catch (error) {
     console.error(error);
@@ -71,13 +75,41 @@ const addUserProducts = async (userId, productsIds) => {
   try {
     for (let product of productsIds) {
       const { id, quantity } = product;
-      await pool.query(`
+
+      const existentProduct = await pool.query(`SELECT * FROM user_products 
+        WHERE user_id = ${userId} AND product_id = ${id}  
+      `);
+
+      //If the product is already in cart for current user, just increase its quantity
+      if (existentProduct.rows.length !== 0) {
+        await pool.query(
+          `UPDATE user_products 
+          SET product_quantity = product_quantity + $1 WHERE user_id = ${userId} AND product_id = ${id} 
+        `,
+          [quantity]
+        );
+        //Else, add the new product with it's corresponding quantity
+      } else {
+        await pool.query(`
         INSERT INTO user_products (user_id, product_id, product_quantity)
         VALUES (${userId}, ${id}, ${quantity});
-  `);
+        `);
+      }
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+const getTotalProducts = async (userId) => {
+  try {
+    const totalProducts =
+      await pool.query(`select SUM(product_quantity) from user_products up where user_id = ${userId} 
+    `);
+
+    return parseInt(totalProducts.rows[0].sum);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -87,4 +119,5 @@ module.exports = {
   getProductImages,
   getUserProducts,
   addUserProducts,
+  getTotalProducts,
 };

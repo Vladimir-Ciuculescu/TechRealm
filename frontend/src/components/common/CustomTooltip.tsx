@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 import { styled } from '@mui/material/styles'
 import Grow from '@mui/material/Grow'
+import { useSelector } from 'react-redux'
+import { isUserLoggedSelector } from '../../redux/user/selectors'
 
 interface CommonTooltipProps extends TooltipProps {
   containerSpace?: number | string
@@ -16,24 +18,38 @@ const CommonTooltip: React.FC<CommonTooltipProps> = styled(
     paddingSpace,
     tooltipWidth,
     ...props
-  }: CommonTooltipProps) => (
-    <Tooltip
-      PopperProps={{
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, containerSpace],
+  }: CommonTooltipProps) => {
+    const [open, setOpen] = useState(false)
+    const isLogged = useSelector(isUserLoggedSelector)
+
+    useEffect(() => {
+      console.log('INTRA AICI:', isLogged)
+      if (!isLogged) {
+        setOpen(false)
+      }
+    }, [isLogged])
+
+    return (
+      <Tooltip
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
+        PopperProps={{
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: [0, containerSpace],
+              },
             },
-          },
-        ],
-      }}
-      TransitionComponent={Grow}
-      {...props}
-      arrow
-      classes={{ popper: className }}
-    />
-  ),
+          ],
+        }}
+        TransitionComponent={Grow}
+        {...props}
+        arrow
+        classes={{ popper: className }}
+      />
+    )
+  },
 )(({ theme, paddingSpace, tooltipWidth }) => ({
   [`& .${tooltipClasses.arrow}`]: {
     color: '#ffffff',

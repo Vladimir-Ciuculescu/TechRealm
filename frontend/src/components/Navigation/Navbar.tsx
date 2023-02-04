@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
 import { Badge, CssBaseline, Drawer, Link } from '@mui/material'
-import CommonTooltip from '../common/CustomTooltip'
+import CustomTooltip from '../common/CustomTooltip'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import DrawerComponent from './Drawer'
 import NavigationLinks from './NavItems'
@@ -114,7 +114,7 @@ const NavBar = (props: Props) => {
               }}
             >
               {navLinks.map((page, key) => (
-                <CommonTooltip
+                <CustomTooltip
                   containerSpace={-12}
                   title={page.tooltipContent}
                   paddingSpace={page.tooltipPaddingSpace}
@@ -157,7 +157,7 @@ const NavBar = (props: Props) => {
                       {page.title}
                     </Typography>
                   </Link>
-                </CommonTooltip>
+                </CustomTooltip>
               ))}
             </Box>
           </Toolbar>

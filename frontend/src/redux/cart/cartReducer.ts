@@ -2,6 +2,8 @@ import {
   ADD_PRODUCT,
   REMOVE_PRODUCT,
   SET_QUANTITY_PRODUCT,
+  CLEAR_CART,
+  SET_CART,
 } from './actionTypes'
 import { CartProduct } from '../../interfaces/CartProduct'
 
@@ -67,6 +69,17 @@ export const cartReducer = (state = cartState, action: any) => {
           action.payload,
         ),
       }
+    case SET_CART:
+      return {
+        ...state,
+        cartProducts: action.payload,
+      }
+    case CLEAR_CART:
+      return {
+        ...state,
+        cartProducts: [],
+      }
+
     default:
       return state
   }

@@ -31,8 +31,9 @@ const getUserProducts = async (req, res) => {
     const { id } = req.params;
 
     const products = await productRepository.getUserProducts(id);
+    const totalProducts = await productRepository.getTotalProducts(id);
 
-    res.status(200).json(products);
+    res.status(200).json({ products: products, total: totalProducts });
   } catch (error) {
     console.error(error);
   }
