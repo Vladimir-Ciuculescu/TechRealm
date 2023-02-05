@@ -48,7 +48,7 @@ export const addUserProductsApi = async (
   productsIds: Product[],
 ) => {
   try {
-    await axiosInstance.post<any>(`api/products/user/${userId}`, {
+    await axiosInstance.post<any>(`api/products/user/${userId}/get`, {
       productsIds,
     })
   } catch (error) {
@@ -62,7 +62,7 @@ export const addUserProductApi = async (
   quantitiy: number,
 ) => {
   try {
-    await axiosInstance.post<any>(`api/product/user/${userId}`, {
+    await axiosInstance.post<any>(`api/product/user/${userId}/add`, {
       productId,
       quantity: quantitiy,
     })
@@ -76,7 +76,7 @@ export const deleteUserProductApi = async (
   product: Product,
 ) => {
   try {
-    await axiosInstance.delete<any>(`api/product/user/${userId}`, {
+    await axiosInstance.delete<any>(`api/product/user/${userId}/delete`, {
       data: { product: product },
     })
   } catch (error) {
@@ -90,10 +90,13 @@ export const updateUserProductQuantityApi = async (
   quantity: number,
 ) => {
   try {
-    await axiosInstance.post<any>(`api/product/user/${userId}`, {
-      productId: productId,
-      quantity: quantity,
-    })
+    await axiosInstance.post<any>(
+      `api/product/user/${userId}/update-quantity`,
+      {
+        productId: productId,
+        quantity: quantity,
+      },
+    )
   } catch (error) {
     console.log(error)
   }

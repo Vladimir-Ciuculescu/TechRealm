@@ -26,18 +26,20 @@ router.route("/products/user/:id").get(getUserProducts);
 
 // ? @desc Add products to cart for an user
 // ? @route POST /api/products/user/:id
-router.route("/products/user/:id").post(addUserProducts);
+router.route("/products/user/:id/get").post(addUserProducts);
 
 // ? @desc Add a product to cart for an user
 // ? @route POSST /api/product/user/:id
-router.route("/product/user/:id").post(addUserProduct);
+router.route("/product/user/:id/add").post(addUserProduct);
 
 // ? @desc Remove a product from cart for an user
 // ? @route DELETE /api/product/user/:id
-router.route("/product/user/:id").delete(deleteUserProduct);
+router.route("/product/user/:id/delete").delete(deleteUserProduct);
 
 // ? @desc Update a product quantity from a user's cart
 // ? @route POST /api/product/user/:id
-router.route("/product/user/:id").post(updateUserProductQuantity);
+router
+  .route("/product/user/:id/update-quantity")
+  .post(updateUserProductQuantity);
 
 module.exports = router;
