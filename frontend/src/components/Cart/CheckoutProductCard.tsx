@@ -15,7 +15,10 @@ import { CartProduct } from '../../interfaces/CartProduct'
 import { useNavigate } from 'react-router-dom'
 import { PRODUCTS_PATH } from '../../constants/paths'
 import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
-import { deleteUserProductApi } from '../../services/productApi'
+import {
+  deleteUserProductApi,
+  updateUserProductQuantityApi,
+} from '../../services/productApi'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -49,6 +52,14 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
 
     if (isLogged) {
       await deleteUserProductApi(user.id, cartItem)
+    }
+  }
+
+  const updateProductQuantity = async (units: number) => {
+    dispatch(setQuantityProductAction(cartItem, units))
+
+    if (isLogged) {
+      await updateUserProductQuantityApi(user.id, cartItem.id, units)
     }
   }
 
@@ -129,9 +140,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
             alignSingleValueText={true}
             width="60%"
             value={quantity}
-            onChange={(e: any) =>
-              dispatch(setQuantityProductAction(cartItem, e.value))
-            }
+            onChange={(e: any) => updateProductQuantity(e.value)}
           />
         </Grid>
         <Grid

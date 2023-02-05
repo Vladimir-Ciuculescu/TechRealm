@@ -6,6 +6,7 @@ const {
   addUserProducts,
   getTotalProducts,
   deleteUserProduct,
+  updateUserProductQuantity,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -29,5 +30,9 @@ router.route("/products/user/:id").post(addUserProducts);
 // ? @desc Remove a product from cart for an user
 // ? @route DELETE /api/product/user/:id
 router.route("/product/user/:id").delete(deleteUserProduct);
+
+// ? @desc Update a product quantity from a user's cart
+// ? @route POST /api/product/user/:id
+router.route("/product/user/:id").post(updateUserProductQuantity);
 
 module.exports = router;

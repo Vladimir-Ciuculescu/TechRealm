@@ -68,3 +68,18 @@ export const deleteUserProductApi = async (
     console.log(error)
   }
 }
+
+export const updateUserProductQuantityApi = async (
+  userId: number | string,
+  productId: number | string,
+  quantity: number,
+) => {
+  try {
+    await axiosInstance.post<any>(`api/product/user/${userId}`, {
+      productId: productId,
+      quantity: quantity,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}

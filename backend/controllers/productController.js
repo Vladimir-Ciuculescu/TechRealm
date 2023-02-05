@@ -62,10 +62,22 @@ const deleteUserProduct = async (req, res) => {
   }
 };
 
+const updateUserProductQuantity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { productId, quantity } = req.body;
+
+    await productRepository.updateUserProductQuantity(id, productId, quantity);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
   getUserProducts,
   addUserProducts,
   deleteUserProduct,
+  updateUserProductQuantity,
 };

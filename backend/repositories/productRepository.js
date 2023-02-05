@@ -123,6 +123,16 @@ const deleteUserProduct = async (userId, productId) => {
   }
 };
 
+const updateUserProductQuantity = async (userId, produdctId, quantity) => {
+  try {
+    await pool.query(`UPDATE user_products 
+        SET product_quantity = ${quantity} where user_id = ${userId} and product_id = ${produdctId} 
+`);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
@@ -131,4 +141,5 @@ module.exports = {
   addUserProducts,
   getTotalProducts,
   deleteUserProduct,
+  updateUserProductQuantity,
 };
