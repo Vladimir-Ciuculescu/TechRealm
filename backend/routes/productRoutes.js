@@ -7,6 +7,7 @@ const {
   getTotalProducts,
   deleteUserProduct,
   updateUserProductQuantity,
+  addUserProduct,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -26,6 +27,10 @@ router.route("/products/user/:id").get(getUserProducts);
 // ? @desc Add products to cart for an user
 // ? @route POST /api/products/user/:id
 router.route("/products/user/:id").post(addUserProducts);
+
+// ? @desc Add a product to cart for an user
+// ? @route POSST /api/product/user/:id
+router.route("/product/user/:id").post(addUserProduct);
 
 // ? @desc Remove a product from cart for an user
 // ? @route DELETE /api/product/user/:id

@@ -33,8 +33,9 @@ import {
   CircularProgress,
 } from '@mui/material'
 import { addProductAction } from '../redux/cart/actions'
-import { getProductApi } from '../services/productApi'
+import { addUserProductApi, getProductApi } from '../services/productApi'
 import { Image } from '../interfaces/Image'
+import { isUserLoggedSelector, userSelector } from '../redux/user/selectors'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -50,11 +51,10 @@ const ProductScreen: React.FC<any> = () => {
   const [quantity, setQuantity] = useState<number>(1)
   const [productImages, setProductImages] = useState<Image[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-
   const activeImage = useSelector(activeImageSelector)
+  const isLogged = useSelector(isUserLoggedSelector)
+  const user = useSelector(userSelector)
 
   const getProduct = async () => {
     if (id) {
@@ -70,11 +70,16 @@ const ProductScreen: React.FC<any> = () => {
     getProduct()
   }, [])
 
-  const addProduct = () => {
-    console.log(product)
+  const addProduct = async () => {
     dispatch(
       addProductAction({ ...product, defaultImage: activeImage.url }, quantity),
     )
+
+    if (isLogged) {
+      setLoading(true)
+      await addUserProductApi(user.id, product!.id, quantity)
+      setLoading(false)
+    }
     toast.info('Product added to cart !')
   }
 

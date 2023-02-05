@@ -12,10 +12,12 @@ import {
   CircularProgress,
 } from '@mui/material'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addProductAction } from '../../redux/cart/actions'
 import { toast } from 'react-toastify'
 import { LoadingButton } from '@mui/lab'
+import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
+import { addUserProductApi } from '../../services/productApi'
 
 interface ProductCardProps {
   product: Product
@@ -24,11 +26,19 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { name, defaultImage, id, price, numberOfReviews, rating } = product
 
-  const [loading, setLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
+  const user = useSelector(userSelector)
+  const isLogged = useSelector(isUserLoggedSelector)
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const addProduct = () => {
+  const addProduct = async () => {
     dispatch(addProductAction(product, 1))
+
+    if (isLogged) {
+      setLoading(true)
+      await addUserProductApi(user.id, product.id, 1)
+      setLoading(false)
+    }
     toast.info('Product added to cart !')
   }
 

@@ -56,6 +56,21 @@ export const addUserProductsApi = async (
   }
 }
 
+export const addUserProductApi = async (
+  userId: number | string,
+  productId: number | string,
+  quantitiy: number,
+) => {
+  try {
+    await axiosInstance.post<any>(`api/product/user/${userId}`, {
+      productId,
+      quantity: quantitiy,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const deleteUserProductApi = async (
   userId: number | string,
   product: Product,

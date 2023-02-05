@@ -51,12 +51,26 @@ const addUserProducts = async (req, res) => {
   }
 };
 
+const addUserProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { productId, quantity } = req.body;
+
+    await productRepository.addUserProduct(id, productId, quantity);
+
+    res.status(200).json({ message: "Product added succesfully 1" });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const deleteUserProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const { product } = req.body;
-
     await productRepository.deleteUserProduct(id, product.id);
+
+    res.status(200).json({ message: "Product deleted succesfully !" });
   } catch (error) {
     console.error(error);
   }
@@ -66,6 +80,8 @@ const updateUserProductQuantity = async (req, res) => {
   try {
     const { id } = req.params;
     const { productId, quantity } = req.body;
+
+    res.status(200).json({ message: "Quantity updated succesfully !" });
 
     await productRepository.updateUserProductQuantity(id, productId, quantity);
   } catch (error) {
@@ -78,6 +94,7 @@ module.exports = {
   getProductById,
   getUserProducts,
   addUserProducts,
+  addUserProduct,
   deleteUserProduct,
   updateUserProductQuantity,
 };

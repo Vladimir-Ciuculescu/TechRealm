@@ -38,18 +38,14 @@ import { toast } from 'react-toastify'
 import { GrClose } from 'react-icons/gr'
 import { ImageSet } from './ImageSet'
 import { Stack } from '@mui/system'
+import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
+import { addUserProductApi } from '../../services/productApi'
 
 interface GalleryModalProps {
   images: Image[]
   activeImage: Image
   quantity: number
   product: Product
-}
-
-interface DialogTitleProps {
-  id: string
-  children?: React.ReactNode
-  onClose: () => void
 }
 
 export const GalleryModal: React.FC<GalleryModalProps> = ({
@@ -65,8 +61,9 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
   const isLastImage = currentIndex === images.length - 1
 
   const matches = useMediaQuery('(min-width:1200px)')
-
   const isBigScreen = useMediaQuery('(min-width:1300px)')
+  const isLogged = useSelector(isUserLoggedSelector)
+  const user = useSelector(userSelector)
 
   const imagesToDisplay = images.map((item, key) => {
     return { ...item, index: key }
@@ -97,10 +94,15 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
     }
   }
 
-  const addProduct = () => {
+  const addProduct = async () => {
     dispatch(
       addProductAction({ ...product, defaultImage: activeImage.url }, quantity),
     )
+
+    if (isLogged) {
+      await addUserProductApi(user.id, product.id, quantity)
+    }
+
     closeGalleryModal()
     toast.info('Product added to cart')
   }
@@ -348,6 +350,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
           <ImageSet images={images} />
           <Stack width="100%" direction={'row'} gap={1}>
             <Button
+              onClick={addProduct}
               sx={{ py: 1.2, width: '95%' }}
               variant="contained"
               disableRipple

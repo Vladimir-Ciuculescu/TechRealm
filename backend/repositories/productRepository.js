@@ -101,6 +101,28 @@ const addUserProducts = async (userId, productsIds) => {
   }
 };
 
+const addUserProduct = async (userId, productId, quantity) => {
+  try {
+    const existentProduct = await pool.query(`SELECT * FROM user_products
+    WHERE user_id = ${userId} AND product_id = ${productId}`);
+
+    if (existentProduct.rows.length !== 0) {
+      await pool.query(
+        `UPDATE user_products
+      SET product_quantity = product_quantity + $1 WHERE user_id = ${userId} AND product_id = ${productId}`,
+        [quantity]
+      );
+    } else {
+      await pool.query(`
+      INSERT INTO user_products (user_id, product_id, product_quantity) 
+      VALUES (${userId}, ${productId}, ${quantity});
+`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getTotalProducts = async (userId) => {
   try {
     const totalProducts =
@@ -139,6 +161,7 @@ module.exports = {
   getProductImages,
   getUserProducts,
   addUserProducts,
+  addUserProduct,
   getTotalProducts,
   deleteUserProduct,
   updateUserProductQuantity,
