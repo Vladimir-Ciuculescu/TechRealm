@@ -1,5 +1,4 @@
 const productRepository = require("../repositories/productRepository");
-const bcrypt = require("bcrypt");
 
 const getProducts = async (req, res) => {
   try {
@@ -52,9 +51,21 @@ const addUserProducts = async (req, res) => {
   }
 };
 
+const deleteUserProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { product } = req.body;
+
+    await productRepository.deleteUserProduct(id, product.id);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getProducts,
   getProductById,
   getUserProducts,
   addUserProducts,
+  deleteUserProduct,
 };

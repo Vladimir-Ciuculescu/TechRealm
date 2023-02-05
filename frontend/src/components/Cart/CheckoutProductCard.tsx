@@ -6,7 +6,7 @@ import { FiHeart } from 'react-icons/fi'
 import { useTheme } from '@mui/material/styles'
 import { IoCloseOutline } from 'react-icons/io5'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   removeProductAction,
   setQuantityProductAction,
@@ -14,6 +14,8 @@ import {
 import { CartProduct } from '../../interfaces/CartProduct'
 import { useNavigate } from 'react-router-dom'
 import { PRODUCTS_PATH } from '../../constants/paths'
+import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
+import { deleteUserProductApi } from '../../services/productApi'
 
 const options: SelectOption[] = [
   { value: 1, label: '1' },
@@ -35,10 +37,20 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const isLogged = useSelector(isUserLoggedSelector)
+  const user = useSelector(userSelector)
 
   const { name, defaultImage, price, quantity, id } = cartItem
 
-  const totalCost = quantity ? quantity * price : 0
+  const totalCost = quantity! * price
+
+  const deleteProduct = async (cartItem: CartProduct) => {
+    dispatch(removeProductAction(cartItem))
+
+    if (isLogged) {
+      await deleteUserProductApi(user.id, cartItem)
+    }
+  }
 
   return (
     <Paper
@@ -171,7 +183,7 @@ const CheckoutProductCard: React.FC<CheckoutProductCardProps> = ({
               style={{ cursor: 'pointer' }}
               fontSize={isSmallScreen ? 25 : 35}
               color="#4a148c"
-              onClick={() => dispatch(removeProductAction(cartItem))}
+              onClick={() => deleteProduct(cartItem)}
             />
           </Grid>
         </Grid>

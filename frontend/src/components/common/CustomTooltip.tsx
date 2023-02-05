@@ -23,7 +23,6 @@ const CommonTooltip: React.FC<CommonTooltipProps> = styled(
     const isLogged = useSelector(isUserLoggedSelector)
 
     useEffect(() => {
-      console.log('INTRA AICI:', isLogged)
       if (!isLogged) {
         setOpen(false)
       }

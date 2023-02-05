@@ -6,6 +6,7 @@ import {
   SET_CART,
 } from './actionTypes'
 import { CartProduct } from '../../interfaces/CartProduct'
+import { Product } from '../../interfaces/Product'
 
 interface cartStateProps {
   cartProducts: CartProduct[]
@@ -15,7 +16,7 @@ const cartState: cartStateProps = {
   cartProducts: [],
 }
 
-const addProductToCart = (cartProducts: CartProduct[], payload: any) => {
+const addProductToCart = (cartProducts: Product[], payload: any) => {
   const { product, quantity } = payload
   const alreadyInCart = cartProducts.find(
     (cartItem) => cartItem.id === product.id,
@@ -32,15 +33,12 @@ const addProductToCart = (cartProducts: CartProduct[], payload: any) => {
   return [...cartProducts, { ...product, quantity: quantity }]
 }
 
-const removeProductFromCart = (cartProducts: CartProduct[], payload: any) => {
+const removeProductFromCart = (cartProducts: Product[], payload: any) => {
   const { product } = payload
   return cartProducts.filter((cartItem) => cartItem.id !== product.id)
 }
 
-const setQuantityProductFromCart = (
-  cartProducts: CartProduct[],
-  payload: any,
-) => {
+const setQuantityProductFromCart = (cartProducts: Product[], payload: any) => {
   const { product, quantity } = payload
 
   return cartProducts.map((cartItem) =>

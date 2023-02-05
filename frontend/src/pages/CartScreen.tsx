@@ -8,7 +8,7 @@ import {
 } from '@mui/material'
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   cartProductsSelector,
   cartTotalProductsSelector,
@@ -20,6 +20,7 @@ import { ROOT_PATH } from '../constants/paths'
 import { isUserLoggedSelector, userIdSelector } from '../redux/user/selectors'
 import { Product } from '../interfaces/Product'
 import { getUserProductsApi } from '../services/productApi'
+import { setCartAction } from '../redux/cart/actions'
 
 const CartScreen: React.FC<any> = () => {
   const isBiggerThan1500px = useMediaQuery('(min-width:1500px)')
@@ -27,22 +28,20 @@ const CartScreen: React.FC<any> = () => {
   const isLogged = useSelector(isUserLoggedSelector)
   const userId = useSelector(userIdSelector)
   const navigate = useNavigate()
-  const [products, setProducts] = useState<Product[] | undefined>([])
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getUserProducts = async () => {
       if (isLogged) {
         const response = await getUserProductsApi(userId)
-        setProducts(response?.products)
-      } else {
-        setProducts(cartProducts)
+        dispatch(setCartAction(response?.products))
       }
     }
 
     getUserProducts()
   }, [])
 
-  return products?.length !== 0 ? (
+  return cartProducts.length !== 0 ? (
     <Container
       maxWidth={false}
       sx={{ width: { xs: '100%', md: '80%' }, mt: 6 }}
@@ -175,7 +174,7 @@ const CartScreen: React.FC<any> = () => {
                 </Grid>
               </Grid>
             </Paper>
-            {products?.map((cartItem: any) => (
+            {cartProducts?.map((cartItem: any) => (
               <CheckoutProductCard cartItem={cartItem} />
             ))}
           </Box>

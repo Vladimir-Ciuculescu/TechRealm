@@ -104,10 +104,20 @@ const addUserProducts = async (userId, productsIds) => {
 const getTotalProducts = async (userId) => {
   try {
     const totalProducts =
-      await pool.query(`select SUM(product_quantity) from user_products up where user_id = ${userId} 
+      await pool.query(`SELECT SUM(product_quantity) FROM user_products up WHERE user_id = ${userId} 
     `);
 
     return parseInt(totalProducts.rows[0].sum);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteUserProduct = async (userId, productId) => {
+  try {
+    await pool.query(
+      `DELETE FROM user_products WHERE user_id = ${userId} and product_id = ${productId}`
+    );
   } catch (error) {
     console.log(error);
   }
@@ -120,4 +130,5 @@ module.exports = {
   getUserProducts,
   addUserProducts,
   getTotalProducts,
+  deleteUserProduct,
 };

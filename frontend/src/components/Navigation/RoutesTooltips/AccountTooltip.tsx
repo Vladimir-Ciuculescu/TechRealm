@@ -25,6 +25,7 @@ import {
 const AccountTooltip: React.FC<any> = () => {
   const user = useSelector(userSelector)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
   const logOut = () => {

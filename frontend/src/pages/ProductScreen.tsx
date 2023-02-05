@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Product } from '../interfaces/Product'
 import CustomSelect from '../components/common/CustomSelect'
 import { SelectOption } from '../interfaces/SelectOption'
@@ -52,6 +52,7 @@ const ProductScreen: React.FC<any> = () => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const activeImage = useSelector(activeImageSelector)
 

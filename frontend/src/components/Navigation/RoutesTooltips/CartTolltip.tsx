@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 import { IoCloseOutline } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { CartProduct } from '../../../interfaces/CartProduct'
 import { Product } from '../../../interfaces/Product'
 import { removeProductAction } from '../../../redux/cart/actions'
@@ -23,7 +24,10 @@ import {
   isUserLoggedSelector,
   userSelector,
 } from '../../../redux/user/selectors'
-import { getUserProductsApi } from '../../../services/productApi'
+import {
+  deleteUserProductApi,
+  getUserProductsApi,
+} from '../../../services/productApi'
 
 interface CartTooltipProductProps {
   cartItem: CartProduct
@@ -35,10 +39,20 @@ const CartTooltipProduct: React.FC<CartTooltipProductProps> = ({
   const { id } = cartItem
 
   const [removeIcon, toggleRemoveIcon] = useState(false)
+  const isLogged = useSelector(isUserLoggedSelector)
   const dispatch = useDispatch()
+  const user = useSelector(userSelector)
 
   const goToProductPage = (productId: number) => {
     window.location.href = `/products/${productId}`
+  }
+
+  const deleteProduct = async (cartItem: CartProduct) => {
+    dispatch(removeProductAction(cartItem))
+
+    if (isLogged) {
+      await deleteUserProductApi(user.id, cartItem)
+    }
   }
 
   return (
@@ -101,7 +115,7 @@ const CartTooltipProduct: React.FC<CartTooltipProductProps> = ({
               cursor: 'pointer',
               background: 'white',
             }}
-            onClick={() => dispatch(removeProductAction(cartItem))}
+            onClick={() => deleteProduct(cartItem)}
           />
         ) : null}
       </Box>

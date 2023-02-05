@@ -59,9 +59,9 @@ const LoginForm: React.FC<any> = () => {
 
     const response = await getUserProductsApi(userId)
 
-    for (let product of response!.products) {
-      dispatch(addProductAction(product, product.quantity))
-    }
+    // for (let product of response!.products) {
+    //   dispatch(addProductAction(product, product.quantity))
+    // }
   }
 
   const handleLogin = async (values: loginProps) => {
