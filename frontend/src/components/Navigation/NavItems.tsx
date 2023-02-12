@@ -23,11 +23,12 @@ import {
   userSelector,
 } from '../../redux/user/selectors'
 import { getUserProductsApi } from '../../services/productApi'
-import AccountTooltip from './RoutesTooltips/AccountTooltip'
+import ClientTooltip from './RoutesTooltips/ClientTooltip'
 import CartTooltip from './RoutesTooltips/CartTolltip'
 import FavoritesTooltip from './RoutesTooltips/FavoritesTooltip'
 import { MdAdminPanelSettings } from 'react-icons/md'
 import { Roles } from '../../enums/Roles'
+import AdminToolTip from './RoutesTooltips/AdminTooltip'
 
 const NavItems = () => {
   const user = useSelector(userSelector)
@@ -53,10 +54,10 @@ const NavItems = () => {
       title: 'Admin',
       path: PROFILE_PATH,
       icon: <MdAdminPanelSettings fontSize={30} />,
-      tooltipContent: <Typography>awdaw</Typography>,
+      tooltipContent: <AdminToolTip />,
       tooltipPaddingSpace: 0,
       badgeValue: 0,
-      rolesAllowed: [Roles.ADMIN],
+      visibleFor: [Roles.ADMIN],
     },
     {
       title: 'Account',
@@ -70,11 +71,11 @@ const NavItems = () => {
       ) : (
         <BsPerson fontSize={30} />
       ),
-      tooltipContent: <AccountTooltip />,
+      tooltipContent: <ClientTooltip />,
       tooltipPaddingSpace: 0,
       tooltipWidth: user.email ? 250 : null,
       badgeValue: null,
-      rolesAllowed: [Roles.CLIENT, Roles.UNLOGGED],
+      visibleFor: [Roles.CLIENT, Roles.UNLOGGED],
     },
     {
       title: 'Favorites',
@@ -83,7 +84,7 @@ const NavItems = () => {
       tooltipContent: <FavoritesTooltip />,
       tooltipPaddingSpace: 'none',
       badgeValue: null,
-      rolesAllowed: [Roles.CLIENT, Roles.UNLOGGED],
+      visibleFor: [Roles.CLIENT, Roles.UNLOGGED],
     },
     {
       title: 'Cart',
@@ -94,7 +95,7 @@ const NavItems = () => {
       ),
       tooltipPaddingSpace: 0,
       badgeValue: totalProducts,
-      rolesAllowed: [Roles.CLIENT, Roles.UNLOGGED],
+      visibleFor: [Roles.CLIENT, Roles.UNLOGGED],
     },
   ]
 

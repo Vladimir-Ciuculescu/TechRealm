@@ -21,6 +21,7 @@ import { getCurrentUserApi } from '../../services/userApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
 import { setUserAction } from '../../redux/user/actions'
+import LogoutModal from '../LogoutModal'
 
 interface RoutesProps {
   element: JSX.Element
@@ -44,7 +45,8 @@ const Navigation = () => {
   useEffect(() => {
     const getCurrentUser = async () => {
       const data = await getCurrentUserApi(token)
-      dispatch(setUserAction(data))
+      const user = { ...data, token: token }
+      dispatch(setUserAction(user))
     }
 
     if (isLogged) {
@@ -61,7 +63,7 @@ const Navigation = () => {
           <Route path={route.path} element={route.element} />
         ))}
       </Routes>
-
+      <LogoutModal />
       <Footer />
     </BrowserRouter>
   )

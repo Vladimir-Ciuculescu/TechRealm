@@ -3,7 +3,6 @@ const { cryptPassword } = require("../utils/cryptPassword");
 const { generateAvatarColor } = require("../utils/generateAvatarColor");
 
 const registerUser = async (registerData) => {
-  console.log(registerData);
   try {
     const { firstName, lastName, email, password, gender } = registerData;
 

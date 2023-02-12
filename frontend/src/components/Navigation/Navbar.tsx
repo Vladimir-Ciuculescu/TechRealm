@@ -120,7 +120,7 @@ const NavBar = (props: Props) => {
             >
               {navLinks.map(
                 (page: NavigationItem, key: number) =>
-                  page.rolesAllowed.includes(user.role) && (
+                  page.visibleFor.includes(user.role) && (
                     <CustomTooltip
                       key={key}
                       containerSpace={-12}

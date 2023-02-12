@@ -8,7 +8,6 @@ const authUser = async (req, res) => {
   const user = await userRepository.getUserByEmail(email);
 
   if (user && (await comparePassword(password, user.password))) {
-    console.log(user);
     res.status(200).json({
       id: user.id,
       firstName: user.first_name,

@@ -15,24 +15,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { ROOT_PATH } from '../../../constants/paths'
 import { clearCartAction } from '../../../redux/cart/actions'
+import { toggleLogoutModalAction } from '../../../redux/logout_modal/actions'
 import { logoutUserAction } from '../../../redux/user/actions'
-import {
-  isUserLoggedSelector,
-  userInitialsSelector,
-  userSelector,
-} from '../../../redux/user/selectors'
+import { userSelector } from '../../../redux/user/selectors'
 
-const AccountTooltip: React.FC<any> = () => {
+const ClientTooltip: React.FC<any> = () => {
   const user = useSelector(userSelector)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
-  const logOut = () => {
-    setLoading(true)
-    dispatch(logoutUserAction())
-    dispatch(clearCartAction())
-    window.location.href = ROOT_PATH
+  // const logOut = () => {
+  //   setLoading(true)
+  //   dispatch(logoutUserAction())
+  //   dispatch(clearCartAction())
+  //   window.location.href = ROOT_PATH
+  // }
+
+  const openLogoutModal = () => {
+    dispatch(toggleLogoutModalAction())
   }
 
   return loading ? null : user.isLogged ? (
@@ -112,9 +113,8 @@ const AccountTooltip: React.FC<any> = () => {
           </ListItem>
           <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
           <ListItem sx={{ px: 0 }}>
-            <ListItemButton sx={{ px: 0 }} onClick={logOut}>
+            <ListItemButton sx={{ px: 0 }} onClick={openLogoutModal}>
               <ListItemText
-                onClick={logOut}
                 sx={{
                   fontSize: 15,
                   color: '#404040',
@@ -174,4 +174,4 @@ const AccountTooltip: React.FC<any> = () => {
   )
 }
 
-export default AccountTooltip
+export default ClientTooltip

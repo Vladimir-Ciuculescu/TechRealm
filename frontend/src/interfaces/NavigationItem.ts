@@ -9,5 +9,5 @@ export interface NavigationItem {
   badgeValue: number | null
   tooltipPaddingSpace: number | string
   tooltipWidth?: number | null
-  rolesAllowed: Roles[]
+  visibleFor: Roles[]
 }

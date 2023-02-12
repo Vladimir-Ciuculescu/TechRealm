@@ -39,7 +39,7 @@ export const userReducer = (state = userState, action: any) => {
         photo: user.photo,
         role: user.role,
         color: user.color,
-        token: state.token,
+        token: user.token,
       }
     case LOGOUT_USER:
       return {
@@ -52,6 +52,7 @@ export const userReducer = (state = userState, action: any) => {
         photo: '',
         color: '',
         isLogged: false,
+        token: '',
       }
     default:
       return state
