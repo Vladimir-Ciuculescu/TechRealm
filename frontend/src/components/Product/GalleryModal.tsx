@@ -129,7 +129,19 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
         },
       }}
     >
-      <DialogTitle>awda</DialogTitle>
+      <DialogTitle>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <GrClose
+            onClick={closeGalleryModal}
+            style={{
+              fontSize: 30,
+              right: 15,
+              top: 15,
+              cursor: 'pointer',
+            }}
+          />
+        </Box>
+      </DialogTitle>
       <DialogContent
         dividers
         sx={{
@@ -271,56 +283,8 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
       </DialogContent>
     </Dialog>
   ) : (
-    <Dialog
-      fullScreen
-      open={visible}
-      onClose={closeGalleryModal}
-      //TransitionComponent={Transition}
-    >
-      {/* <AppBar sx={{ position: 'relative' }}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={closeGalleryModal}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-            Sound
-          </Typography>
-          <Button autoFocus color="inherit" onClick={closeGalleryModal}>
-            save
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <List>
-        <ListItem button>
-          <ListItemText primary="Phone ringtone" secondary="Titania" />
-        </ListItem>
-        <Divider />
-        <ListItem button>
-          <ListItemText
-            primary="Default notification ringtone"
-            secondary="Tethys"
-          />
-        </ListItem>
-      </List> */}
+    <Dialog fullScreen open={visible} onClose={closeGalleryModal}>
       <DialogTitle sx={{ height: '6%' }}>
-        {/* <IconButton
-          aria-label="close"
-          onClick={closeGalleryModal}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            fontSize: 30,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton> */}
         <GrClose
           onClick={closeGalleryModal}
           style={{

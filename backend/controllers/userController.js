@@ -8,7 +8,8 @@ const authUser = async (req, res) => {
   const user = await userRepository.getUserByEmail(email);
 
   if (user && (await comparePassword(password, user.password))) {
-    res.json({
+    console.log(user);
+    res.status(200).json({
       id: user.id,
       firstName: user.first_name,
       lastName: user.last_name,
@@ -16,7 +17,7 @@ const authUser = async (req, res) => {
       photo: user.photo,
       role: user.role,
       color: user.avatar_color,
-      token: generateToken(user.email),
+      token: generateToken(user.id),
     });
   } else {
     res.status(401).json({ error: "Invalid email or password" });
@@ -25,7 +26,6 @@ const authUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
   const { registerData } = req.body;
-  console.log(registerData);
 
   const user = await userRepository.getUserByEmail(registerData.email);
 
@@ -45,7 +45,6 @@ const registerUser = async (req, res) => {
       res.status(200).json({
         name: registeredUser.name,
         email: registeredUser.email,
-        token: generateToken(registeredUser.email),
       });
     } else {
       res.status(400);
@@ -55,19 +54,22 @@ const registerUser = async (req, res) => {
 };
 
 // TODO : Temporary
-const getUserProfile = async (req, res) => {
-  const { user } = req;
-
-  if (user) {
-    res.json({
+const getCurrentUser = async (req, res) => {
+  try {
+    const { user } = req;
+    res.status(200).json({
       id: user.id,
-      name: user.name,
       email: user.email,
+      role: user.role,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      gender: user.gender,
+      photo: user.photo,
+      color: user.avatar_color,
     });
-  } else {
-    res.status(404);
-    throw new Error("User not found !");
+  } catch (error) {
+    console.error(error);
   }
 };
 
-module.exports = { authUser, registerUser, getUserProfile };
+module.exports = { authUser, registerUser, getCurrentUser };

@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   authUser,
   registerUser,
-  getUserProfile,
+  getCurrentUser,
 } = require("../controllers/userController");
 
 const { authMiddleware } = require("../middleware/authMiddleware");
@@ -18,6 +18,6 @@ router.route("/users/register").post(registerUser);
 
 // * @desc   Get user profile
 // * @route  GET /api/users/profile
-router.route("api/users/profile").get(authMiddleware, getUserProfile);
+router.route("/user/profile").get(authMiddleware, getCurrentUser);
 
 module.exports = router;

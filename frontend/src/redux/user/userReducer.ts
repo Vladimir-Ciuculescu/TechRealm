@@ -1,15 +1,16 @@
-import { Role } from '../../enums/Role'
+import { Roles } from '../../enums/Roles'
 import { LOGOUT_USER, SET_USER } from './actionTypes'
 
 interface userStateProps {
   firstName: string
   lastName: string
   email: string
-  role: Role | string
+  role: Roles | string
   photo: string
   color: string
   isLogged: boolean
   id: number
+  token: string
 }
 
 const userState: userStateProps = {
@@ -21,6 +22,7 @@ const userState: userStateProps = {
   role: '',
   photo: '',
   color: '',
+  token: '',
 }
 
 export const userReducer = (state = userState, action: any) => {
@@ -37,6 +39,7 @@ export const userReducer = (state = userState, action: any) => {
         photo: user.photo,
         role: user.role,
         color: user.color,
+        token: state.token,
       }
     case LOGOUT_USER:
       return {

@@ -32,14 +32,23 @@ const registerUser = async (registerData) => {
 
 const getUserByEmail = async (email) => {
   try {
-    const user = await pool.query(
+    const data = await pool.query(
       `SELECT * from USERS u where email = '${email}'`
     );
 
-    return user.rows[0];
+    return data.rows[0];
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports = { registerUser, getUserByEmail };
+const getUserById = async (id) => {
+  try {
+    const data = await pool.query(`SELECT * FROM USERS where id  = ${id}`);
+    return data.rows[0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { registerUser, getUserByEmail, getUserById };

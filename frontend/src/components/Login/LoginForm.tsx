@@ -18,12 +18,8 @@ import { loginUserApi } from '../../services/userApi'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUserAction } from '../../redux/user/actions'
-import {
-  addUserProductsApi,
-  getUserProductsApi,
-} from '../../services/productApi'
+import { addUserProductsApi } from '../../services/productApi'
 import { cartProductsIdsSelector } from '../../redux/cart/selectors'
-import { addProductAction } from '../../redux/cart/actions'
 
 const LoginForm: React.FC<any> = () => {
   const [passwordVisible, togglePasswordVisible] = useState<boolean>(false)
@@ -56,12 +52,6 @@ const LoginForm: React.FC<any> = () => {
     if (productsIds.length !== 0) {
       await addUserProductsApi(userId, productsIds)
     }
-
-    const response = await getUserProductsApi(userId)
-
-    // for (let product of response!.products) {
-    //   dispatch(addProductAction(product, product.quantity))
-    // }
   }
 
   const handleLogin = async (values: loginProps) => {

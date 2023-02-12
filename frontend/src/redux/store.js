@@ -9,11 +9,6 @@ import { configureStore } from '@reduxjs/toolkit'
 
 const middleWare = [thunk]
 
-// export const store = createStore(
-//   rootReducer,
-//   composeWithDevTools(applyMiddleware(...middleWare)),
-// )
-
 export const store = configureStore(
   { reducer: rootReducer },
   composeWithDevTools(applyMiddleware(...middleWare)),

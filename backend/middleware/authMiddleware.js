@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const env = require("dotenv");
-const { getUserByEmail } = require("../repositories/userRepository");
+const { getUserById } = require("../repositories/userRepository");
 
 env.config();
 
@@ -13,8 +13,8 @@ const authMiddleware = async (req, res, next) => {
       const token = req.headers.authorization.split(" ")[1];
 
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-
-      req.user = await getUserByEmail(decodedToken.email);
+      console.log(await getUserById(decodedToken.id));
+      req.user = await getUserById(decodedToken.id);
 
       next();
     } catch (error) {

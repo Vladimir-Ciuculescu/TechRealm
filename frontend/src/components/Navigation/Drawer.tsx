@@ -2,7 +2,8 @@ import { Badge, Box, List, ListItem, ListItemAvatar, Link } from '@mui/material'
 import React from 'react'
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
-import NavigationLinks from './NavItems'
+import { NavigationItem } from '../../interfaces/NavigationItem'
+import NavItems from './NavItems'
 
 interface DrawerComponentProps {
   setToggleDrawer: () => void
@@ -13,12 +14,12 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
 }) => {
   const navigate = useNavigate()
 
-  const navLinks = NavigationLinks()
+  const navLinks = NavItems()
 
   return (
     <Box onClick={setToggleDrawer} sx={{ textAlign: 'center' }}>
       <List dense={false}>
-        {navLinks.map((page, key) => (
+        {navLinks.map((page: NavigationItem, key: number) => (
           <ListItem
             sx={{ marginBottom: 1 }}
             dense={false}
@@ -27,8 +28,8 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
             secondaryAction={<MdOutlineKeyboardArrowRight size={25} />}
           >
             <ListItemAvatar>
-              {page.badge ? (
-                <Badge badgeContent={page.badge.value} color="error">
+              {page.badgeValue ? (
+                <Badge badgeContent={page.badgeValue} color="error">
                   {page.icon}
                 </Badge>
               ) : (

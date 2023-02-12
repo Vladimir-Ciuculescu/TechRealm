@@ -10,7 +10,10 @@ import { Badge, CssBaseline, Drawer, Link } from '@mui/material'
 import CustomTooltip from '../common/CustomTooltip'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import DrawerComponent from './Drawer'
-import NavigationLinks from './NavItems'
+import NavItems from './NavItems'
+import { NavigationItem } from '../../interfaces/NavigationItem'
+import { userSelector } from '../../redux/user/selectors'
+import { useSelector } from 'react-redux'
 
 const drawerWidth = 240
 
@@ -31,7 +34,9 @@ const NavBar = (props: Props) => {
   const container =
     window !== undefined ? () => window().document.body : undefined
 
-  const navLinks = NavigationLinks()
+  const navLinks = NavItems()
+
+  const user = useSelector(userSelector)
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -113,52 +118,56 @@ const NavBar = (props: Props) => {
                 gap: 5,
               }}
             >
-              {navLinks.map((page, key) => (
-                <CustomTooltip
-                  containerSpace={-12}
-                  title={page.tooltipContent}
-                  paddingSpace={page.tooltipPaddingSpace}
-                  tooltipWidth={page.tooltipWidth}
-                >
-                  <Link
-                    key={key}
-                    color="inherit"
-                    href={page.path}
-                    underline="none"
-                    justifyContent="center"
-                    noWrap
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      '&:hover': {
-                        color: 'inherit',
-                      },
-                    }}
-                  >
-                    {page.badge ? (
-                      <Badge badgeContent={page.badge.value} color="error">
-                        {page.icon}
-                      </Badge>
-                    ) : (
-                      page.icon
-                    )}
-                    <Typography
-                      component="a"
-                      sx={{
-                        ml: 1,
-                        textDecoration: 'none',
-                        color: 'inherit',
-                        '&:hover': {
-                          color: 'inherit',
-                        },
-                      }}
+              {navLinks.map(
+                (page: NavigationItem, key: number) =>
+                  page.rolesAllowed.includes(user.role) && (
+                    <CustomTooltip
+                      key={key}
+                      containerSpace={-12}
+                      title={page.tooltipContent}
+                      paddingSpace={page.tooltipPaddingSpace}
+                      tooltipWidth={page.tooltipWidth}
                     >
-                      {page.title}
-                    </Typography>
-                  </Link>
-                </CustomTooltip>
-              ))}
+                      <Link
+                        key={key}
+                        color="inherit"
+                        href={page.path}
+                        underline="none"
+                        justifyContent="center"
+                        noWrap
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          '&:hover': {
+                            color: 'inherit',
+                          },
+                        }}
+                      >
+                        {page.badgeValue ? (
+                          <Badge badgeContent={page.badgeValue} color="error">
+                            {page.icon}
+                          </Badge>
+                        ) : (
+                          page.icon
+                        )}
+                        <Typography
+                          component="a"
+                          sx={{
+                            ml: 1,
+                            textDecoration: 'none',
+                            color: 'inherit',
+                            '&:hover': {
+                              color: 'inherit',
+                            },
+                          }}
+                        >
+                          {page.title}
+                        </Typography>
+                      </Link>
+                    </CustomTooltip>
+                  ),
+              )}
             </Box>
           </Toolbar>
         </Container>
