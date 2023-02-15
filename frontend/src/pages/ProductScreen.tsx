@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Product } from '../interfaces/Product'
 import CustomSelect from '../components/common/CustomSelect'
 import { SelectOption } from '../interfaces/SelectOption'
@@ -55,6 +55,8 @@ const ProductScreen: React.FC<any> = () => {
   const activeImage = useSelector(activeImageSelector)
   const isLogged = useSelector(isUserLoggedSelector)
   const user = useSelector(userSelector)
+  const location = useLocation()
+
 
   const getProduct = async () => {
     if (id) {

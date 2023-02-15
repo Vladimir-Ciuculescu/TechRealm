@@ -9,34 +9,48 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { ROOT_PATH } from '../../../constants/paths'
-import { clearCartAction } from '../../../redux/cart/actions'
+import {
+  FAVORITES_PATH,
+  ORDERS_PATH,
+  PROFILE_PATH,
+} from '../../../constants/paths'
 import { toggleLogoutModalAction } from '../../../redux/logout_modal/actions'
-import { logoutUserAction } from '../../../redux/user/actions'
 import { userSelector } from '../../../redux/user/selectors'
 
 const ClientTooltip: React.FC<any> = () => {
   const user = useSelector(userSelector)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
-
-  // const logOut = () => {
-  //   setLoading(true)
-  //   dispatch(logoutUserAction())
-  //   dispatch(clearCartAction())
-  //   window.location.href = ROOT_PATH
-  // }
 
   const openLogoutModal = () => {
     dispatch(toggleLogoutModalAction())
   }
 
-  return loading ? null : user.isLogged ? (
+  interface Option {
+    title: string
+    path: string
+  }
+
+  const options: Option[] = [
+    {
+      title: 'My account',
+      path: PROFILE_PATH,
+    },
+    {
+      title: 'Orders',
+      path: ORDERS_PATH,
+    },
+    {
+      title: 'Favorites',
+      path: FAVORITES_PATH,
+    },
+  ]
+
+  return user.isLogged ? (
     <Box
       sx={{
         display: 'flex',
@@ -66,51 +80,26 @@ const ClientTooltip: React.FC<any> = () => {
 
       <Box>
         <List>
-          <ListItem sx={{ px: 0, py: 0 }}>
-            <ListItemButton sx={{ px: 0 }}>
-              <ListItemText
-                sx={{
-                  fontSize: 15,
-                  color: '#404040',
-                  fontFamily: 'Source Sans Pro',
-                  fontWeight: '1000',
+          {options.map((option, index) => (
+            <ListItem key={index} sx={{ px: 0, py: 0 }}>
+              <ListItemButton
+                sx={{ px: 0 }}
+                onClick={() => navigate(option.path)}
+              >
+                <ListItemText
+                  sx={{
+                    fontSize: 15,
+                    color: '#404040',
+                    fontFamily: 'Source Sans Pro',
+                    fontWeight: '1000',
 
-                  pl: 3,
-                }}
-                primary="My account"
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem sx={{ px: 0, py: 0 }}>
-            <ListItemButton sx={{ px: 0 }}>
-              <ListItemText
-                sx={{
-                  fontSize: 15,
-                  color: '#404040',
-                  fontFamily: 'Source Sans Pro',
-                  fontWeight: '1000',
-
-                  pl: 3,
-                }}
-                primary="Orders"
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem sx={{ px: 0, py: 0 }}>
-            <ListItemButton sx={{ px: 0 }}>
-              <ListItemText
-                sx={{
-                  fontSize: 15,
-                  color: '#404040',
-                  fontFamily: 'Source Sans Pro',
-                  fontWeight: '1000',
-
-                  pl: 3,
-                }}
-                primary="Favorites"
-              />
-            </ListItemButton>
-          </ListItem>
+                    pl: 3,
+                  }}
+                  primary={option.title}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
           <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
           <ListItem sx={{ px: 0 }}>
             <ListItemButton sx={{ px: 0 }} onClick={openLogoutModal}>

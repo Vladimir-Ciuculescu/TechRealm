@@ -4,10 +4,15 @@ import { Product } from '../interfaces/Product'
 import { Container } from '@mui/system'
 import { Box, Grid, Typography } from '@mui/material'
 import { getProductsApi } from '../services/productApi'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { userSelector } from '../redux/user/selectors'
 
-interface IProps {}
+interface IProps {
+  props: any
+}
 
-const HomeScreen: React.FC<IProps> = () => {
+const HomeScreen: React.FC<any> = (props) => {
   const [products, setProducts] = useState<Product[]>([])
 
   const fetchProducts = async () => {

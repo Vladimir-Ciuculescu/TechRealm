@@ -12,35 +12,69 @@ import LoginScreen from '../../pages/LoginScreen'
 import ProductScreen from '../../pages/ProductScreen'
 import RegisterScreen from '../../pages/RegisterScreen'
 import SearchPage from '../../pages/SearchPage'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  BrowserRouter,
+} from 'react-router-dom'
 import NavBar from './Navbar'
 import OptionsBar from './OptionsBar'
 import Footer from '../Footer'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getCurrentUserApi } from '../../services/userApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
-import { setUserAction } from '../../redux/user/actions'
+import { setUserAccessAction, setUserAction } from '../../redux/user/actions'
 import LogoutModal from '../LogoutModal'
+import { Roles } from '../../enums/Roles'
 
 interface RoutesProps {
   element: JSX.Element
   path: string
+  rolesAllowed: Roles[]
 }
 
 const routes: RoutesProps[] = [
-  { element: <HomeScreen />, path: ROOT_PATH },
-  { element: <ProductScreen />, path: `${PRODUCTS_PATH}/:id` },
-  { element: <CartScreen />, path: CART_PATH },
-  { element: <RegisterScreen />, path: REGISTER_PATH },
-  { element: <LoginScreen />, path: LOGIN_PATH },
-  { element: <SearchPage />, path: SEARCH_PATH },
+  {
+    element: <HomeScreen />,
+    path: ROOT_PATH,
+    rolesAllowed: [Roles.UNLOGGED, Roles.CLIENT, Roles.ADMIN],
+  },
+  {
+    element: <ProductScreen />,
+    path: `${PRODUCTS_PATH}/:id`,
+    rolesAllowed: [Roles.UNLOGGED, Roles.CLIENT, Roles.ADMIN],
+  },
+  {
+    element: <CartScreen />,
+    path: CART_PATH,
+    rolesAllowed: [Roles.UNLOGGED, Roles.CLIENT],
+  },
+  {
+    element: <RegisterScreen />,
+    path: REGISTER_PATH,
+    rolesAllowed: [Roles.UNLOGGED],
+  },
+  {
+    element: <LoginScreen />,
+    path: LOGIN_PATH,
+    rolesAllowed: [Roles.UNLOGGED],
+  },
+  {
+    element: <SearchPage />,
+    path: SEARCH_PATH,
+    rolesAllowed: [Roles.UNLOGGED, Roles.CLIENT],
+  },
 ]
 
 const Navigation = () => {
-  const { token } = useSelector(userSelector)
+  const { token, role } = useSelector(userSelector)
   const isLogged = useSelector(isUserLoggedSelector)
   const dispatch = useDispatch()
+
+  const prevPath = useRef('')
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -54,13 +88,28 @@ const Navigation = () => {
     }
   }, [])
 
+  const hasAccess = (rolesAllowed: Roles[], role: Roles) => {
+    const access = rolesAllowed.includes(role)
+
+    return access
+  }
+
   return (
     <BrowserRouter>
       <NavBar />
       <OptionsBar />
       <Routes>
         {routes.map((route) => (
-          <Route path={route.path} element={route.element} />
+          <Route
+            path={route.path}
+            element={
+              hasAccess(route.rolesAllowed, role) ? (
+                route.element
+              ) : (
+                <Navigate to={'/'} />
+              )
+            }
+          />
         ))}
       </Routes>
       <LogoutModal />
