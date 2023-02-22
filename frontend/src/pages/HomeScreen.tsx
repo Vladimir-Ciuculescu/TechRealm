@@ -4,16 +4,11 @@ import { Product } from '../interfaces/Product'
 import { Container } from '@mui/system'
 import { Box, Grid, Typography } from '@mui/material'
 import { getProductsApi } from '../services/productApi'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { userSelector } from '../redux/user/selectors'
-
-interface IProps {
-  props: any
-}
+import { useNavigate } from 'react-router-dom'
 
 const HomeScreen: React.FC<any> = (props) => {
   const [products, setProducts] = useState<Product[]>([])
+  const navigate = useNavigate()
 
   const fetchProducts = async () => {
     const products = await getProductsApi()
@@ -23,6 +18,13 @@ const HomeScreen: React.FC<any> = (props) => {
   }
 
   useEffect(() => {
+    const redirect = localStorage.getItem('redirect')
+
+    if (redirect === 'true') {
+      localStorage.removeItem('redirect')
+      navigate(-2)
+    }
+
     fetchProducts()
   }, [])
 

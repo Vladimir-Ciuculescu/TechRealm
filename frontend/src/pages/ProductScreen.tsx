@@ -57,7 +57,6 @@ const ProductScreen: React.FC<any> = () => {
   const user = useSelector(userSelector)
   const location = useLocation()
 
-
   const getProduct = async () => {
     if (id) {
       const data = await getProductApi(id)

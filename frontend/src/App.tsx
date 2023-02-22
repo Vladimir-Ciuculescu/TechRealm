@@ -2,7 +2,11 @@ import { BrowserRouter } from 'react-router-dom'
 import Navigation from './components/Navigation/Navigation'
 
 const App = () => {
-  return <Navigation />
+  return (
+    <BrowserRouter>
+      <Navigation />
+    </BrowserRouter>
+  )
 }
 
 export default App

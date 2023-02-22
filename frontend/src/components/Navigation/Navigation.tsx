@@ -12,23 +12,18 @@ import LoginScreen from '../../pages/LoginScreen'
 import ProductScreen from '../../pages/ProductScreen'
 import RegisterScreen from '../../pages/RegisterScreen'
 import SearchPage from '../../pages/SearchPage'
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  BrowserRouter,
-} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import NavBar from './Navbar'
 import OptionsBar from './OptionsBar'
 import Footer from '../Footer'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 import { getCurrentUserApi } from '../../services/userApi'
 import { useDispatch, useSelector } from 'react-redux'
 import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
-import { setUserAccessAction, setUserAction } from '../../redux/user/actions'
+import { setUserAction } from '../../redux/user/actions'
 import LogoutModal from '../LogoutModal'
 import { Roles } from '../../enums/Roles'
+import CustomRoute from './CustomRoute'
 
 interface RoutesProps {
   element: JSX.Element
@@ -74,8 +69,6 @@ const Navigation = () => {
   const isLogged = useSelector(isUserLoggedSelector)
   const dispatch = useDispatch()
 
-  const prevPath = useRef('')
-
   useEffect(() => {
     const getCurrentUser = async () => {
       const data = await getCurrentUserApi(token)
@@ -88,33 +81,29 @@ const Navigation = () => {
     }
   }, [])
 
-  const hasAccess = (rolesAllowed: Roles[], role: Roles) => {
-    const access = rolesAllowed.includes(role)
-
-    return access
-  }
-
   return (
-    <BrowserRouter>
+    <>
       <NavBar />
       <OptionsBar />
       <Routes>
-        {routes.map((route) => (
+        {routes.map((route, index) => (
           <Route
             path={route.path}
             element={
-              hasAccess(route.rolesAllowed, role) ? (
-                route.element
-              ) : (
-                <Navigate to={'/'} />
-              )
+              <CustomRoute
+                role={role}
+                rolesAllowed={route.rolesAllowed}
+                path={route.path}
+              >
+                {route.element}
+              </CustomRoute>
             }
           />
         ))}
       </Routes>
       <LogoutModal />
       <Footer />
-    </BrowserRouter>
+    </>
   )
 }
 
