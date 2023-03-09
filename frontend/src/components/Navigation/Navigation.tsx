@@ -1,6 +1,7 @@
 import {
   CART_PATH,
   LOGIN_PATH,
+  MANAGE_PRODUCTS_PATH,
   PRODUCTS_PATH,
   REGISTER_PATH,
   ROOT_PATH,
@@ -24,6 +25,7 @@ import { setUserAction } from '../../redux/user/actions'
 import LogoutModal from '../LogoutModal'
 import { Roles } from '../../enums/Roles'
 import CustomRoute from './CustomRoute'
+import ManageProducts from '../../pages/ManageProducts'
 
 interface RoutesProps {
   element: JSX.Element
@@ -62,6 +64,11 @@ const routes: RoutesProps[] = [
     path: SEARCH_PATH,
     rolesAllowed: [Roles.UNLOGGED, Roles.CLIENT],
   },
+  {
+    element: <ManageProducts />,
+    path: MANAGE_PRODUCTS_PATH,
+    rolesAllowed: [Roles.ADMIN],
+  },
 ]
 
 const Navigation = () => {
@@ -84,7 +91,8 @@ const Navigation = () => {
   return (
     <>
       <NavBar />
-      <OptionsBar />
+      {role !== Roles.ADMIN && <OptionsBar />}
+
       <Routes>
         {routes.map((route, index) => (
           <Route

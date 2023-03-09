@@ -59,7 +59,6 @@ const LoginForm: React.FC<any> = () => {
     setLoading(true)
     try {
       const user = await loginUserApi(email, password)
-
       dispatch(setUserAction(user))
       handleCartProducts(user.id)
       navigate(ROOT_PATH)

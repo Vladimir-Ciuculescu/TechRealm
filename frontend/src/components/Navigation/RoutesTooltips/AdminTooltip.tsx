@@ -12,10 +12,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { MANAGE_PRODUCTS_PATH, USERS_PATH } from '../../../constants/paths'
 import { toggleLogoutModalAction } from '../../../redux/logout_modal/actions'
 import { userSelector } from '../../../redux/user/selectors'
+import { MdLogout, MdOutlineInventory } from 'react-icons/md'
+import { HiUsers } from 'react-icons/hi'
+import { useNavigate } from 'react-router-dom'
 
 const AdminToolTip = () => {
   const user = useSelector(userSelector)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const logOut = () => {
     dispatch(toggleLogoutModalAction())
@@ -24,11 +28,20 @@ const AdminToolTip = () => {
   interface Option {
     title: string
     path: string
+    icon: JSX.Element
   }
 
   const options: Option[] = [
-    { title: 'Products', path: MANAGE_PRODUCTS_PATH },
-    { title: 'Users', path: USERS_PATH },
+    {
+      title: 'Products',
+      path: MANAGE_PRODUCTS_PATH,
+      icon: <MdOutlineInventory style={{ fontSize: '20px' }} />,
+    },
+    {
+      title: 'Users',
+      path: USERS_PATH,
+      icon: <HiUsers style={{ fontSize: '20px' }} />,
+    },
   ]
 
   return (
@@ -63,8 +76,16 @@ const AdminToolTip = () => {
       <Box>
         <List>
           {options.map((option, index) => (
-            <ListItem key={index} sx={{ px: 0, py: 0 }}>
-              <ListItemButton sx={{ px: 0 }}>
+            <ListItem
+              key={index}
+              sx={{ px: 0, py: 0 }}
+              secondaryAction={option.icon}
+            >
+              <ListItemButton
+                sx={{ px: 0 }}
+                onClick={() => navigate(option.path)}
+                disableRipple
+              >
                 <ListItemText
                   sx={{
                     fontSize: 15,
@@ -80,7 +101,10 @@ const AdminToolTip = () => {
             </ListItem>
           ))}
           <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
-          <ListItem sx={{ px: 0 }}>
+          <ListItem
+            sx={{ px: 0 }}
+            secondaryAction={<MdLogout style={{ fontSize: '20px' }} />}
+          >
             <ListItemButton sx={{ px: 0 }} onClick={logOut}>
               <ListItemText
                 sx={{

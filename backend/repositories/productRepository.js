@@ -10,7 +10,7 @@ const getProducts = async () => {
       p.rating,
       p.number_of_reviews as "numberOfReviews",
       p.price,
-      p.count_in_stock as countInStock,
+      p.count_in_stock as "countInStock",
       (select url from product_images pi2 where pi2.product_id  = p.id limit 1 ) as "defaultImage"
       FROM products p`);
 

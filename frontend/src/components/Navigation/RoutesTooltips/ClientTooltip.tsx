@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { HiChevronDoubleRight } from 'react-icons/hi'
+import { MdLogout } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -20,6 +21,9 @@ import {
 } from '../../../constants/paths'
 import { toggleLogoutModalAction } from '../../../redux/logout_modal/actions'
 import { userSelector } from '../../../redux/user/selectors'
+import { BiPurchaseTag } from 'react-icons/bi'
+import { MdManageAccounts } from 'react-icons/md'
+import { FiHeart } from 'react-icons/fi'
 
 const ClientTooltip: React.FC<any> = () => {
   const user = useSelector(userSelector)
@@ -33,20 +37,24 @@ const ClientTooltip: React.FC<any> = () => {
   interface Option {
     title: string
     path: string
+    icon: JSX.Element
   }
 
   const options: Option[] = [
     {
       title: 'My account',
       path: PROFILE_PATH,
+      icon: <MdManageAccounts style={{ fontSize: '20px' }} />,
     },
     {
       title: 'Orders',
       path: ORDERS_PATH,
+      icon: <BiPurchaseTag style={{ fontSize: '20px' }} />,
     },
     {
       title: 'Favorites',
       path: FAVORITES_PATH,
+      icon: <FiHeart style={{ fontSize: '20px' }} />,
     },
   ]
 
@@ -81,7 +89,11 @@ const ClientTooltip: React.FC<any> = () => {
       <Box>
         <List>
           {options.map((option, index) => (
-            <ListItem key={index} sx={{ px: 0, py: 0 }}>
+            <ListItem
+              key={index}
+              sx={{ px: 0, py: 0 }}
+              secondaryAction={option.icon}
+            >
               <ListItemButton
                 sx={{ px: 0 }}
                 onClick={() => navigate(option.path)}
@@ -101,7 +113,10 @@ const ClientTooltip: React.FC<any> = () => {
             </ListItem>
           ))}
           <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
-          <ListItem sx={{ px: 0 }}>
+          <ListItem
+            sx={{ px: 0 }}
+            secondaryAction={<MdLogout style={{ fontSize: '20px' }} />}
+          >
             <ListItemButton sx={{ px: 0 }} onClick={openLogoutModal}>
               <ListItemText
                 sx={{

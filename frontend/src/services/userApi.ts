@@ -17,37 +17,58 @@ const config = {
 }
 
 export const registerUserApi = async (registerData: RegisterData) => {
-  try {
-    await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
-      registerData,
-      config,
-    })
-  } catch (error) {
-    console.log(error)
-  }
+  // try {
+  //   await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
+  //     registerData,
+  //     config,
+  //   })
+  // } catch (error) {
+  //   console.log(error)
+  // }
+  await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
+    registerData,
+    config,
+  })
 }
 
 export const loginUserApi = async (email: string, password: string) => {
-  try {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+  // try {
+  //   const config = {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
 
-    const { data } = await axiosInstance.post<any>(
-      `/api/users${LOGIN_PATH}`,
-      {
-        email,
-        password,
-      },
-      config,
-    )
+  //   const { data } = await axiosInstance.post<any>(
+  //     `/api/users${LOGIN_PATH}`,
+  //     {
+  //       email,
+  //       password,
+  //     },
+  //     config,
+  //   )
 
-    return data
-  } catch (error) {
-    console.log(error)
+  //   console.log(data)
+  //   return data
+  // } catch (error) {
+  //   console.log(error)
+  // }
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
   }
+
+  const { data } = await axiosInstance.post<any>(
+    `/api/users${LOGIN_PATH}`,
+    {
+      email,
+      password,
+    },
+    config,
+  )
+
+  return data
 }
 
 export const getCurrentUserApi = async (token: string) => {
