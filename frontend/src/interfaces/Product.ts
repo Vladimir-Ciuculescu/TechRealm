@@ -11,4 +11,5 @@ export interface Product {
   rating: number
   numberOfReviews: number
   quantity?: number | undefined
+  checked?: boolean
 }

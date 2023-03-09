@@ -11,7 +11,7 @@ import { manageProductsReducer } from './manage_products/manageProductsReducer'
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['logoutModal'],
+  blacklist: ['logoutModal', 'manageProducts'],
 }
 
 const rootReducer = combineReducers({

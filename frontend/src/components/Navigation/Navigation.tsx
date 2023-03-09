@@ -25,7 +25,7 @@ import { setUserAction } from '../../redux/user/actions'
 import LogoutModal from '../LogoutModal'
 import { Roles } from '../../enums/Roles'
 import CustomRoute from './CustomRoute'
-import ManageProducts from '../../pages/ManageProducts'
+import ManageProducts from '../../pages/ManageProductsScreen'
 
 interface RoutesProps {
   element: JSX.Element

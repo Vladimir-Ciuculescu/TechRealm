@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -24,23 +24,31 @@ interface RowProps {
 
 const Row: React.FC<RowProps> = ({ product }) => {
   const { name, brand, price, countInStock, defaultImage } = product
-  const [checked, setChecked] = useState(false)
+
+  console.log(product.checked)
 
   const dispatch = useDispatch()
 
   const selectProduct = (product: Product) => {
-    setChecked(!checked)
-    if (checked) {
+    if (product.checked) {
       dispatch(unselectProductAction(product))
     } else {
-      dispatch(selectProductAction(product))
+      dispatch(dispatch(selectProductAction(product)))
     }
   }
 
   return (
-    <TableRow tabIndex={-1} selected={checked} sx={{ bgcolor: 'primary' }}>
+    <TableRow
+      tabIndex={-1}
+      selected={product.checked}
+      sx={{ bgcolor: 'primary' }}
+    >
       <TableCell padding="checkbox">
-        <Checkbox onChange={() => selectProduct(product)} disableRipple />
+        <Checkbox
+          checked={product.checked}
+          onChange={() => selectProduct(product)}
+          disableRipple
+        />
       </TableCell>
       <TableCell>
         <img

@@ -1,24 +1,27 @@
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  Typography,
-} from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { Container, Stack } from '@mui/system'
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BulkActionsCard from '../components/Admin/BulkActionsCard'
 import ProductsTable from '../components/Admin/ProductsTable'
 import { Product } from '../interfaces/Product'
+import { setProductsAction } from '../redux/manage_products/actionts'
+import { productsSelector } from '../redux/manage_products/selectors'
 import { getProductsApi } from '../services/productApi'
 
 const ManageProducts = () => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [itemsIds, setItemsIds] = useState<number[]>([])
+  // const [products, setProducts] = useState<Product[]>([])
+  const dispatch = useDispatch()
+  const products = useSelector(productsSelector)
 
   useEffect(() => {
     const fetchProducts = async () => {
       const products = await getProductsApi()
-      setProducts(products!)
+      dispatch(
+        setProductsAction(
+          products!.map((item) => ({ ...item, checked: false })),
+        ),
+      )
     }
     fetchProducts()
   }, [])
@@ -35,18 +38,7 @@ const ManageProducts = () => {
           </Grid>
           <Grid container direction="column" item md={10} gap="24px">
             <Grid item>
-              <Stack
-                direction="row"
-                sx={{
-                  width: '100%',
-                  background: '#FFFFFF',
-                  borderRadius: '8px',
-                  height: '70px',
-                  padding: '16px',
-                }}
-              >
-                <FormControlLabel control={<Checkbox />} label="Check all" />
-              </Stack>
+              <BulkActionsCard />
             </Grid>
             <Grid item>
               <ProductsTable products={products} />
