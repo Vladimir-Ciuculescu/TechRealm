@@ -1,13 +1,17 @@
 import {
   Dialog,
+  DialogContent,
   DialogTitle,
   Grid,
   IconButton,
+  InputAdornment,
   Stack,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { CgClose } from 'react-icons/cg'
+import CustomInput from '../common/CustomInput'
+import { BsCurrencyDollar } from 'react-icons/bs'
 
 interface AddProductModalProps {
   open: boolean
@@ -18,6 +22,9 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   open,
   closeModal,
 }) => {
+  const [name, setName] = useState<string>('')
+  const [price, setPrice] = useState<number>()
+
   return (
     <Dialog
       open={open}
@@ -45,6 +52,29 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           </IconButton>
         </Stack>
       </DialogTitle>
+      <DialogContent>
+        <Stack gap="24px">
+          <CustomInput
+            value={name}
+            handleValue={setName}
+            width="100%"
+            type="text"
+            label="Name"
+          />
+          <CustomInput
+            value={price}
+            handleValue={(e: any) => setPrice(e)}
+            width="100%"
+            type="number"
+            label="Price"
+            startAdornment={
+              <InputAdornment position="start">
+                <BsCurrencyDollar />
+              </InputAdornment>
+            }
+          />
+        </Stack>
+      </DialogContent>
     </Dialog>
   )
 }

@@ -1,6 +1,10 @@
 import { createTheme } from '@mui/material/styles'
 declare module '@mui/material/styles' {
   interface PaletteOptions {
+    Base: {
+      White: string
+      Black: string
+    }
     Violet: {
       50: string
       100: string
@@ -14,6 +18,19 @@ declare module '@mui/material/styles' {
       900: string
     }
     Error: {
+      25: string
+      50: string
+      100: string
+      200: string
+      300: string
+      400: string
+      500: string
+      600: string
+      700: string
+      800: string
+      900: string
+    }
+    Gray: {
       25: string
       50: string
       100: string
@@ -374,6 +391,10 @@ const theme = createTheme({
     },
   },
   palette: {
+    Base: {
+      White: '#FFFFFF',
+      Black: '#000000',
+    },
     Violet: {
       50: '#ede7f6',
       100: '#d1c4e9',
@@ -399,7 +420,19 @@ const theme = createTheme({
       800: '#912018',
       900: '#7A271A',
     },
-
+    Gray: {
+      25: '#FCFCFC',
+      50: '#FAFAFA',
+      100: '#F5F5F5',
+      200: '#E5E5E5',
+      300: '#D6D6D6',
+      400: '#A3A3A3',
+      500: '#737373',
+      600: '#525252',
+      700: '#424242',
+      800: '#292929',
+      900: '#141414',
+    },
     background: {
       default: '#f2f2f8',
     },
