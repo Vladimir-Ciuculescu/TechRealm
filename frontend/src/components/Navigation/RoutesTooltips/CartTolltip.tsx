@@ -7,27 +7,19 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 import { IoCloseOutline } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { CartProduct } from '../../../interfaces/CartProduct'
 import { Product } from '../../../interfaces/Product'
 import { removeProductAction } from '../../../redux/cart/actions'
-import {
-  cartProductsSelector,
-  cartTotalCostSelector,
-  cartTotalProductsSelector,
-} from '../../../redux/cart/selectors'
+import { cartTotalCostSelector } from '../../../redux/cart/selectors'
 import {
   isUserLoggedSelector,
   userSelector,
 } from '../../../redux/user/selectors'
-import {
-  deleteUserProductApi,
-  getUserProductsApi,
-} from '../../../services/productApi'
+import { deleteUserProductApi } from '../../../services/productApi'
 
 interface CartTooltipProductProps {
   cartItem: CartProduct
@@ -201,9 +193,11 @@ const CartTooltip: React.FC<CartTooltipProps> = ({ products, total }) => {
                 fontSize: 16,
                 mb: 1,
                 my: 1,
+                bgcolor: 'Violet.600',
                 width: '100%',
                 ':hover': {
                   color: 'white',
+                  bgcolor: 'Violet.900',
                 },
               }}
               startIcon={<HiChevronDoubleRight />}

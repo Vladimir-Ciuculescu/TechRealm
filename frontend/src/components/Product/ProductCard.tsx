@@ -89,7 +89,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <LoadingButton
             onClick={addProduct}
             variant="contained"
-            sx={{ width: '90%', textTransform: 'none', fontSize: '16px' }}
+            sx={{
+              width: '90%',
+              textTransform: 'none',
+              fontSize: '16px',
+              bgcolor: 'Violet.600',
+              ':hover': {
+                bgcolor: 'Violet.900',
+                color: 'white',
+              },
+            }}
             disableRipple
             startIcon={
               loading ? (

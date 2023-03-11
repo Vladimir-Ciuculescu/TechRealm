@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {
   Box,
+  Button,
   Checkbox,
   FormControlLabel,
   Stack,
@@ -14,8 +15,14 @@ import {
   unselectAllProductsAction,
 } from '../../redux/manage_products/actionts'
 import { Product } from '../../interfaces/Product'
+import { AiOutlinePlus } from 'react-icons/ai'
+import { pink } from '@mui/material/colors'
 
-const BulkActionsCard = () => {
+interface BulkActionsCardProps {
+  toggleAddModal: () => void
+}
+
+const BulkActionsCard: React.FC<any> = ({ toggleAddModal }) => {
   const products = useSelector(productsSelector)
   const [checked, setChecked] = useState(false)
   const dispatch = useDispatch()
@@ -44,10 +51,37 @@ const BulkActionsCard = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <FormControlLabel
-        control={<Checkbox disableRipple onChange={toggleAll} />}
-        label="Check all"
-      />
+      <Stack direction="row">
+        <FormControlLabel
+          control={
+            <Checkbox
+              disableRipple
+              onChange={toggleAll}
+              sx={{
+                color: 'Violet.600',
+                '&.Mui-checked': {
+                  color: 'Violet.600',
+                },
+              }}
+            />
+          }
+          label="Check all"
+        />
+        <Button
+          onClick={toggleAddModal}
+          startIcon={<AiOutlinePlus />}
+          disableRipple
+          sx={{
+            color: 'Violet.600',
+            textTransform: 'none',
+            ':hover': {
+              bgcolor: 'inherit',
+            },
+          }}
+        >
+          Add product
+        </Button>
+      </Stack>
       {checkedProducts.length > 0 && (
         <Stack direction="row" gap="12px" alignItems="center">
           <Typography>{checkedProducts.length} selected</Typography>

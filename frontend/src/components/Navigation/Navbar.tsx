@@ -41,7 +41,7 @@ const NavBar = (props: Props) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: 'Violet.800' }}>
         <Container maxWidth="xl">
           <Toolbar sx={{ height: '100%' }}>
             <Container>

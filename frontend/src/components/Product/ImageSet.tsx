@@ -81,6 +81,7 @@ export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
           width: '12%',
           borderRadius: 2,
           '&:hover': { boxShadow: 2 },
+          color: 'Violet.600',
         }}
         disableRipple
       >
@@ -121,6 +122,7 @@ export const ImageSet: React.FC<ImageSetProps> = ({ images }) => {
           width: '12%',
           borderRadius: 2,
           '&:hover': { boxShadow: 2 },
+          color: 'Violet.600',
         }}
         disableRipple
         color="primary"

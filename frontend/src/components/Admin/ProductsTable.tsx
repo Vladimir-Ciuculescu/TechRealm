@@ -38,13 +38,15 @@ const Row: React.FC<RowProps> = ({ product }) => {
   }
 
   return (
-    <TableRow
-      tabIndex={-1}
-      selected={product.checked}
-      sx={{ bgcolor: 'primary' }}
-    >
+    <TableRow sx={{ bgcolor: product.checked ? 'Violet.100' : 'inherit' }}>
       <TableCell padding="checkbox">
         <Checkbox
+          sx={{
+            color: 'Violet.600',
+            '&.Mui-checked': {
+              color: 'Violet.600',
+            },
+          }}
           checked={product.checked}
           onChange={() => selectProduct(product)}
           disableRipple

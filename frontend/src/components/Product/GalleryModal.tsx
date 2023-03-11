@@ -209,6 +209,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
                 disabled={isFirstImage}
                 color="primary"
                 sx={{
+                  color: 'Violet.600',
                   borderRadius: 2,
                   '&:hover': { boxShadow: 2 },
                   height: '8vh',
@@ -224,6 +225,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
                 disabled={isLastImage}
                 color="primary"
                 sx={{
+                  color: 'Violet.600',
                   borderRadius: 2,
                   '&:hover': { boxShadow: 2 },
                   height: '8vh',
@@ -266,13 +268,20 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
                   variant="contained"
                   startIcon={<AiOutlineShoppingCart />}
                   onClick={addProduct}
+                  sx={{ bgcolor: 'Violet.600' }}
                 >
                   Add to cart
                 </Button>
 
                 <IconButton
-                  color="primary"
-                  sx={{ border: '2px solid #4a148c', borderRadius: 2 }}
+                  disableRipple
+                  sx={{
+                    borderRadius: 2,
+                    borderWidth: '2px',
+                    borderStyle: 'solid',
+                    borderColor: 'Violet.600',
+                    color: 'Violet.600',
+                  }}
                 >
                   <AiOutlineHeart />
                 </IconButton>
@@ -315,7 +324,7 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
           <Stack width="100%" direction={'row'} gap={1}>
             <Button
               onClick={addProduct}
-              sx={{ py: 1.2, width: '95%' }}
+              sx={{ py: 1.2, width: '95%', bgcolor: 'Violet.600' }}
               variant="contained"
               disableRipple
               startIcon={
@@ -333,8 +342,11 @@ export const GalleryModal: React.FC<GalleryModalProps> = ({
             </Button>
             <IconButton
               disableRipple
-              color="primary"
-              sx={{ border: '2px solid #4a148c', borderRadius: 2 }}
+              sx={{
+                border: '2px solid #4a148c',
+                borderRadius: 2,
+                color: 'Violet.600',
+              }}
             >
               <AiOutlineHeart />
             </IconButton>

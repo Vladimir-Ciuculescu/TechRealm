@@ -225,6 +225,10 @@ const ProductScreen: React.FC<any> = () => {
                       sx={{
                         width: '100%',
                         height: '40px',
+                        bgcolor: 'Violet.600',
+                        ':hover': {
+                          bgcolor: 'Violet.900',
+                        },
                       }}
                     >
                       Add to cart
@@ -233,7 +237,15 @@ const ProductScreen: React.FC<any> = () => {
                   <Grid item>
                     <Button
                       disableRipple
-                      sx={{ width: '100%' }}
+                      sx={{
+                        width: '100%',
+                        color: 'Violet.600',
+                        borderColor: 'Violet.600',
+                        ':hover': {
+                          borderColor: 'Violet.900',
+                          bgcolor: 'transparent',
+                        },
+                      }}
                       variant="outlined"
                       startIcon={<AiFillHeart />}
                     >

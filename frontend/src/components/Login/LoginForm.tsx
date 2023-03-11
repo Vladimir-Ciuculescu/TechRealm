@@ -184,7 +184,15 @@ const LoginForm: React.FC<any> = () => {
           <LoadingButton
             disableRipple
             onClick={() => submitForm()}
-            sx={{ width: '100%', textTransform: 'none', fontSize: 16 }}
+            sx={{
+              width: '100%',
+              textTransform: 'none',
+              fontSize: 16,
+              bgcolor: 'Violet.600',
+              ':hover': {
+                bgcolor: 'Violet.900',
+              },
+            }}
             variant="contained"
           >
             Login

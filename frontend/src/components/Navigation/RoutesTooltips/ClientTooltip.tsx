@@ -161,7 +161,15 @@ const ClientTooltip: React.FC<any> = () => {
         <Button
           href="/login"
           variant="contained"
-          sx={{ textTransform: 'none', fontSize: 16 }}
+          sx={{
+            textTransform: 'none',
+            fontSize: 16,
+            bgcolor: 'Violet.600',
+            ':hover': {
+              bgcolor: 'Violet.900',
+              color: 'white',
+            },
+          }}
           startIcon={<HiChevronDoubleRight />}
           size="small"
         >
@@ -169,7 +177,12 @@ const ClientTooltip: React.FC<any> = () => {
         </Button>
         <Link
           href="/register"
-          sx={{ textDecoration: 'none', cursor: 'pointer', fontSize: 16 }}
+          sx={{
+            textDecoration: 'none',
+            cursor: 'pointer',
+            fontSize: 16,
+            color: 'Violet.600',
+          }}
         >
           Create account
         </Link>

@@ -138,7 +138,14 @@ export const SummaryCart: React.FC<any> = () => {
 
         <CardActions sx={{ display: 'flex', justifyContent: 'center', pb: 2 }}>
           <Button
-            sx={{ textTransform: 'none', width: '100%' }}
+            sx={{
+              textTransform: 'none',
+              width: '100%',
+              bgcolor: 'Violet.600',
+              ':hover': {
+                bgcolor: 'Violet.900',
+              },
+            }}
             variant="contained"
           >
             Proceed to checkout

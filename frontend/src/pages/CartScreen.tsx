@@ -62,8 +62,7 @@ const CartScreen: React.FC<any> = () => {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-
-              background: '#e3f1f9',
+              bgcolor: 'Violet.100',
               borderRadius: 2,
               opacity: 0.8,
               paddingTop: 4,
