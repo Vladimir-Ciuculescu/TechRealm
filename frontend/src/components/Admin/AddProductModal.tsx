@@ -22,6 +22,7 @@ import CustomTextArea from '../common/CustomTextArea'
 import CustomButton from '../common/CustomButton'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { uploadImagesApi } from '../../services/imagesApi'
 
 interface AddProductModalProps {
   open: boolean
@@ -49,7 +50,9 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       countInStock: Yup.number().required('Please fill in the count in stock '),
       description: Yup.string().required('Please fill in the description '),
     }),
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      handleSubmit()
+    },
   })
 
   const { values, errors, submitForm } = formik
@@ -79,10 +82,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     }
   }, [open])
 
-  useEffect(() => {
-    console.log(previewImages)
-  }, [previewImages])
-
   const handleChange = (value: any, label: string) => {
     formik.setFieldValue(label, value)
     formik.setFieldTouched(label, false)
@@ -92,6 +91,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     setPreviewImages(
       previewImages.filter((previewImage: string) => previewImage !== preview),
     )
+  }
+
+  const handleSubmit = async () => {
+    const data = [{ name: 'marian' }]
+    await uploadImagesApi(data)
   }
 
   return (
