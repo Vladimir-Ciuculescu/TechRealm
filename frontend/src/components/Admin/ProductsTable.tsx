@@ -25,8 +25,6 @@ interface RowProps {
 const Row: React.FC<RowProps> = ({ product }) => {
   const { name, brand, price, countInStock, defaultImage } = product
 
-  console.log(product.checked)
-
   const dispatch = useDispatch()
 
   const selectProduct = (product: Product) => {

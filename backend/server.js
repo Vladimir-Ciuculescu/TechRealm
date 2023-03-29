@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
+const brandRoutes = require("./routes/brandRoutes");
 const types = require("pg").types;
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(cors());
 
 app.use("/api", productRoutes);
 app.use("/api", userRoutes);
+app.use("/api", brandRoutes);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

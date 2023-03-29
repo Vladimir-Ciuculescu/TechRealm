@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux'
 import {
   LOGIN_PATH,
   PROFILE_PATH,
@@ -7,7 +6,6 @@ import {
 } from '../constants/paths'
 import { RegisterData } from '../interfaces/RegisterData'
 import { User } from '../interfaces/User'
-import { userSelector } from '../redux/user/selectors'
 import { axiosInstance } from './axiosInstance'
 
 const config = {
@@ -17,14 +15,6 @@ const config = {
 }
 
 export const registerUserApi = async (registerData: RegisterData) => {
-  // try {
-  //   await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
-  //     registerData,
-  //     config,
-  //   })
-  // } catch (error) {
-  //   console.log(error)
-  // }
   await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
     registerData,
     config,
@@ -32,27 +22,6 @@ export const registerUserApi = async (registerData: RegisterData) => {
 }
 
 export const loginUserApi = async (email: string, password: string) => {
-  // try {
-  //   const config = {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   }
-
-  //   const { data } = await axiosInstance.post<any>(
-  //     `/api/users${LOGIN_PATH}`,
-  //     {
-  //       email,
-  //       password,
-  //     },
-  //     config,
-  //   )
-
-  //   console.log(data)
-  //   return data
-  // } catch (error) {
-  //   console.log(error)
-  // }
   const config = {
     headers: {
       'Content-Type': 'application/json',

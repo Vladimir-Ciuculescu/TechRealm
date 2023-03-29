@@ -190,6 +190,10 @@ const ProductScreen: React.FC<any> = () => {
                   </Grid>
                   <Grid item lg={6} xs={6}>
                     <CustomSelect
+                      displayDropdownIndicator={false}
+                      displayindicatorSeparator={false}
+                      alignSingleValueText={true}
+                      width="50px"
                       value={quantity}
                       onChange={(e: any) => setQuantity(e.value)}
                       options={options}
