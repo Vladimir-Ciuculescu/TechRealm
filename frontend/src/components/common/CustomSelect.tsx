@@ -16,7 +16,8 @@ interface CommonSelectProps {
   value?: string | number | undefined
   onChange?: (e: any) => any
   label?: string
-  error?: string
+  error?: string | boolean
+  errorMessage?: string
   required?: boolean
 }
 
@@ -32,6 +33,7 @@ const CustomSelect: React.FC<CommonSelectProps> = ({
   onChange,
   label,
   error,
+  errorMessage,
   required,
 }) => {
   const [focused, setFocused] = useState<boolean>(false)
@@ -128,7 +130,7 @@ const CustomSelect: React.FC<CommonSelectProps> = ({
           variant="TEXT_SM_MEDIUM"
           sx={{ color: 'Error.500', paddingLeft: '5px' }}
         >
-          {error}
+          {errorMessage}
         </Typography>
       )}
     </FormControl>

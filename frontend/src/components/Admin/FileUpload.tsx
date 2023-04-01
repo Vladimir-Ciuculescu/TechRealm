@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   Box,
   Fab,
@@ -11,35 +11,16 @@ import {
 import { AiOutlineCloudUpload } from 'react-icons/ai'
 
 interface FileUploadProps {
-  file: any
-  setFile: (e: any) => void
-  preview: string[]
   setPreview: (e: any) => void
   multiple: boolean
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({
-  file,
-  setFile,
-  preview,
-  setPreview,
-  multiple,
-}) => {
+const FileUpload: React.FC<FileUploadProps> = ({ setPreview, multiple }) => {
   const inputRef = useRef<any>()
 
   const { palette }: any = useTheme()
 
   const [error, setError] = useState<string>('')
-
-  // useEffect(() => {
-  //   let images = []
-  //   if (file) {
-  //     for (let i = 0; i < file.length; i++) {
-  //       images.push(URL.createObjectURL(file[i]))
-  //     }
-  //     setPreview(images)
-  //   }
-  // }, [file])
 
   const renderBorderColor = () => {
     if (error) {
@@ -59,52 +40,34 @@ const FileUpload: React.FC<FileUploadProps> = ({
     e.stopPropagation()
 
     if (e.dataTransfer.files[0].type.includes('image')) {
-      setPreview([...preview, URL.createObjectURL(e.dataTransfer.files[0])])
+      handleFileUpload(e.dataTransfer.files)
       setError('')
     } else {
       setError("That's not an image ")
     }
   }
 
-  const handleChange = (e: any) => {
-    // setFile(e.target.files)
-    console.log(e.target)
-
-    const reader = new FileReader()
-
-    e.map(() => {
-      console.log(e)
-    })
-    // reader.readAsDataURL(file)
-    // reader.onload = () => {
-    //   resolve(reader.result)
-    // }
-  }
-
-  const handleFileUpload = (event: any) => {
-    const fileList = event.target.files // list of selected files
-
-    const imagesPaths: any[] = []
-
-    // iterate over the selected files
-    for (let i = 0; i < fileList.length; i++) {
-      const file = fileList[i]
-      const fileReader = new FileReader()
-
-      // add event listener to file reader instance to read the file data
-      fileReader.onload = (e) => {
-        if (e && e.target) {
-          const fileData = e.target.result
-          imagesPaths.push(fileData)
-          console.log(fileData)
+  const handleFileUpload = (files: any[]) => {
+    const images: any[] = []
+    const fileReaders: any[] = []
+    let isCancel = false
+    if (files.length) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        const fileReader = new FileReader()
+        fileReaders.push(fileReader)
+        fileReader.onload = (e: any) => {
+          const { result } = e.target
+          if (result) {
+            images.push(result)
+          }
+          if (images.length === files.length && !isCancel) {
+            setPreview(images)
+          }
         }
-
-        // do something with the file data, e.g. format it
+        fileReader.readAsDataURL(file)
       }
-      fileReader.readAsDataURL(file)
     }
-
-    setFile(imagesPaths)
   }
 
   return (
@@ -132,8 +95,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
           accept="image/*"
           type="file"
           ref={inputRef}
-          //onChange={(e) => handleChange(e)}
-          onChange={(e) => handleFileUpload(e)}
+          onChange={(e: any) => handleFileUpload(e.target.files)}
           hidden
         />
 
@@ -147,6 +109,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
               boxShadow: `0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px ${palette.Violet[200]}`,
               '&:focus': {
                 boxShadow: 0,
+              },
+              '&:hover': {
+                bgcolor: 'Violet.400',
               },
             }}
           >
@@ -175,11 +140,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
               SVG, PNG, JPG or GIF (max. 800x400px)
             </Typography>
           </Box>
-          {/* {error && (
-            <Typography variant="TEXT_XS_REGULAR" sx={{ color: 'Error.400' }}>
-              That's not an image format
-            </Typography>
-          )} */}
+
           {error && (
             <Typography variant="TEXT_XS_REGULAR" sx={{ color: 'Error.400' }}>
               {error}

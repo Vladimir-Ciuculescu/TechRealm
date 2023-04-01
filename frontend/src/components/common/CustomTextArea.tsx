@@ -27,7 +27,8 @@ const StyledTextField = styled(TextField)<StyledTextFieldProps>(
 interface CustomTextAreaProps {
   width: string
   label: string
-  error?: string
+  error?: string | boolean
+  errorMessage?: string
   disabled?: boolean
   value: string
   handleValue: (e: any) => void
@@ -38,6 +39,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
   width,
   label,
   error,
+  errorMessage,
   disabled,
   value,
   handleValue,
@@ -107,7 +109,7 @@ const CustomTextArea: React.FC<CustomTextAreaProps> = ({
           variant="TEXT_SM_MEDIUM"
           sx={{ color: 'Error.500', paddingLeft: '5px' }}
         >
-          {error}
+          {errorMessage}
         </Typography>
       )}
     </FormControl>

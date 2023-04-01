@@ -51,20 +51,17 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       description: Yup.string().required('Please fill in the description '),
     }),
     onSubmit: async (values) => {
-      handleSubmit()
+      try {
+        handleSubmit()
+      } catch (error) {}
     },
   })
 
-  const { values, errors, submitForm } = formik
+  const { values, errors, submitForm, touched } = formik
 
-  const [name, setName] = useState<string>('')
-  const [price, setPrice] = useState<number>()
-  const [brand, setBrand] = useState()
   const [brands, setBrands] = useState<any>([])
-  const [stockNumber, setStockNumber] = useState<number>()
   const [images, setImages] = useState([])
   const [previewImages, setPreviewImages] = useState([])
-  const [description, setDescription] = useState<string>('')
 
   useEffect(() => {
     if (open) {
@@ -81,6 +78,10 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       getBrands()
     }
   }, [open])
+
+  useEffect(() => {
+    console.log(previewImages)
+  }, [previewImages])
 
   const handleChange = (value: any, label: string) => {
     formik.setFieldValue(label, value)
@@ -130,24 +131,22 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           <Grid item>
             <CustomInput
               required
-              //value={name}
               value={values.name}
-              //handleValue={setName}
               handleValue={(value: any) => handleChange(value, 'name')}
               width="100%"
               type="text"
               label="Name"
-              error={errors.name}
+              error={errors.name && touched.name}
+              errorMessage={errors.name}
             />
           </Grid>
           <Grid item>
             <CustomInput
               required
-              // value={price}
-              // handleValue={(e: any) => setPrice(e)}
               value={values.price}
               handleValue={(value: any) => handleChange(value, 'price')}
-              error={errors.price}
+              error={errors.price && touched.price}
+              errorMessage={errors.price}
               width="100%"
               type="number"
               label="Price"
@@ -175,19 +174,20 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
                 label="Brand"
                 value={values.brand}
                 onChange={(e: any) => handleChange(e.value, 'brand')}
-                error={errors.brand}
+                error={errors.brand && touched.brand}
+                errorMessage={errors.brand}
+                //defaultValue={brands[0]}
               />
             </Grid>
             <Grid item md={6} sm={12} xs={12}>
               <CustomInput
                 required
-                // value={stockNumber}
-                // handleValue={(e: any) => setStockNumber(e)}
                 value={values.countInStock}
                 handleValue={(value: any) =>
                   handleChange(value, 'countInStock')
                 }
-                error={errors.countInStock}
+                error={errors.countInStock && touched.countInStock}
+                errorMessage={errors.countInStock}
                 type="number"
                 label="Count in Stock"
                 width="100%"
@@ -248,21 +248,15 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
             </Stack>
           </Grid>
           <Grid item md={12} sm={12} xs={12}>
-            <FileUpload
-              multiple={true}
-              file={images}
-              setFile={setImages}
-              preview={previewImages}
-              setPreview={setPreviewImages}
-            />
+            <FileUpload multiple={true} setPreview={setPreviewImages} />
           </Grid>
           <Grid item md={12} sm={12} xs={12}>
             <CustomTextArea
               required
               value={values.description}
-              //handleValue={setDescription}
               handleValue={(value: any) => handleChange(value, 'description')}
-              error={errors.description}
+              error={errors.description && touched.description}
+              errorMessage={errors.description}
               width="100%"
               label="Description"
             />
@@ -277,8 +271,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           gap="12px"
         >
           <CustomButton
-            //onClick={reset}
-            onClick={() => console.log('cancel')}
+            onClick={closeModal}
             variant="outlined"
             sx={{
               width: '50%',

@@ -49,7 +49,8 @@ const StyledTextField = styled(TextField)<StyledTextFieldProps>(
 )
 
 interface CustomInputProps {
-  error?: string
+  error?: string | boolean
+  errorMessage?: string
   disabled?: boolean
   startAdornment?: JSX.Element
   endAdornment?: JSX.Element
@@ -66,6 +67,7 @@ interface CustomInputProps {
 
 const CustomInput: React.FC<CustomInputProps> = ({
   error,
+  errorMessage,
   disabled,
   startAdornment,
   startDivider,
@@ -149,7 +151,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           variant="TEXT_SM_MEDIUM"
           sx={{ color: 'Error.500', paddingLeft: '5px' }}
         >
-          {error}
+          {errorMessage}
         </Typography>
       )}
     </FormControl>
