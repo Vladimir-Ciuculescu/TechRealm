@@ -6,6 +6,7 @@ const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
 const brandRoutes = require("./routes/brandRoutes");
 const imagesRoutes = require("./routes/imagesRoutes");
+const categoriesRoutes = require("./routes/categoriesRoutes");
 const types = require("pg").types;
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use("/api", productRoutes);
 app.use("/api", userRoutes);
 app.use("/api", brandRoutes);
 app.use("/api", imagesRoutes);
+app.use("/api", categoriesRoutes);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");

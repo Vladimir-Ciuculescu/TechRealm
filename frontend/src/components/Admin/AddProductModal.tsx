@@ -24,6 +24,7 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 //import { uploadImagesApi } from '../../services/imagesApi'
 import { Option } from '../../interfaces/Options'
+import { getCategoriesApi } from '../../services/categoriesApi'
 
 interface AddProductModalProps {
   open: boolean
@@ -83,7 +84,17 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         setBrands(brandOptions)
       }
 
+      const getCategories = async () => {
+        const response = await getCategoriesApi()
+        console.log(response)
+        const categoriesOptions: any = response?.map((item) => {
+          return { label: item.name, value: item.name }
+        })
+        setCategories(categoriesOptions)
+      }
+
       getBrands()
+      getCategories()
     }
   }, [open])
 
@@ -205,11 +216,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           <Grid item>
             <CustomSelect
               required
-              options={brands}
+              options={categories}
               label="Category"
-              value={values.brand}
-              onChange={(e: any) => handleChange(e.value, 'brand')}
-              error={errors.brand && touched.brand}
+              value={values.category}
+              onChange={(e: any) => handleChange(e.value, 'category')}
+              error={errors.category && touched.category}
               errorMessage={errors.brand}
               //defaultValue={brands[0]}
             />
