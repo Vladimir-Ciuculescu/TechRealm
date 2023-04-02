@@ -22,7 +22,8 @@ import CustomTextArea from '../common/CustomTextArea'
 import CustomButton from '../common/CustomButton'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { uploadImagesApi } from '../../services/imagesApi'
+//import { uploadImagesApi } from '../../services/imagesApi'
+import { Option } from '../../interfaces/Options'
 
 interface AddProductModalProps {
   open: boolean
@@ -38,6 +39,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       name: '',
       price: null,
       brand: '',
+      category: '',
       countInStock: '',
       description: '',
     },
@@ -47,6 +49,9 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         .typeError('Please fill in the number')
         .required('Please fill in the price'),
       brand: Yup.string().required('Please select the brand '),
+      category: Yup.string().required(
+        'Please select the category of the product !',
+      ),
       countInStock: Yup.number().required('Please fill in the count in stock '),
       description: Yup.string().required('Please fill in the description '),
     }),
@@ -59,14 +64,17 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
 
   const { values, errors, submitForm, touched } = formik
 
-  const [brands, setBrands] = useState<any>([])
-  const [images, setImages] = useState([])
+  const [brands, setBrands] = useState<Option[]>([{ label: '', value: '' }])
+  const [categories, setCategories] = useState<Option[]>([
+    { label: '', value: '' },
+  ])
+
   const [previewImages, setPreviewImages] = useState([])
 
   useEffect(() => {
     if (open) {
       formik.resetForm()
-      setImages([])
+
       const getBrands = async () => {
         const response = await getBrandsApi()
         const brandOptions: any = response?.map((response) => {
@@ -96,7 +104,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
 
   const handleSubmit = async () => {
     const data = [{ name: 'marian' }]
-    await uploadImagesApi(data)
+    //await uploadImagesApi(data)
   }
 
   return (
@@ -193,6 +201,18 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
                 width="100%"
               />
             </Grid>
+          </Grid>
+          <Grid item>
+            <CustomSelect
+              required
+              options={brands}
+              label="Category"
+              value={values.brand}
+              onChange={(e: any) => handleChange(e.value, 'brand')}
+              error={errors.brand && touched.brand}
+              errorMessage={errors.brand}
+              //defaultValue={brands[0]}
+            />
           </Grid>
           <Grid
             item
