@@ -1,5 +1,6 @@
 import { Product } from '../../interfaces/Product'
 import {
+  ADD_PRODUCT,
   SELECT_ALL_PRODUCTS,
   SELECT_PRODUCT,
   SET_PRODUCTS,
@@ -24,6 +25,11 @@ export const manageProductsReducer = (
       return {
         ...state,
         products: action.payload,
+      }
+    case ADD_PRODUCT:
+      return {
+        ...state,
+        products: [...state.products, action.payload.product],
       }
     case SELECT_PRODUCT:
       return {

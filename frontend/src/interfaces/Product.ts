@@ -8,8 +8,8 @@ export interface Product {
   category: string
   price: number
   countInStock?: number
-  rating: number
-  numberOfReviews: number
+  rating?: number
+  numberOfReviews?: number
   quantity?: number | undefined
   checked?: boolean
 }

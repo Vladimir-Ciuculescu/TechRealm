@@ -39,6 +39,23 @@ const getProductById = async (id) => {
   }
 };
 
+const addProduct = async (product) => {
+  const { name, price, brand, countInStock, category, description } = product;
+  try {
+    const addedProduct = await pool.query(
+      `INSERT INTO products 
+          (name, brand, description, price , count_in_stock, category)
+          VALUES ($1, $2, $3, $4, $5, $6)
+          RETURNING *
+        `,
+      [name, brand, description, parseFloat(price), countInStock, category]
+    );
+    return addedProduct.rows[0];
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getProductImages = async (id) => {
   try {
     const productImages = await pool.query(`SELECT pi2.id,
@@ -158,6 +175,7 @@ const updateUserProductQuantity = async (userId, produdctId, quantity) => {
 module.exports = {
   getProducts,
   getProductById,
+  addProduct,
   getProductImages,
   getUserProducts,
   addUserProducts,

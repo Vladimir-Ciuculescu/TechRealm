@@ -1,13 +1,13 @@
 import { Container } from '@mui/system'
 import React from 'react'
-import register_screen_background from '../assets/images/register_screen_background.svg'
+import { AuthLayout } from '../assets/layouts'
 import LoginForm from '../components/Login/LoginForm'
 
 const LoginScreen: React.FC<any> = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(${register_screen_background})`,
+        backgroundImage: `url(${AuthLayout})`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',

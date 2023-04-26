@@ -1,4 +1,5 @@
 const productRepository = require("../repositories/productRepository");
+const imageRepository = require("../repositories/imageRepository.js");
 
 const getProducts = async (req, res) => {
   try {
@@ -22,6 +23,41 @@ const getProductById = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+  }
+};
+
+const addProduct = async (req, res) => {
+  const { product } = req.body;
+
+  const response = await productRepository.addProduct(product);
+
+  if (response) {
+    const { images, name } = product;
+
+    let urls;
+    if (images) {
+      urls = await imageRepository.uploadImagesToS3(images, name);
+
+      await imageRepository.addImages(urls, response.id);
+    }
+
+    res.status(200).json({
+      product: {
+        id: response.id,
+        name: response.name,
+        brand: response.brand,
+        description: response.description,
+        rating: response.rating,
+        numberOfReviews: response.number_of_reviews,
+        price: response.price,
+        countInStock: response.count_in_stock,
+        category: response.category,
+        defaultImage: urls[0],
+      },
+      message: "Product succesfully added !",
+    });
+  } else {
+    res.status(400).json({ message: "Product already exists !" });
   }
 };
 
@@ -92,6 +128,7 @@ const updateUserProductQuantity = async (req, res) => {
 module.exports = {
   getProducts,
   getProductById,
+  addProduct,
   getUserProducts,
   addUserProducts,
   addUserProduct,

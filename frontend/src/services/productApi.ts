@@ -27,6 +27,17 @@ export const getProductApi = async (productId: number | string) => {
   }
 }
 
+export const addProductApi = async (product: Product) => {
+  try {
+    const { data } = await axiosInstance.post(`/api${PRODUCTS_PATH}/add`, {
+      product,
+    })
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const getUserProductsApi = async (userId: number | string) => {
   interface UserProductsApiInterface {
     products: Product[]

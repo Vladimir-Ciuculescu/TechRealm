@@ -4,7 +4,9 @@ const getCategories = async (req, res) => {
   try {
     const categories = await categoriesRepository.getCategories();
     res.status(200).json(categories);
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 module.exports = { getCategories };

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Dialog,
@@ -10,7 +11,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
 import { CgClose } from 'react-icons/cg'
 import CustomInput from '../common/CustomInput'
 import { BsCurrencyDollar } from 'react-icons/bs'
@@ -22,9 +22,11 @@ import CustomTextArea from '../common/CustomTextArea'
 import CustomButton from '../common/CustomButton'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-//import { uploadImagesApi } from '../../services/imagesApi'
+import { useDispatch } from 'react-redux'
 import { Option } from '../../interfaces/Options'
 import { getCategoriesApi } from '../../services/categoriesApi'
+import { addProductApi } from '../../services/productApi'
+import { addProductAction } from '../../redux/cart/actions'
 
 interface AddProductModalProps {
   open: boolean
@@ -38,7 +40,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   const formik = useFormik({
     initialValues: {
       name: '',
-      price: null,
+      price: '',
       brand: '',
       category: '',
       countInStock: '',
@@ -58,49 +60,50 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     }),
     onSubmit: async (values) => {
       try {
-        handleSubmit()
-      } catch (error) {}
+        handleSubmit(values)
+      } catch (error) {
+        console.log(error)
+      }
     },
   })
 
   const { values, errors, submitForm, touched } = formik
 
-  const [brands, setBrands] = useState<Option[]>([{ label: '', value: '' }])
-  const [categories, setCategories] = useState<Option[]>([
-    { label: '', value: '' },
-  ])
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [brands, setBrands] = useState<Option[]>([])
+  const [categories, setCategories] = useState<Option[]>([])
 
   const [previewImages, setPreviewImages] = useState([])
+
+  const getBrands = async () => {
+    const response = await getBrandsApi()
+    const brandOptions: any = response?.map((response) => {
+      return { label: response.name, value: response.name }
+    })
+    setBrands(brandOptions)
+  }
+
+  const getCategories = async () => {
+    const response = await getCategoriesApi()
+    const categoriesOptions: any = response?.map((item) => {
+      return { label: item.name, value: item.name }
+    })
+    setCategories(categoriesOptions)
+  }
 
   useEffect(() => {
     if (open) {
       formik.resetForm()
 
-      const getBrands = async () => {
-        const response = await getBrandsApi()
-        const brandOptions: any = response?.map((response) => {
-          return { label: response.name, value: response.name }
-        })
-        setBrands(brandOptions)
+      if (brands.length === 0) {
+        getBrands()
       }
-
-      const getCategories = async () => {
-        const response = await getCategoriesApi()
-        console.log(response)
-        const categoriesOptions: any = response?.map((item) => {
-          return { label: item.name, value: item.name }
-        })
-        setCategories(categoriesOptions)
+      if (categories.length === 0) {
+        getCategories()
       }
-
-      getBrands()
-      getCategories()
     }
   }, [open])
-
-  useEffect(() => {
-    console.log(previewImages)
-  }, [previewImages])
 
   const handleChange = (value: any, label: string) => {
     formik.setFieldValue(label, value)
@@ -113,9 +116,39 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     )
   }
 
-  const handleSubmit = async () => {
-    const data = [{ name: 'marian' }]
-    //await uploadImagesApi(data)
+  const isInt = (value: string) => {
+    let result = value.includes(',') ? value.replace(',', '') : value
+
+    const regex = /^\d+$/
+
+    return regex.test(result) ? parseInt(result) : parseFloat(result)
+  }
+
+  const handleSubmit = async (values: any) => {
+    setLoading(true)
+    const { name, description, price, brand, countInStock, category } = values
+
+    try {
+      const data = {
+        id: 1,
+        name: name,
+        price: isInt(price),
+        brand: brand,
+        countInStock: isInt(countInStock),
+        category: category,
+        description: description,
+        images: previewImages,
+      }
+
+      const { product } = await addProductApi(data)
+
+      dispatch(addProductAction(product))
+      closeModal()
+    } catch (error) {
+      console.log(error)
+    }
+
+    setLoading(false)
   }
 
   return (
@@ -221,8 +254,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
               value={values.category}
               onChange={(e: any) => handleChange(e.value, 'category')}
               error={errors.category && touched.category}
-              errorMessage={errors.brand}
-              //defaultValue={brands[0]}
+              errorMessage={errors.category}
             />
           </Grid>
           <Grid
@@ -318,6 +350,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
           <CustomButton
             onClick={() => submitForm()}
             variant="contained"
+            loading={loading}
             sx={{
               width: '50%',
               height: '44px',

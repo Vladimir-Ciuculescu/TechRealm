@@ -17,6 +17,7 @@ import {
   selectProductAction,
   unselectProductAction,
 } from '../../redux/manage_products/actionts'
+import { ImagePlaceholder } from '../../assets/images'
 
 interface RowProps {
   product: Product
@@ -51,11 +52,15 @@ const Row: React.FC<RowProps> = ({ product }) => {
         />
       </TableCell>
       <TableCell>
-        <img
-          src={defaultImage}
-          alt="product"
-          style={{ width: '80px', height: '80px' }}
-        />
+        {defaultImage ? (
+          <img
+            src={defaultImage}
+            alt="product"
+            style={{ width: '80px', height: '80px' }}
+          />
+        ) : (
+          <ImagePlaceholder style={{ width: '80px', height: '80px' }} />
+        )}
       </TableCell>
       <TableCell>
         <Typography>{name}</Typography>

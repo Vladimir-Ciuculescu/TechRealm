@@ -8,6 +8,7 @@ const {
   deleteUserProduct,
   updateUserProductQuantity,
   addUserProduct,
+  addProduct,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -19,6 +20,10 @@ router.route("/products").get(getProducts);
 // ? @desc   Get product by Id
 // ? @route  GET /api/products/:id
 router.route("/products/:id").get(getProductById);
+
+// ? @desc Add a new product to store
+// ? @route POST /api/products/add
+router.route("/products/add").post(addProduct);
 
 // ? @desc Get cart products for an user
 // ? @route GET /api/products/user/:id
