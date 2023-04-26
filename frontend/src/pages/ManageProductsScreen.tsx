@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddProductModal from '../components/Admin/AddProductModal'
 import BulkActionsCard from '../components/Admin/BulkActionsCard'
+import DeleteProductModal from '../components/Admin/DeleteProductModal'
 import ProductsTable from '../components/Admin/ProductsTable'
 import { setProductsAction } from '../redux/manage_products/actionts'
 import { productsSelector } from '../redux/manage_products/selectors'
@@ -13,6 +14,7 @@ const ManageProducts = () => {
   const dispatch = useDispatch()
   const products = useSelector(productsSelector)
   const [addModal, toggleAddModal] = useState(false)
+  const [deleteModal, toggleDeleteModal] = useState(false)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,6 +51,10 @@ const ManageProducts = () => {
       <AddProductModal
         open={addModal}
         closeModal={() => toggleAddModal(false)}
+      />
+      <DeleteProductModal
+        open={deleteModal}
+        closeModal={() => toggleDeleteModal(false)}
       />
     </Container>
   )

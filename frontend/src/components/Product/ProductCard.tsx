@@ -10,6 +10,7 @@ import {
   Grid,
   CardActionArea,
   CircularProgress,
+  Stack,
 } from '@mui/material'
 import { AiOutlineShoppingCart } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,6 +19,7 @@ import { toast } from 'react-toastify'
 import { LoadingButton } from '@mui/lab'
 import { isUserLoggedSelector, userSelector } from '../../redux/user/selectors'
 import { addUserProductApi } from '../../services/productApi'
+import { ImagePlaceholder } from '../../assets/images'
 
 interface ProductCardProps {
   product: Product
@@ -49,18 +51,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         disableRipple
         href={`/products/${id}`}
       >
-        <CardMedia
-          sx={{
-            '&:hover': {
-              transform: 'scale(1.3)',
-              transition: 'transform 1.5s',
-            },
-          }}
-          component="img"
-          height="300"
-          alt="image"
-          image={defaultImage}
-        />
+        {defaultImage ? (
+          <CardMedia
+            sx={{
+              '&:hover': {
+                transform: 'scale(1.3)',
+                transition: 'transform 1.5s',
+              },
+            }}
+            component="img"
+            height="300"
+            alt="image"
+            image={defaultImage}
+          />
+        ) : (
+          <Stack justifyContent="center" alignItems="center">
+            <ImagePlaceholder style={{ height: '300px', width: '300px' }} />
+          </Stack>
+        )}
       </CardActionArea>
       <CardContent>
         <Typography gutterBottom variant="h6" component="div" noWrap>
