@@ -6,20 +6,27 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutModalSelector } from '../redux/logout_modal/selectors'
-import { toggleLogoutModalAction } from '../redux/logout_modal/actions'
 import { logoutUserAction } from '../redux/user/actions'
 import { clearCartAction } from '../redux/cart/actions'
 import { useNavigate } from 'react-router-dom'
 import { ROOT_PATH } from '../constants/paths'
+import { modalsSelector } from '../redux/modals/selectors'
+import { toggleLogoutModalAction } from '../redux/modals/actions'
 
 const LogoutModal = () => {
-  const { visible } = useSelector(logoutModalSelector)
+  const { logoutModal } = useSelector(modalsSelector)
+
+  console.log(logoutModal)
+  //const { visible } = useSelector(logoutModalSelector)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleModal = () => {
-    dispatch(toggleLogoutModalAction())
+  // const handleModal = () => {
+
+  //   dispatch(toggleLogoutModalAction())
+  // }
+  const closeModal = () => {
+    dispatch(toggleLogoutModalAction(false))
   }
 
   const logOut = () => {
@@ -31,8 +38,10 @@ const LogoutModal = () => {
 
   return (
     <Dialog
-      open={visible}
-      onClose={handleModal}
+      //open={visible}
+      open={logoutModal}
+      //onClose={handleModal}
+      onClose={closeModal}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -46,7 +55,11 @@ const LogoutModal = () => {
         <Button disableRipple onClick={logOut}>
           Yes
         </Button>
-        <Button disableRipple onClick={handleModal}>
+        <Button
+          disableRipple
+          //onClick={handleModal}
+          onClick={closeModal}
+        >
           No
         </Button>
       </DialogActions>

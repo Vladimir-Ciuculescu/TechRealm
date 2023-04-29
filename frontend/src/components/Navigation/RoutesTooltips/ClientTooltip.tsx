@@ -19,11 +19,11 @@ import {
   ORDERS_PATH,
   PROFILE_PATH,
 } from '../../../constants/paths'
-import { toggleLogoutModalAction } from '../../../redux/logout_modal/actions'
 import { userSelector } from '../../../redux/user/selectors'
 import { BiPurchaseTag } from 'react-icons/bi'
 import { MdManageAccounts } from 'react-icons/md'
 import { FiHeart } from 'react-icons/fi'
+import { toggleLogoutModalAction } from '../../../redux/modals/actions'
 
 const ClientTooltip: React.FC<any> = () => {
   const user = useSelector(userSelector)
@@ -31,7 +31,8 @@ const ClientTooltip: React.FC<any> = () => {
   const navigate = useNavigate()
 
   const openLogoutModal = () => {
-    dispatch(toggleLogoutModalAction())
+    //dispatch(toggleLogoutModalAction())
+    dispatch(toggleLogoutModalAction(true))
   }
 
   interface Option {

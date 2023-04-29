@@ -22,21 +22,17 @@ import CustomTextArea from '../common/CustomTextArea'
 import CustomButton from '../common/CustomButton'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Option } from '../../interfaces/Options'
 import { getCategoriesApi } from '../../services/categoriesApi'
 import { addProductApi } from '../../services/productApi'
 import { addProductAction } from '../../redux/cart/actions'
+import { modalsSelector } from '../../redux/modals/selectors'
+import { toggleAddProductModal } from '../../redux/modals/actions'
 
-interface AddProductModalProps {
-  open: boolean
-  closeModal: () => void
-}
+const AddProductModal: React.FC<any> = ({}) => {
+  const { addProductModal } = useSelector(modalsSelector)
 
-const AddProductModal: React.FC<AddProductModalProps> = ({
-  open,
-  closeModal,
-}) => {
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -93,7 +89,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   }
 
   useEffect(() => {
-    if (open) {
+    if (addProductModal) {
       formik.resetForm()
 
       if (brands.length === 0) {
@@ -103,7 +99,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         getCategories()
       }
     }
-  }, [open])
+  }, [addProductModal])
 
   const handleChange = (value: any, label: string) => {
     formik.setFieldValue(label, value)
@@ -143,7 +139,8 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       const { product } = await addProductApi(data)
 
       dispatch(addProductAction(product))
-      closeModal()
+
+      //closeModal()
     } catch (error) {
       console.log(error)
     }
@@ -151,9 +148,13 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     setLoading(false)
   }
 
+  const closeModal = () => {
+    dispatch(toggleAddProductModal(false))
+  }
+
   return (
     <Dialog
-      open={open}
+      open={addProductModal}
       onClose={closeModal}
       sx={{ backdropFilter: 'blur(8px)' }}
       PaperProps={{

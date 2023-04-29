@@ -9,20 +9,21 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { CgClose } from 'react-icons/cg'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleDeleteProductModal } from '../../redux/modals/actions'
+import { modalsSelector } from '../../redux/modals/selectors'
 import CustomButton from '../common/CustomButton'
 
-interface DeleteProductModalProps {
-  open: boolean
-  closeModal: () => void
-}
+const DeleteProductModal: React.FC<any> = () => {
+  const dispatch = useDispatch()
+  const { deleteProductModal } = useSelector(modalsSelector)
 
-const DeleteProductModal: React.FC<DeleteProductModalProps> = ({
-  open,
-  closeModal,
-}) => {
+  const closeModal = () => {
+    dispatch(toggleDeleteProductModal(false))
+  }
   return (
     <Dialog
-      open={open}
+      open={deleteProductModal}
       onClose={closeModal}
       sx={{ backdropFilter: 'blur(8px)' }}
       PaperProps={{
@@ -76,7 +77,6 @@ const DeleteProductModal: React.FC<DeleteProductModalProps> = ({
           <CustomButton
             onClick={() => console.log('awd')}
             variant="contained"
-            //loading={loading}
             sx={{
               width: '50%',
               height: '44px',

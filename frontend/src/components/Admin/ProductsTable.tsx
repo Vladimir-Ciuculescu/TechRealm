@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import { Product } from '../../interfaces/Product'
-import { Chip, Stack } from '@mui/material'
+import { Chip, IconButton, Stack } from '@mui/material'
 import { MdModeEditOutline } from 'react-icons/md'
 import { FaTrash } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
@@ -18,6 +18,7 @@ import {
   unselectProductAction,
 } from '../../redux/manage_products/actionts'
 import { ImagePlaceholder } from '../../assets/images'
+import { toggleDeleteProductModal } from '../../redux/modals/actions'
 
 interface RowProps {
   product: Product
@@ -34,6 +35,10 @@ const Row: React.FC<RowProps> = ({ product }) => {
     } else {
       dispatch(dispatch(selectProductAction(product)))
     }
+  }
+
+  const openDeleteModal = () => {
+    dispatch(toggleDeleteProductModal(true))
   }
 
   return (
@@ -81,8 +86,12 @@ const Row: React.FC<RowProps> = ({ product }) => {
           justifyContent="space-evenly"
           alignItems="center"
         >
-          <MdModeEditOutline style={{ fontSize: '25px', color: '#9c27b0' }} />
-          <FaTrash style={{ fontSize: '20px', color: '#F04438' }} />
+          <IconButton disableRipple>
+            <MdModeEditOutline style={{ fontSize: '25px', color: '#9c27b0' }} />
+          </IconButton>
+          <IconButton disableRipple onClick={openDeleteModal}>
+            <FaTrash style={{ fontSize: '20px', color: '#F04438' }} />
+          </IconButton>
         </Stack>
       </TableCell>
     </TableRow>

@@ -13,8 +13,8 @@ import { getProductsApi } from '../services/productApi'
 const ManageProducts = () => {
   const dispatch = useDispatch()
   const products = useSelector(productsSelector)
-  const [addModal, toggleAddModal] = useState(false)
-  const [deleteModal, toggleDeleteModal] = useState(false)
+  //const [addModal, toggleAddModal] = useState(false)
+  const [deleteModal, toggleDeleteModal] = useState(true)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -40,7 +40,7 @@ const ManageProducts = () => {
           </Grid>
           <Grid container direction="column" item md={10} gap="24px">
             <Grid item>
-              <BulkActionsCard toggleAddModal={() => toggleAddModal(true)} />
+              <BulkActionsCard />
             </Grid>
             <Grid item>
               <ProductsTable products={products} />
@@ -48,14 +48,8 @@ const ManageProducts = () => {
           </Grid>
         </Grid>
       </Stack>
-      <AddProductModal
-        open={addModal}
-        closeModal={() => toggleAddModal(false)}
-      />
-      <DeleteProductModal
-        open={deleteModal}
-        closeModal={() => toggleDeleteModal(false)}
-      />
+      <AddProductModal />
+      <DeleteProductModal />
     </Container>
   )
 }

@@ -66,6 +66,7 @@ const NavBar = (props: Props) => {
               >
                 TechRealm
               </Typography>
+
               <Box
                 sx={{
                   display: isBigScreen ? 'none' : 'flex',

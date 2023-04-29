@@ -16,13 +16,9 @@ import {
 } from '../../redux/manage_products/actionts'
 import { Product } from '../../interfaces/Product'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { pink } from '@mui/material/colors'
+import { toggleAddProductModal } from '../../redux/modals/actions'
 
-interface BulkActionsCardProps {
-  toggleAddModal: () => void
-}
-
-const BulkActionsCard: React.FC<any> = ({ toggleAddModal }) => {
+const BulkActionsCard: React.FC<any> = () => {
   const products = useSelector(productsSelector)
   const [checked, setChecked] = useState(false)
   const dispatch = useDispatch()
@@ -37,6 +33,10 @@ const BulkActionsCard: React.FC<any> = ({ toggleAddModal }) => {
   }
 
   const checkedProducts = products.filter((item: Product) => item.checked)
+
+  const openAddModal = () => {
+    dispatch(toggleAddProductModal(true))
+  }
 
   return (
     <Stack
@@ -68,7 +68,7 @@ const BulkActionsCard: React.FC<any> = ({ toggleAddModal }) => {
           label="Check all"
         />
         <Button
-          onClick={toggleAddModal}
+          onClick={openAddModal}
           startIcon={<AiOutlinePlus />}
           disableRipple
           sx={{

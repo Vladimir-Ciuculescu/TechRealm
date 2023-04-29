@@ -3,10 +3,10 @@ import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import { cartReducer } from './cart/cartReducer'
 import { categoryMenuReducer } from './category_menu/categoryMenuReducer'
-import { logoutModalReducer } from './logout_modal/logoutModalReducer'
 import { productsReducer } from './product/productReducer'
 import { userReducer } from './user/userReducer'
 import { manageProductsReducer } from './manage_products/manageProductsReducer'
+import { modalsReducer } from './modals/modalsReducer'
 
 const persistConfig = {
   key: 'root',
@@ -19,8 +19,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   user: userReducer,
   categoryMenu: categoryMenuReducer,
-  logoutModal: logoutModalReducer,
   manageProducts: manageProductsReducer,
+  modals: modalsReducer,
 })
 
 export default persistReducer(persistConfig, rootReducer)

@@ -10,19 +10,24 @@ import {
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { MANAGE_PRODUCTS_PATH, USERS_PATH } from '../../../constants/paths'
-import { toggleLogoutModalAction } from '../../../redux/logout_modal/actions'
 import { userSelector } from '../../../redux/user/selectors'
 import { MdLogout, MdOutlineInventory } from 'react-icons/md'
 import { HiUsers } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
+import { toggleLogoutModalAction } from '../../../redux/modals/actions'
 
 const AdminToolTip = () => {
   const user = useSelector(userSelector)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const logOut = () => {
-    dispatch(toggleLogoutModalAction())
+  // const logOut = () => {
+  //   //dispatch(toggleLogoutModalAction)
+  //   dispatch(toggleLogoutModalAction(false))
+  // }
+
+  const openLogoutModal = () => {
+    dispatch(toggleLogoutModalAction(true))
   }
 
   interface Option {
@@ -105,7 +110,7 @@ const AdminToolTip = () => {
             sx={{ px: 0 }}
             secondaryAction={<MdLogout style={{ fontSize: '20px' }} />}
           >
-            <ListItemButton sx={{ px: 0 }} onClick={logOut}>
+            <ListItemButton sx={{ px: 0 }} onClick={openLogoutModal}>
               <ListItemText
                 sx={{
                   fontSize: 15,
