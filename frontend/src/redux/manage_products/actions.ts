@@ -37,9 +37,9 @@ export const setProductsAction: ActionCreator<any> = (products: Product[]) => ({
   payload: products,
 })
 
-export const setSelectedProductAction: ActionCreator<any> = (
-  selectedProduct: Product,
+export const setSelectedProductsAction: ActionCreator<any> = (
+  selectedProducts: Product[],
 ) => ({
   type: SET_SELECTED_PRODUCT,
-  payload: selectedProduct,
+  payload: selectedProducts,
 })

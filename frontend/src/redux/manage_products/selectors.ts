@@ -8,7 +8,7 @@ export const productsSelector: Selector<any, any> = createSelector(
   (manageProducts) => manageProducts.products,
 )
 
-export const selectedProductSelector: Selector<any, any> = createSelector(
+export const selectedProductsSelector: Selector<any, any> = createSelector(
   [manageProductsSelector],
-  (ManageProducts) => ManageProducts.selectedProduct,
+  (ManageProducts) => ManageProducts.selectedProducts,
 )

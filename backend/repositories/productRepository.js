@@ -57,6 +57,7 @@ const addProduct = async (product) => {
 };
 
 const deleteProducts = async (products) => {
+  console.log(products);
   try {
     for (let i = 0; i < products.length; i++) {
       await pool.query("DELETE FROM products WHERE id = $1", [products[i].id]);

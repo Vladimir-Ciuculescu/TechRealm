@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
+  IconButton,
   Stack,
   Typography,
 } from '@mui/material'
@@ -12,11 +13,15 @@ import { productsSelector } from '../../redux/manage_products/selectors'
 import { FaTrash } from 'react-icons/fa'
 import {
   selectAllProductsAction,
+  setSelectedProductsAction,
   unselectAllProductsAction,
 } from '../../redux/manage_products/actions'
 import { Product } from '../../interfaces/Product'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { toggleAddProductModal } from '../../redux/modals/actions'
+import {
+  toggleAddProductModal,
+  toggleDeleteProductModal,
+} from '../../redux/modals/actions'
 
 const BulkActionsCard: React.FC<any> = () => {
   const products = useSelector(productsSelector)
@@ -36,6 +41,15 @@ const BulkActionsCard: React.FC<any> = () => {
 
   const openAddModal = () => {
     dispatch(toggleAddProductModal(true))
+  }
+
+  const openDeleteModal = () => {
+    dispatch(
+      setSelectedProductsAction(
+        products.filter((item: Product) => item.checked),
+      ),
+    )
+    dispatch(toggleDeleteProductModal(true))
   }
 
   return (
@@ -85,7 +99,9 @@ const BulkActionsCard: React.FC<any> = () => {
       {checkedProducts.length > 0 && (
         <Stack direction="row" gap="12px" alignItems="center">
           <Typography>{checkedProducts.length} selected</Typography>
-          <FaTrash style={{ fontSize: '20px', color: '#9c27b0' }} />
+          <IconButton disableRipple onClick={openDeleteModal}>
+            <FaTrash style={{ fontSize: '20px', color: '#9c27b0' }} />
+          </IconButton>
         </Stack>
       )}
     </Stack>

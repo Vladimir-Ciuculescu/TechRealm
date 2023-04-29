@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toggleDeleteProductModal } from '../../redux/modals/actions'
 import {
   productsSelector,
-  selectedProductSelector,
+  selectedProductsSelector,
 } from '../../redux/manage_products/selectors'
 import { modalsSelector } from '../../redux/modals/selectors'
 import CustomButton from '../common/CustomButton'
@@ -25,7 +25,7 @@ import { toast } from 'react-toastify'
 const DeleteProductModal: React.FC<any> = () => {
   const dispatch = useDispatch()
   const { deleteProductModal } = useSelector(modalsSelector)
-  const selectedProduct = useSelector(selectedProductSelector)
+  const selectedProducts = useSelector(selectedProductsSelector)
   const products = useSelector(productsSelector)
 
   const [loading, setLoading] = useState(false)
@@ -38,15 +38,18 @@ const DeleteProductModal: React.FC<any> = () => {
     setLoading(true)
 
     try {
-      await deleteProductApi([selectedProduct])
-      dispatch(
-        setProductsAction(
-          products.filter((item: Product) => item.id !== selectedProduct.id),
-        ),
+      await deleteProductApi(selectedProducts)
+
+      let selectedProductsIds = selectedProducts.map((item: Product) => item.id)
+
+      const updatedProducts = products.filter(
+        (item: Product) => !selectedProductsIds.includes(item.id),
       )
+      dispatch(setProductsAction(updatedProducts))
+
       closeModal()
       setLoading(false)
-      toast.info('Product succesfully deleted !')
+      toast.info('Product(s) succesfully deleted !')
     } catch (error) {
       console.log(error)
     }
@@ -73,7 +76,7 @@ const DeleteProductModal: React.FC<any> = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="TEXT_LG_SEMIBOLD">Delete product</Typography>
+          <Typography variant="TEXT_LG_SEMIBOLD">Delete product(s)</Typography>
           <IconButton disableRipple onClick={closeModal}>
             <CgClose />
           </IconButton>
@@ -81,7 +84,7 @@ const DeleteProductModal: React.FC<any> = () => {
       </DialogTitle>
       <DialogContent>
         <Typography variant="TEXT_LG_REGULAR">
-          Are you sure you want to delete this ?
+          Are you sure you want to delete this product(s) ?
         </Typography>
       </DialogContent>
       <DialogActions sx={{ padding: '32px 32px 24px 32px' }}>

@@ -15,7 +15,7 @@ import { FaTrash } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
 import {
   selectProductAction,
-  setSelectedProductAction,
+  setSelectedProductsAction,
   unselectProductAction,
 } from '../../redux/manage_products/actions'
 import { ImagePlaceholder } from '../../assets/images'
@@ -40,7 +40,7 @@ const Row: React.FC<RowProps> = ({ product }) => {
 
   const selectProduct = () => {
     dispatch(toggleDeleteProductModal(true))
-    dispatch(setSelectedProductAction(product))
+    dispatch(setSelectedProductsAction([product]))
   }
 
   return (

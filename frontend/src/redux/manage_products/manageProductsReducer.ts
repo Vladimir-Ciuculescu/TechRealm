@@ -11,12 +11,12 @@ import {
 
 interface manageProductsStateProps {
   products: Product[]
-  selectedProduct: Product | Object
+  selectedProducts: Product[] | []
 }
 
 const manageProductsState: manageProductsStateProps = {
   products: [],
-  selectedProduct: {},
+  selectedProducts: [],
 }
 
 export const manageProductsReducer = (
@@ -62,7 +62,7 @@ export const manageProductsReducer = (
     case SET_SELECTED_PRODUCT:
       return {
         ...state,
-        selectedProduct: action.payload,
+        selectedProducts: action.payload,
       }
     default:
       return state
