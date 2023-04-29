@@ -7,20 +7,51 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { CgClose } from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleDeleteProductModal } from '../../redux/modals/actions'
+import {
+  productsSelector,
+  selectedProductSelector,
+} from '../../redux/manage_products/selectors'
 import { modalsSelector } from '../../redux/modals/selectors'
 import CustomButton from '../common/CustomButton'
+import { deleteProductApi } from '../../services/productApi'
+import { setProductsAction } from '../../redux/manage_products/actions'
+import { Product } from '../../interfaces/Product'
+import { toast } from 'react-toastify'
 
 const DeleteProductModal: React.FC<any> = () => {
   const dispatch = useDispatch()
   const { deleteProductModal } = useSelector(modalsSelector)
+  const selectedProduct = useSelector(selectedProductSelector)
+  const products = useSelector(productsSelector)
+
+  const [loading, setLoading] = useState(false)
 
   const closeModal = () => {
     dispatch(toggleDeleteProductModal(false))
   }
+
+  const deleteProduct = async () => {
+    setLoading(true)
+
+    try {
+      await deleteProductApi([selectedProduct])
+      dispatch(
+        setProductsAction(
+          products.filter((item: Product) => item.id !== selectedProduct.id),
+        ),
+      )
+      closeModal()
+      setLoading(false)
+      toast.info('Product succesfully deleted !')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <Dialog
       open={deleteProductModal}
@@ -70,12 +101,13 @@ const DeleteProductModal: React.FC<any> = () => {
             }}
           >
             <Typography variant="TEXT_MD_SEMIBOLD" sx={{ color: 'Gray.700' }}>
-              Cancel
+              No
             </Typography>
           </CustomButton>
 
           <CustomButton
-            onClick={() => console.log('awd')}
+            loading={loading}
+            onClick={deleteProduct}
             variant="contained"
             sx={{
               width: '50%',
@@ -85,7 +117,7 @@ const DeleteProductModal: React.FC<any> = () => {
             }}
           >
             <Typography variant="TEXT_MD_SEMIBOLD" sx={{ color: 'Base.White' }}>
-              Add product
+              Yes
             </Typography>
           </CustomButton>
         </Stack>

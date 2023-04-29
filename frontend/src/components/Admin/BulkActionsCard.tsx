@@ -13,7 +13,7 @@ import { FaTrash } from 'react-icons/fa'
 import {
   selectAllProductsAction,
   unselectAllProductsAction,
-} from '../../redux/manage_products/actionts'
+} from '../../redux/manage_products/actions'
 import { Product } from '../../interfaces/Product'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { toggleAddProductModal } from '../../redux/modals/actions'

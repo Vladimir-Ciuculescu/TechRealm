@@ -56,6 +56,16 @@ const addProduct = async (product) => {
   }
 };
 
+const deleteProducts = async (products) => {
+  try {
+    for (let i = 0; i < products.length; i++) {
+      await pool.query("DELETE FROM products WHERE id = $1", [products[i].id]);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getProductImages = async (id) => {
   try {
     const productImages = await pool.query(`SELECT pi2.id,
@@ -176,6 +186,7 @@ module.exports = {
   getProducts,
   getProductById,
   addProduct,
+  deleteProducts,
   getProductImages,
   getUserProducts,
   addUserProducts,

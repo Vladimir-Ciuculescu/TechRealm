@@ -9,6 +9,7 @@ const {
   updateUserProductQuantity,
   addUserProduct,
   addProduct,
+  deleteProduct,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -24,6 +25,10 @@ router.route("/products/:id").get(getProductById);
 // ? @desc Add a new product to store
 // ? @route POST /api/products/add
 router.route("/products/add").post(addProduct);
+
+// ? @desc Delete product from store
+// ? @route DELETE /api/products/delete
+router.route("/product/delete").delete(deleteProduct);
 
 // ? @desc Get cart products for an user
 // ? @route GET /api/products/user/:id

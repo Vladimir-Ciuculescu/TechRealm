@@ -15,8 +15,9 @@ import { FaTrash } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
 import {
   selectProductAction,
+  setSelectedProductAction,
   unselectProductAction,
-} from '../../redux/manage_products/actionts'
+} from '../../redux/manage_products/actions'
 import { ImagePlaceholder } from '../../assets/images'
 import { toggleDeleteProductModal } from '../../redux/modals/actions'
 
@@ -29,7 +30,7 @@ const Row: React.FC<RowProps> = ({ product }) => {
 
   const dispatch = useDispatch()
 
-  const selectProduct = (product: Product) => {
+  const toggleProduct = (product: Product) => {
     if (product.checked) {
       dispatch(unselectProductAction(product))
     } else {
@@ -37,8 +38,9 @@ const Row: React.FC<RowProps> = ({ product }) => {
     }
   }
 
-  const openDeleteModal = () => {
+  const selectProduct = () => {
     dispatch(toggleDeleteProductModal(true))
+    dispatch(setSelectedProductAction(product))
   }
 
   return (
@@ -52,7 +54,7 @@ const Row: React.FC<RowProps> = ({ product }) => {
             },
           }}
           checked={product.checked}
-          onChange={() => selectProduct(product)}
+          onChange={() => toggleProduct(product)}
           disableRipple
         />
       </TableCell>
@@ -89,7 +91,7 @@ const Row: React.FC<RowProps> = ({ product }) => {
           <IconButton disableRipple>
             <MdModeEditOutline style={{ fontSize: '25px', color: '#9c27b0' }} />
           </IconButton>
-          <IconButton disableRipple onClick={openDeleteModal}>
+          <IconButton disableRipple onClick={selectProduct}>
             <FaTrash style={{ fontSize: '20px', color: '#F04438' }} />
           </IconButton>
         </Stack>

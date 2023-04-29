@@ -6,15 +6,13 @@ import AddProductModal from '../components/Admin/AddProductModal'
 import BulkActionsCard from '../components/Admin/BulkActionsCard'
 import DeleteProductModal from '../components/Admin/DeleteProductModal'
 import ProductsTable from '../components/Admin/ProductsTable'
-import { setProductsAction } from '../redux/manage_products/actionts'
+import { setProductsAction } from '../redux/manage_products/actions'
 import { productsSelector } from '../redux/manage_products/selectors'
 import { getProductsApi } from '../services/productApi'
 
 const ManageProducts = () => {
   const dispatch = useDispatch()
   const products = useSelector(productsSelector)
-  //const [addModal, toggleAddModal] = useState(false)
-  const [deleteModal, toggleDeleteModal] = useState(true)
 
   useEffect(() => {
     const fetchProducts = async () => {

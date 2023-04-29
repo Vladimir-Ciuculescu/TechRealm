@@ -61,6 +61,18 @@ const addProduct = async (req, res) => {
   }
 };
 
+const deleteProduct = async (req, res) => {
+  const { products } = req.body;
+
+  try {
+    await productRepository.deleteProducts(products);
+    console.log("here");
+    res.status(200).json({ message: "Product(s) deleted succesfully" });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getUserProducts = async (req, res) => {
   try {
     const { id } = req.params;
@@ -129,6 +141,7 @@ module.exports = {
   getProducts,
   getProductById,
   addProduct,
+  deleteProduct,
   getUserProducts,
   addUserProducts,
   addUserProduct,

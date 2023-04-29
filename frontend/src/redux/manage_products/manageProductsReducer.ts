@@ -4,16 +4,19 @@ import {
   SELECT_ALL_PRODUCTS,
   SELECT_PRODUCT,
   SET_PRODUCTS,
+  SET_SELECTED_PRODUCT,
   UNSELECT_ALL_PRODUCTS,
   UNSELECT_PRODUCT,
 } from './actionTypes'
 
 interface manageProductsStateProps {
   products: Product[]
+  selectedProduct: Product | Object
 }
 
 const manageProductsState: manageProductsStateProps = {
   products: [],
+  selectedProduct: {},
 }
 
 export const manageProductsReducer = (
@@ -55,6 +58,11 @@ export const manageProductsReducer = (
       return {
         ...state,
         products: state.products.map((item) => ({ ...item, checked: false })),
+      }
+    case SET_SELECTED_PRODUCT:
+      return {
+        ...state,
+        selectedProduct: action.payload,
       }
     default:
       return state

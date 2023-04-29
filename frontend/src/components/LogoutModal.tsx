@@ -16,15 +16,9 @@ import { toggleLogoutModalAction } from '../redux/modals/actions'
 const LogoutModal = () => {
   const { logoutModal } = useSelector(modalsSelector)
 
-  console.log(logoutModal)
-  //const { visible } = useSelector(logoutModalSelector)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  // const handleModal = () => {
-
-  //   dispatch(toggleLogoutModalAction())
-  // }
   const closeModal = () => {
     dispatch(toggleLogoutModalAction(false))
   }
@@ -38,9 +32,7 @@ const LogoutModal = () => {
 
   return (
     <Dialog
-      //open={visible}
       open={logoutModal}
-      //onClose={handleModal}
       onClose={closeModal}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
@@ -55,11 +47,7 @@ const LogoutModal = () => {
         <Button disableRipple onClick={logOut}>
           Yes
         </Button>
-        <Button
-          disableRipple
-          //onClick={handleModal}
-          onClick={closeModal}
-        >
+        <Button disableRipple onClick={closeModal}>
           No
         </Button>
       </DialogActions>

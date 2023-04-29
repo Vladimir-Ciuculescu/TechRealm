@@ -38,6 +38,17 @@ export const addProductApi = async (product: Product) => {
   }
 }
 
+export const deleteProductApi = async (products: Product[]) => {
+  try {
+    const { data } = await axiosInstance.delete<any>(`api/product/delete`, {
+      data: { products: products },
+    })
+    return { data }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const getUserProductsApi = async (userId: number | string) => {
   interface UserProductsApiInterface {
     products: Product[]

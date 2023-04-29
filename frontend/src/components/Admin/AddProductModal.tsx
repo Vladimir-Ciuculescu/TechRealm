@@ -29,6 +29,7 @@ import { addProductApi } from '../../services/productApi'
 import { addProductAction } from '../../redux/cart/actions'
 import { modalsSelector } from '../../redux/modals/selectors'
 import { toggleAddProductModal } from '../../redux/modals/actions'
+import { toast } from 'react-toastify'
 
 const AddProductModal: React.FC<any> = ({}) => {
   const { addProductModal } = useSelector(modalsSelector)
@@ -69,7 +70,6 @@ const AddProductModal: React.FC<any> = ({}) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [brands, setBrands] = useState<Option[]>([])
   const [categories, setCategories] = useState<Option[]>([])
-
   const [previewImages, setPreviewImages] = useState([])
 
   const getBrands = async () => {
@@ -91,6 +91,7 @@ const AddProductModal: React.FC<any> = ({}) => {
   useEffect(() => {
     if (addProductModal) {
       formik.resetForm()
+      setPreviewImages([])
 
       if (brands.length === 0) {
         getBrands()
@@ -137,10 +138,9 @@ const AddProductModal: React.FC<any> = ({}) => {
       }
 
       const { product } = await addProductApi(data)
-
       dispatch(addProductAction(product))
-
-      //closeModal()
+      closeModal()
+      toast.success('Product succesfully added !')
     } catch (error) {
       console.log(error)
     }
