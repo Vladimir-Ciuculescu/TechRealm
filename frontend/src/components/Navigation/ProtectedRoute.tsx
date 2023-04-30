@@ -6,11 +6,11 @@ import { Roles } from '../../enums/Roles'
 interface CustomRouteProps {
   role: Roles
   rolesAllowed: Roles[]
-  path: string
+
   children: JSX.Element
 }
 
-const CustomRoute: React.FC<CustomRouteProps> = ({
+const ProtectedRoute: React.FC<CustomRouteProps> = ({
   role,
   rolesAllowed,
 
@@ -28,4 +28,4 @@ const CustomRoute: React.FC<CustomRouteProps> = ({
   return hasAccess(rolesAllowed, role) ? children : <Navigate to={ROOT_PATH} />
 }
 
-export default CustomRoute
+export default ProtectedRoute
