@@ -22,6 +22,7 @@ import {
   toggleAddProductModal,
   toggleDeleteProductModal,
 } from '../../redux/modals/actions'
+import CustomCheckbox from '../common/CustomCheckbox'
 
 const BulkActionsCard: React.FC<any> = () => {
   const products = useSelector(productsSelector)
@@ -36,6 +37,9 @@ const BulkActionsCard: React.FC<any> = () => {
     }
     setChecked(!checked)
   }
+
+  const allChecked = products.every((product: Product) => product.checked)
+  const someChecked = products.some((product: Product) => product.checked)
 
   const checkedProducts = products.filter((item: Product) => item.checked)
 
@@ -65,21 +69,11 @@ const BulkActionsCard: React.FC<any> = () => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Stack direction="row">
-        <FormControlLabel
-          control={
-            <Checkbox
-              disableRipple
-              onChange={toggleAll}
-              sx={{
-                color: 'Violet.600',
-                '&.Mui-checked': {
-                  color: 'Violet.600',
-                },
-              }}
-            />
-          }
-          label="Check all"
+      <Stack direction="row" alignItems="center">
+        <CustomCheckbox
+          checked={allChecked}
+          indeterminate={!allChecked && someChecked}
+          toggleCheck={toggleAll}
         />
         <Button
           onClick={openAddModal}

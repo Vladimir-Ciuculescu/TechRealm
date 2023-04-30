@@ -31,7 +31,7 @@ import { modalsSelector } from '../../redux/modals/selectors'
 import { toggleAddProductModal } from '../../redux/modals/actions'
 import { toast } from 'react-toastify'
 
-const AddProductModal: React.FC<any> = ({}) => {
+const AddProductModal: React.FC<any> = () => {
   const { addProductModal } = useSelector(modalsSelector)
 
   const formik = useFormik({
@@ -229,6 +229,7 @@ const AddProductModal: React.FC<any> = ({}) => {
                 onChange={(e: any) => handleChange(e.value, 'brand')}
                 error={errors.brand && touched.brand}
                 errorMessage={errors.brand}
+                displayDropdownIndicator
                 //defaultValue={brands[0]}
               />
             </Grid>
@@ -256,6 +257,7 @@ const AddProductModal: React.FC<any> = ({}) => {
               onChange={(e: any) => handleChange(e.value, 'category')}
               error={errors.category && touched.category}
               errorMessage={errors.category}
+              displayDropdownIndicator
             />
           </Grid>
           <Grid

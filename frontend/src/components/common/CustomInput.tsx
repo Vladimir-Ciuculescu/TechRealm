@@ -107,6 +107,18 @@ const CustomInput: React.FC<CustomInputProps> = ({
   const renderBackground = () =>
     disabled ? palette.Gray[50] : palette.Base.White
 
+  const handleInputChange = (value: string) => {
+    let newValue
+
+    if (type === 'number') {
+      newValue = value.replace(/[^0-9]/g, '')
+    } else {
+      newValue = value
+    }
+
+    handleValue(newValue)
+  }
+
   return (
     <FormControl sx={{ width: width, gap: '8px' }}>
       {label && (
@@ -139,12 +151,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
         onBlur={() => setFocused(false)}
         variant="standard"
         value={value}
-        onChange={(e) => handleValue(e.target.value)}
+        onChange={(e) => handleInputChange(e.target.value)}
         InputProps={{
           disableUnderline: true,
           startAdornment: startAdornment || null,
           endAdornment: endAdornment || null,
         }}
+        inputProps={{ min: 0 }}
       />
       {error && (
         <Typography
