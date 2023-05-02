@@ -1,18 +1,25 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
-import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import TableSortLabel from '@mui/material/TableSortLabel'
 import Paper from '@mui/material/Paper'
-
 import { visuallyHidden } from '@mui/utils'
-import { Typography } from '@mui/material'
-import CustomCheckbox from './CustomCheckbox'
+import { useTheme } from '@mui/material/styles'
+import { Grid, Pagination, Typography } from '@mui/material'
+import CustomSelect from './CustomSelect'
+import { Option } from '../../interfaces/Options'
+
+const options: Option[] = [
+  { label: '5', value: 5 },
+  { label: '10', value: 10 },
+  { label: '15', value: 15 },
+  { label: '50', value: 50 },
+]
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -53,7 +60,7 @@ function stableSort<T>(
   return stabilizedThis.map((el) => el[0])
 }
 
-interface EnhancedTableProps {
+interface TableHeaderProps {
   numSelected: number
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -63,29 +70,24 @@ interface EnhancedTableProps {
   headers: any[]
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-    headers,
-  } = props
+const TableHeader: React.FC<TableHeaderProps> = ({
+  order,
+  orderBy,
+  onRequestSort,
+  headers,
+}) => {
+  const { palette }: any = useTheme()
   const createSortHandler =
     (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property)
     }
 
   return (
-    <TableHead>
+    <TableHead sx={{ background: palette.Violet[600] }}>
       <TableRow>
         {headers.map((headCell) => (
           <TableCell
             key={headCell.id}
-            //align={headCell.numeric ? 'right' : 'left'}
-            //padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             {headCell.sortable ? (
@@ -93,6 +95,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 active={orderBy === headCell.id}
                 direction={orderBy === headCell.id ? order : 'asc'}
                 onClick={createSortHandler(headCell.id)}
+                sx={{
+                  '& .MuiTableSortLabel-icon': {
+                    color: `${palette.Base.White} !important`,
+                  },
+                }}
               >
                 {headCell.label}
                 {orderBy === headCell.id ? (
@@ -123,8 +130,9 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
   const [order, setOrder] = React.useState<Order>('asc')
   const [orderBy, setOrderBy] = React.useState<string>('calories')
   const [selected, setSelected] = React.useState<readonly string[]>([])
-  const [page, setPage] = React.useState(0)
+  const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPageValue, setRowsPerPageValue] = useState(options[0])
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -144,42 +152,7 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
     setSelected([])
   }
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: any) => {
-    const selectedIndex = selected.indexOf(name)
-    let newSelected: readonly string[] = []
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      )
-    }
-
-    setSelected(newSelected)
-  }
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
-  }
-
   const isSelected = (name: any) => selected.indexOf(name) !== -1
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0
 
   let visibleRows = React.useMemo(
     () =>
@@ -201,7 +174,7 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-            <EnhancedTableHead
+            <TableHeader
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -210,66 +183,16 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
               rowCount={data.length}
               headers={headers}
             />
-            {/* <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.name)
-                const labelId = `enhanced-table-checkbox-${index}`
 
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.name)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.name}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.name}
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody> */}
             <TableBody>
               {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.name)
                 const labelId = `enhanced-table-checkbox-${index}`
                 return (
                   <TableRow
-                    //hover
-                    //onClick={(event) => handleClick(event, row.name)}
-                    //role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.name}
-                    //selected={isItemSelected}
-                    //sx={{ cursor: 'pointer' }}
                   >
                     {columns.map((column) => {
                       const cellContent = column.render
@@ -279,8 +202,6 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
                         <TableCell
                           component="th"
                           id={labelId}
-                          //   scope="row"
-                          //   padding="none"
                           key={`${row.id}-${column.id}`}
                         >
                           {cellContent}
@@ -291,52 +212,48 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
                 )
               })}
             </TableBody>
-            {/* <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.name)
-                const labelId = `enhanced-table-checkbox-${index}`
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.name)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.name}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.name}
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.price}
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody> */}
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        <Grid
+          direction="row"
+          container
+          alignItems="center"
+          justifyContent="center"
+          gap="16px"
+        >
+          <Grid item>
+            <Typography variant="TEXT_SM_MEDIUM">Rows per page</Typography>
+          </Grid>
+          <Grid item>
+            <CustomSelect
+              options={options}
+              value={rowsPerPageValue.value}
+              alignSingleValueText
+              width="50px"
+            />
+          </Grid>
+          <Grid item>
+            <Pagination
+              sx={{
+                height: '72px',
+
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                '& .MuiPagination-ul': {
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  '& > *': {
+                    margin: '0 4px',
+                  },
+                },
+              }}
+              count={10}
+              shape="rounded"
+            />
+          </Grid>
+        </Grid>
       </Paper>
     </Box>
   )

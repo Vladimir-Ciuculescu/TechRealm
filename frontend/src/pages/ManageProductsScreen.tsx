@@ -1,5 +1,6 @@
-import { Grid, IconButton, Typography } from '@mui/material'
-import { Container, Stack } from '@mui/system'
+import { Grid, IconButton, Typography, Container, Stack } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddProductModal from '../components/Admin/AddProductModal'
@@ -24,6 +25,7 @@ import { toggleDeleteProductModal } from '../redux/modals/actions'
 const ManageProducts = () => {
   const dispatch = useDispatch()
   const products = useSelector(productsSelector)
+  const { palette }: any = useTheme()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -68,35 +70,41 @@ const ManageProducts = () => {
     {
       id: 'defaultImage',
       sortable: false,
-      label: <Typography>Display</Typography>,
+      label: (
+        <Typography sx={{ color: palette.Base.White }}>Display</Typography>
+      ),
     },
     {
       id: 'name',
       sortable: true,
-      label: <Typography>Product name</Typography>,
+      label: (
+        <Typography sx={{ color: palette.Base.White }}>Product name</Typography>
+      ),
     },
 
     {
       id: 'brand',
       sortable: true,
-      label: <Typography>Brand</Typography>,
+      label: <Typography sx={{ color: palette.Base.White }}>Brand</Typography>,
     },
     {
       id: 'countInStock',
       numeric: true,
       sortable: true,
-      label: <Typography>Stoc</Typography>,
+      label: <Typography sx={{ color: palette.Base.White }}>Stoc</Typography>,
     },
     {
       id: 'price',
       numeric: true,
       sortable: true,
-      label: <Typography>Price</Typography>,
+      label: <Typography sx={{ color: palette.Base.White }}>Price</Typography>,
     },
     {
       id: 'actions',
       sortable: false,
-      label: <Typography>Actions</Typography>,
+      label: (
+        <Typography sx={{ color: palette.Base.White }}>Actions</Typography>
+      ),
     },
   ]
 
@@ -143,7 +151,7 @@ const ManageProducts = () => {
     {
       id: 'price',
       label: 'Price',
-      render: (row: Product) => <Typography>{row.price}</Typography>,
+      render: (row: Product) => <Typography>{row.price} $</Typography>,
     },
     {
       id: 'actions',
@@ -169,7 +177,7 @@ const ManageProducts = () => {
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Stack flexDirection="column" gap={7}>
-        <Typography variant="h3" sx={{ fontFamily: 'monospace' }}>
+        <Typography variant="h3" sx={{ fontFamily: 'Inter' }}>
           Manage Products
         </Typography>
         <Grid container>
@@ -180,9 +188,7 @@ const ManageProducts = () => {
             <Grid item>
               <BulkActionsCard />
             </Grid>
-            {/* <Grid item>
-              <ProductsTable products={products} />
-            </Grid> */}
+
             <Grid item>
               <CustomTable
                 data={products}
