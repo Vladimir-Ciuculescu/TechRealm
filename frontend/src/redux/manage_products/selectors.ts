@@ -1,5 +1,4 @@
 import { Selector, createSelector } from '@reduxjs/toolkit'
-import ManageProducts from '../../pages/ManageProductsScreen'
 
 const manageProductsSelector = (state: any) => state.manageProducts
 
@@ -11,4 +10,9 @@ export const productsSelector: Selector<any, any> = createSelector(
 export const selectedProductsSelector: Selector<any, any> = createSelector(
   [manageProductsSelector],
   (ManageProducts) => ManageProducts.selectedProducts,
+)
+
+export const filterObjectSelector: Selector<any, any> = createSelector(
+  [manageProductsSelector],
+  (manageProducts) => manageProducts.filterObject,
 )

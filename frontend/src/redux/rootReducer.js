@@ -11,7 +11,12 @@ import { modalsReducer } from './modals/modalsReducer'
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['logoutModal', 'manageProducts', 'modals'],
+  blacklist: [
+    'logoutModal',
+    'manageProducts.products',
+    'manageProducts.selectedProducts',
+    'modals',
+  ],
 }
 
 const rootReducer = combineReducers({

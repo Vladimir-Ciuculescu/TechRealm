@@ -3,9 +3,12 @@ import { Image } from '../interfaces/Image'
 import { Product } from '../interfaces/Product'
 import { axiosInstance } from './axiosInstance'
 
-export const getProductsApi = async () => {
+export const getProductsApi = async (filterObject: any = { value: 5 }) => {
   try {
-    const { data } = await axiosInstance.get<Product[]>(`/api${PRODUCTS_PATH}`)
+    const { data } = await axiosInstance.get<Product[]>(
+      `/api${PRODUCTS_PATH}`,
+      { params: filterObject },
+    )
     return data
   } catch (error) {
     console.log(error)

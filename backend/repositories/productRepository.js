@@ -1,8 +1,9 @@
 const pool = require("../database/config");
 
-const getProducts = async () => {
-  try {
-    const products = await pool.query(`SELECT p.id,
+const getProducts = async (filterObject) => {
+  const { rowsPerPage } = filterObject;
+
+  let query = `SELECT p.id,
       p.name,
       p.brand,
       p.category,
@@ -12,7 +13,14 @@ const getProducts = async () => {
       p.price,
       p.count_in_stock as "countInStock",
       (select url from product_images pi2 where pi2.product_id  = p.id limit 1 ) as "defaultImage"
-      FROM products p`);
+      FROM products p`;
+
+  if (rowsPerPage) {
+    query += ` LIMIT ${parseInt(rowsPerPage)}`;
+  }
+
+  try {
+    const products = await pool.query(query);
 
     return products.rows;
   } catch (error) {

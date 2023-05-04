@@ -2,8 +2,10 @@ const productRepository = require("../repositories/productRepository");
 const imageRepository = require("../repositories/imageRepository.js");
 
 const getProducts = async (req, res) => {
+  const { query } = req;
+
   try {
-    const products = await productRepository.getProducts();
+    const products = await productRepository.getProducts(query);
     res.status(200).send(products);
   } catch (error) {
     console.error(error);

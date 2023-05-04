@@ -1,7 +1,7 @@
 import { Grid, IconButton, Typography, Container, Stack } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AddProductModal from '../components/Admin/AddProductModal'
 import BulkActionsCard from '../components/Admin/BulkActionsCard'
@@ -10,10 +10,14 @@ import ProductsTable from '../components/Admin/ProductsTable'
 import {
   selectProductAction,
   setProductsAction,
+  setRowsPerPageAction,
   setSelectedProductsAction,
   unselectProductAction,
 } from '../redux/manage_products/actions'
-import { productsSelector } from '../redux/manage_products/selectors'
+import {
+  filterObjectSelector,
+  productsSelector,
+} from '../redux/manage_products/selectors'
 import { getProductsApi } from '../services/productApi'
 import CustomTable from '../components/common/CustomTable'
 import { MdModeEditOutline } from 'react-icons/md'
@@ -21,15 +25,18 @@ import { FaTrash } from 'react-icons/fa'
 import CustomCheckbox from '../components/common/CustomCheckbox'
 import { Product } from '../interfaces/Product'
 import { toggleDeleteProductModal } from '../redux/modals/actions'
+import { ROWS_PER_PAGE_OPTIONS } from '../consts/filters/filters'
 
 const ManageProducts = () => {
   const dispatch = useDispatch()
   const products = useSelector(productsSelector)
+  const filterObject = useSelector(filterObjectSelector)
   const { palette }: any = useTheme()
+  const [rowsPerPage, setRowsPerPage] = useState(filterObject.rowsPerPage)
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const products = await getProductsApi()
+      const products = await getProductsApi(filterObject)
       dispatch(
         setProductsAction(
           products!.map((item) => ({ ...item, checked: false })),
@@ -50,6 +57,13 @@ const ManageProducts = () => {
   const selectProduct = (product: Product) => {
     dispatch(toggleDeleteProductModal(true))
     dispatch(setSelectedProductsAction([product]))
+  }
+
+  const setData = (data: any[], filterObject: any) => {
+    const { rowsPerPage } = filterObject
+
+    dispatch(setProductsAction(data))
+    dispatch(setRowsPerPageAction(rowsPerPage))
   }
 
   interface HeadCell {
@@ -191,7 +205,11 @@ const ManageProducts = () => {
 
             <Grid item>
               <CustomTable
+                rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
                 data={products}
+                setData={setData}
                 columns={columns}
                 headers={headers}
               />

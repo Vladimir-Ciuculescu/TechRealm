@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -13,6 +13,7 @@ import { useTheme } from '@mui/material/styles'
 import { Grid, Pagination, Typography } from '@mui/material'
 import CustomSelect from './CustomSelect'
 import { Option } from '../../interfaces/Options'
+import { getProductsApi } from '../../services/productApi'
 
 const options: Option[] = [
   { label: '5', value: 5 },
@@ -121,18 +122,36 @@ const TableHeader: React.FC<TableHeaderProps> = ({
 }
 
 interface CustomTablePros {
+  rowsPerPageOptions: number[]
+  rowsPerPage: number
+  setRowsPerPage: (e: any) => void
   data: any[]
   columns: any[]
   headers: any[]
+  setData?: (a: any, b: any) => void
 }
 
-const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
+const CustomTable: React.FC<CustomTablePros> = ({
+  data,
+  columns,
+  headers,
+  rowsPerPage,
+  setRowsPerPage,
+  rowsPerPageOptions,
+  setData,
+}) => {
   const [order, setOrder] = React.useState<Order>('asc')
   const [orderBy, setOrderBy] = React.useState<string>('calories')
   const [selected, setSelected] = React.useState<readonly string[]>([])
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
-  const [rowsPerPageValue, setRowsPerPageValue] = useState(options[0])
+  const [page, setPage] = useState(1)
+  const options = rowsPerPageOptions.map((item) => ({
+    label: item.toString(),
+    value: item,
+  }))
+  //const [rowsPerPage, setRowsPerPage] = useState(options[0].value)
+
+  //const [rowsPerPageValue, setRowsPerPageValue] = useState(options[0].value)
+  //const [rowsPerPage, setRowsPerPage] = useState(5)
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -154,20 +173,33 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
 
   const isSelected = (name: any) => selected.indexOf(name) !== -1
 
-  let visibleRows = React.useMemo(
-    () =>
-      stableSort(data, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [order, orderBy, page, rowsPerPage],
-  )
+  // let visibleRows = React.useMemo(
+  //   () =>
+  //     stableSort(data, getComparator(order, orderBy)).slice(
+  //       page * rowsPerPage,
+  //       page * rowsPerPage + rowsPerPage,
+  //     ),
+  //   [order, orderBy, page, rowsPerPage],
+  // )
 
-  if (visibleRows.length === 0) {
-    visibleRows = data
+  // if (visibleRows.length === 0) {
+  //   visibleRows = data
+  // }
+
+  let sortedData = stableSort(data, getComparator(order, orderBy))
+
+  const getData = async (filterObject: any) => {
+    const result = await getProductsApi(filterObject)
+    setData?.(result, filterObject)
   }
 
-  console.log(visibleRows)
+  useEffect(() => {
+    const filterObject = {
+      rowsPerPage: rowsPerPage,
+    }
+
+    getData(filterObject)
+  }, [rowsPerPage])
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -185,7 +217,7 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
             />
 
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {sortedData.map((row, index) => {
                 const isItemSelected = isSelected(row.name)
                 const labelId = `enhanced-table-checkbox-${index}`
                 return (
@@ -227,16 +259,18 @@ const CustomTable: React.FC<CustomTablePros> = ({ data, columns, headers }) => {
           <Grid item>
             <CustomSelect
               options={options}
-              value={rowsPerPageValue.value}
+              value={rowsPerPage}
+              onChange={(e: any) => setRowsPerPage(e.value)}
               alignSingleValueText
               width="50px"
             />
           </Grid>
           <Grid item>
             <Pagination
+              page={page}
+              onChange={(e, value) => setPage(value)}
               sx={{
                 height: '72px',
-
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',

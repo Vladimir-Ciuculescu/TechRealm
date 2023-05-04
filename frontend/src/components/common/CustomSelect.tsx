@@ -13,7 +13,7 @@ interface CommonSelectProps {
   displayDropdownIndicator?: boolean
   displayindicatorSeparator?: boolean
   alignSingleValueText?: boolean
-  value?: string | number | undefined
+  value?: string | number | undefined | null
   onChange?: (e: any) => any
   label?: string
   error?: string | boolean
@@ -94,7 +94,7 @@ const CustomSelect: React.FC<CommonSelectProps> = ({
       display: displayindicatorSeparator ? 'flex' : 'none',
     }),
   }
-  const selectValue: SelectOption = { label: value, value: value }
+  const selectValue: SelectOption = { label: value!, value: value! }
 
   return (
     <FormControl sx={{ width: '100%', gap: '8px' }}>

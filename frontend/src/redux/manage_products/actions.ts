@@ -5,6 +5,7 @@ import {
   SELECT_ALL_PRODUCTS,
   SELECT_PRODUCT,
   SET_PRODUCTS,
+  SET_ROWS_PER_PAGE,
   SET_SELECTED_PRODUCT,
   UNSELECT_ALL_PRODUCTS,
   UNSELECT_PRODUCT,
@@ -43,3 +44,7 @@ export const setSelectedProductsAction: ActionCreator<any> = (
   type: SET_SELECTED_PRODUCT,
   payload: selectedProducts,
 })
+
+export const setRowsPerPageAction: ActionCreator<any> = (
+  rowsPerPage: number,
+) => ({ type: SET_ROWS_PER_PAGE, payload: rowsPerPage })
