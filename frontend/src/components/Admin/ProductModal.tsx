@@ -25,14 +25,28 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { Option } from '../../interfaces/Options'
 import { getCategoriesApi } from '../../services/categoriesApi'
-import { addProductApi } from '../../services/productApi'
-import { addProductAction } from '../../redux/cart/actions'
+import {
+  addProductApi,
+  editProductApi,
+  getProductsApi,
+} from '../../services/productApi'
 import { modalsSelector } from '../../redux/modals/selectors'
-import { toggleAddProductModal } from '../../redux/modals/actions'
+import { toggleProductModal } from '../../redux/modals/actions'
 import { toast } from 'react-toastify'
+import { FilterObject } from '../../interfaces/FilterObject'
+import {
+  currentProductSelector,
+  filterObjectSelector,
+} from '../../redux/manage_products/selectors'
+import { setProductsAction } from '../../redux/manage_products/actions'
 
 const AddProductModal: React.FC<any> = () => {
-  const { addProductModal } = useSelector(modalsSelector)
+  const {
+    productModal: { visible, mode },
+  } = useSelector(modalsSelector)
+  const currentProduct = useSelector(currentProductSelector)
+
+  const filterObject = useSelector(filterObjectSelector)
 
   const formik = useFormik({
     initialValues: {
@@ -70,7 +84,7 @@ const AddProductModal: React.FC<any> = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [brands, setBrands] = useState<Option[]>([])
   const [categories, setCategories] = useState<Option[]>([])
-  const [previewImages, setPreviewImages] = useState([])
+  const [previewImages, setPreviewImages] = useState<string[]>([])
 
   const getBrands = async () => {
     const response = await getBrandsApi()
@@ -89,7 +103,7 @@ const AddProductModal: React.FC<any> = () => {
   }
 
   useEffect(() => {
-    if (addProductModal) {
+    if (visible) {
       formik.resetForm()
       setPreviewImages([])
 
@@ -100,7 +114,16 @@ const AddProductModal: React.FC<any> = () => {
         getCategories()
       }
     }
-  }, [addProductModal])
+
+    if (mode === 'edit') {
+      Object.keys(currentProduct).forEach((key) => {
+        formik.setFieldValue(key, currentProduct[key])
+      })
+      setPreviewImages([currentProduct.defaultImage])
+    } else {
+      formik.resetForm()
+    }
+  }, [visible, mode])
 
   const handleChange = (value: any, label: string) => {
     formik.setFieldValue(label, value)
@@ -129,18 +152,38 @@ const AddProductModal: React.FC<any> = () => {
       const data = {
         id: 1,
         name: name,
-        price: isInt(price),
+        price: isInt(price.toString()),
+
         brand: brand,
-        countInStock: isInt(countInStock),
+        countInStock: isInt(countInStock.toString()),
+
         category: category,
         description: description,
         images: previewImages,
       }
 
-      const { product } = await addProductApi(data)
-      dispatch(addProductAction(product))
+      if (mode === 'add') {
+        await addProductApi(data)
+      } else if (mode === 'edit') {
+        data.id = currentProduct.id
+        await editProductApi(data)
+      }
+
+      const filter: FilterObject = {
+        rowsPerPage: filterObject.rowsPerPage,
+        page: 1,
+      }
+
+      const result = await getProductsApi(filter)
+
+      dispatch(setProductsAction(result))
+
       closeModal()
-      toast.success('Product succesfully added !')
+      if (mode === 'add') {
+        toast.success('Product succesfully added !')
+      } else {
+        toast.info('Product succesfully edited !')
+      }
     } catch (error) {
       console.log(error)
     }
@@ -149,12 +192,12 @@ const AddProductModal: React.FC<any> = () => {
   }
 
   const closeModal = () => {
-    dispatch(toggleAddProductModal(false))
+    dispatch(toggleProductModal(false))
   }
 
   return (
     <Dialog
-      open={addProductModal}
+      open={visible}
       onClose={closeModal}
       sx={{ backdropFilter: 'blur(8px)' }}
       PaperProps={{
@@ -173,7 +216,9 @@ const AddProductModal: React.FC<any> = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="TEXT_LG_SEMIBOLD">Add product</Typography>
+          <Typography variant="TEXT_LG_SEMIBOLD">
+            {mode.charAt(0).toUpperCase() + mode.slice(1)} product
+          </Typography>
           <IconButton disableRipple onClick={closeModal}>
             <CgClose />
           </IconButton>
@@ -362,7 +407,7 @@ const AddProductModal: React.FC<any> = () => {
             }}
           >
             <Typography variant="TEXT_MD_SEMIBOLD" sx={{ color: 'Base.White' }}>
-              Add product
+              {mode === 'add' ? 'Add' : 'Save'}
             </Typography>
           </CustomButton>
         </Stack>

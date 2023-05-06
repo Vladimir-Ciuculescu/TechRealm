@@ -1,14 +1,13 @@
 import { Grid, IconButton, Typography, Container, Stack } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import AddProductModal from '../components/Admin/AddProductModal'
+import AddProductModal from '../components/Admin/ProductModal'
 import BulkActionsCard from '../components/Admin/BulkActionsCard'
 import DeleteProductModal from '../components/Admin/DeleteProductModal'
-import ProductsTable from '../components/Admin/ProductsTable'
 import {
   selectProductAction,
+  setCurrentProductAction,
   setPagesAction,
   setProductsAction,
   setRowsPerPageAction,
@@ -21,15 +20,22 @@ import {
 } from '../redux/manage_products/selectors'
 import { getProductsApi, getProductsLengthApi } from '../services/productApi'
 import CustomTable from '../components/common/CustomTable'
-import { MdModeEditOutline } from 'react-icons/md'
-import { FaTrash } from 'react-icons/fa'
 import CustomCheckbox from '../components/common/CustomCheckbox'
 import { Product } from '../interfaces/Product'
-import { toggleDeleteProductModal } from '../redux/modals/actions'
+import {
+  setProductModalMode,
+  toggleDeleteProductModal,
+  toggleProductModal,
+} from '../redux/modals/actions'
 import { ROWS_PER_PAGE_OPTIONS } from '../consts/filters/filters'
 import { FilterObject } from '../interfaces/FilterObject'
+import { useNavigate } from 'react-router-dom'
+import { PRODUCTS_PATH } from '../constants/paths'
+import { BsFillTrashFill } from 'react-icons/bs'
+import { RiPencilFill } from 'react-icons/ri'
 
 const ManageProducts = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const products = useSelector(productsSelector)
   const filterObject = useSelector(filterObjectSelector)
@@ -80,7 +86,7 @@ const ManageProducts = () => {
   }
 
   const setData = (data: any[], filterObject: any) => {
-    const { rowsPerPage, pages } = filterObject
+    const { rowsPerPage } = filterObject
 
     dispatch(setProductsAction(data))
     dispatch(setRowsPerPageAction(rowsPerPage))
@@ -98,6 +104,12 @@ const ManageProducts = () => {
     label: any
     numeric?: boolean
     sortable: boolean
+  }
+
+  const openProductModal = (product: Product) => {
+    dispatch(setProductModalMode('edit'))
+    dispatch(toggleProductModal(true))
+    dispatch(setCurrentProductAction(product))
   }
 
   const headers: HeadCell[] = [
@@ -166,8 +178,9 @@ const ManageProducts = () => {
       label: 'Image',
       render: (row: Product) => (
         <img
+          onClick={() => navigate(`${PRODUCTS_PATH}/${row.id}`)}
           src={row.defaultImage}
-          style={{ width: '80px', height: '80px' }}
+          style={{ width: '80px', height: '80px', cursor: 'pointer' }}
           alt={row.name}
         />
       ),
@@ -175,22 +188,36 @@ const ManageProducts = () => {
     {
       id: 'name',
       label: 'name',
-      render: (row: Product) => <Typography>{row.name}</Typography>,
+      render: (row: Product) => (
+        <Typography
+          variant="TEXT_MD_MEDIUM"
+          sx={{ cursor: 'pointer' }}
+          onClick={() => navigate(`${PRODUCTS_PATH}/${row.id}`)}
+        >
+          {row.name}
+        </Typography>
+      ),
     },
     {
       id: 'brand',
       label: 'brand',
-      render: (row: Product) => <Typography>{row.brand}</Typography>,
+      render: (row: Product) => (
+        <Typography variant="TEXT_MD_MEDIUM">{row.brand}</Typography>
+      ),
     },
     {
       id: 'countInStock',
       label: 'stock',
-      render: (row: Product) => <Typography>{row.countInStock}</Typography>,
+      render: (row: Product) => (
+        <Typography variant="TEXT_MD_MEDIUM">{row.countInStock}</Typography>
+      ),
     },
     {
       id: 'price',
       label: 'Price',
-      render: (row: Product) => <Typography>{row.price} $</Typography>,
+      render: (row: Product) => (
+        <Typography variant="TEXT_MD_MEDIUM">{row.price} $</Typography>
+      ),
     },
     {
       id: 'actions',
@@ -202,11 +229,11 @@ const ManageProducts = () => {
           justifyContent="space-evenly"
           alignItems="center"
         >
-          <IconButton disableRipple>
-            <MdModeEditOutline style={{ fontSize: '25px', color: '#9c27b0' }} />
+          <IconButton disableRipple onClick={() => openProductModal(row)}>
+            <RiPencilFill style={{ color: palette.Violet[500] }} />
           </IconButton>
           <IconButton disableRipple onClick={() => selectProduct(row)}>
-            <FaTrash style={{ fontSize: '20px', color: '#F04438' }} />
+            <BsFillTrashFill style={{ color: palette.Violet[500] }} />
           </IconButton>
         </Stack>
       ),

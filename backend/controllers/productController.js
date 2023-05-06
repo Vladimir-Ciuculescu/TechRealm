@@ -73,6 +73,28 @@ const addProduct = async (req, res) => {
   }
 };
 
+const editProduct = async (req, res) => {
+  const { body } = req;
+  const { images, name, id } = body;
+
+  try {
+    await productRepository.editProduct(body);
+
+    // let urls;
+
+    if (images) {
+      const urls = await imageRepository.uploadImagesToS3(images, name);
+      for (let i = 0; i < urls.length; i++) {
+        await imageRepository.editImage(urls[i], id);
+      }
+    }
+
+    res.status(200).json({ message: "Product edited succesfully !" });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const deleteProduct = async (req, res) => {
   const { products } = req.body;
 
@@ -160,4 +182,5 @@ module.exports = {
   addUserProduct,
   deleteUserProduct,
   updateUserProductQuantity,
+  editProduct,
 };

@@ -4,6 +4,7 @@ import {
   ADD_PRODUCT,
   SELECT_ALL_PRODUCTS,
   SELECT_PRODUCT,
+  SET_CURRENT_PRODUCT,
   SET_PAGES,
   SET_PRODUCTS,
   SET_ROWS_PER_PAGE,
@@ -37,6 +38,13 @@ export const unselectAllProductsAction: ActionCreator<any> = () => ({
 export const setProductsAction: ActionCreator<any> = (products: Product[]) => ({
   type: SET_PRODUCTS,
   payload: products,
+})
+
+export const setCurrentProductAction: ActionCreator<any> = (
+  product: Product,
+) => ({
+  type: SET_CURRENT_PRODUCT,
+  payload: product,
 })
 
 export const setSelectedProductsAction: ActionCreator<any> = (

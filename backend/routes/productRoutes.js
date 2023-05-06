@@ -10,6 +10,7 @@ const {
   addProduct,
   deleteProduct,
   getProductsLength,
+  editProduct,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -29,6 +30,10 @@ router.route("/products/:id").get(getProductById);
 // ? @desc Add a new product to store
 // ? @route POST /api/products/add
 router.route("/products/add").post(addProduct);
+
+// ? @desc Edit an existent product
+// ? @route PUT /api/products/edit
+router.route("/products/edit").put(editProduct);
 
 // ? @desc Delete product from store
 // ? @route DELETE /api/products/delete

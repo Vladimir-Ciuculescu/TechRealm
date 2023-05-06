@@ -12,8 +12,6 @@ const getProductsLength = async () => {
 
 const getProducts = async (filterObject) => {
   const { rowsPerPage, page } = filterObject;
-  console.log("page", page);
-  console.log("type", typeof page);
 
   let query = `SELECT p.id,
       p.name,
@@ -25,7 +23,7 @@ const getProducts = async (filterObject) => {
       p.price,
       p.count_in_stock as "countInStock",
       (select url from product_images pi2 where pi2.product_id  = p.id limit 1 ) as "defaultImage"
-      FROM products p`;
+      FROM products p ORDER BY ID DESC`;
 
   if (rowsPerPage) {
     query += ` LIMIT ${parseInt(rowsPerPage)}`;
@@ -75,6 +73,29 @@ const addProduct = async (product) => {
       [name, brand, description, parseFloat(price), countInStock, category]
     );
     return addedProduct.rows[0];
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const editProduct = async (product) => {
+  const { id, name, price, brand, category, countInStock, description } =
+    product;
+
+  console.log(product);
+  try {
+    await pool.query(
+      `UPDATE products
+              SET name = $1,
+              price = $2,
+              brand = $3,
+              count_in_stock = $4,
+              category = $5,
+              description = $6 
+              WHERE id = $7
+              `,
+      [name, price, brand, countInStock, category, description, id]
+    );
   } catch (error) {
     console.error(error);
   }
@@ -210,6 +231,7 @@ module.exports = {
   getProducts,
   getProductById,
   addProduct,
+  editProduct,
   deleteProducts,
   getProductImages,
   getUserProducts,

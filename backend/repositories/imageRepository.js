@@ -40,4 +40,14 @@ const addImages = async (urls, productId) => {
   }
 };
 
-module.exports = { uploadImagesToS3, addImages };
+const editImage = async (url, productId) => {
+  try {
+    await pool.query(
+      `UPDATE product_images SET url = $1 WHERE product_id = $2`,
+      [url, productId]
+    );
+  } catch (error) {
+    console.error(error);
+  }
+};
+module.exports = { uploadImagesToS3, addImages, editImage };

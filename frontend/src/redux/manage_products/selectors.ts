@@ -16,3 +16,8 @@ export const filterObjectSelector: Selector<any, any> = createSelector(
   [manageProductsSelector],
   (manageProducts) => manageProducts.filterObject,
 )
+
+export const currentProductSelector: Selector<any, any> = createSelector(
+  [manageProductsSelector],
+  (manageProducts) => manageProducts.currentProduct,
+)
