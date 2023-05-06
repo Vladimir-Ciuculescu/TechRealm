@@ -1,7 +1,19 @@
 const pool = require("../database/config");
 
+const getProductsLength = async () => {
+  try {
+    const result = await pool.query("SELECT * FROM products p");
+
+    return result.rowCount;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getProducts = async (filterObject) => {
-  const { rowsPerPage } = filterObject;
+  const { rowsPerPage, page } = filterObject;
+  console.log("page", page);
+  console.log("type", typeof page);
 
   let query = `SELECT p.id,
       p.name,
@@ -17,6 +29,10 @@ const getProducts = async (filterObject) => {
 
   if (rowsPerPage) {
     query += ` LIMIT ${parseInt(rowsPerPage)}`;
+  }
+
+  if (page) {
+    query += ` OFFSET ${parseInt(page - 1) * parseInt(rowsPerPage)}`;
   }
 
   try {
@@ -65,7 +81,6 @@ const addProduct = async (product) => {
 };
 
 const deleteProducts = async (products) => {
-  console.log(products);
   try {
     for (let i = 0; i < products.length; i++) {
       await pool.query("DELETE FROM products WHERE id = $1", [products[i].id]);
@@ -201,6 +216,7 @@ module.exports = {
   addUserProducts,
   addUserProduct,
   getTotalProducts,
+  getProductsLength,
   deleteUserProduct,
   updateUserProductQuantity,
 };

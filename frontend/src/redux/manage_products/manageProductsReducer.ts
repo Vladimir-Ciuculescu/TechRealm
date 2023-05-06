@@ -4,6 +4,7 @@ import {
   ADD_PRODUCT,
   SELECT_ALL_PRODUCTS,
   SELECT_PRODUCT,
+  SET_PAGES,
   SET_PRODUCTS,
   SET_ROWS_PER_PAGE,
   SET_SELECTED_PRODUCT,
@@ -19,7 +20,7 @@ interface manageProductsStateProps {
 
 const manageProductsState: manageProductsStateProps = {
   products: [],
-  filterObject: { rowsPerPage: ROWS_PER_PAGE_OPTIONS[0] },
+  filterObject: { rowsPerPage: ROWS_PER_PAGE_OPTIONS[0], pages: 0 },
   selectedProducts: [],
 }
 
@@ -72,6 +73,11 @@ export const manageProductsReducer = (
       return {
         ...state,
         filterObject: { ...state.filterObject, rowsPerPage: action.payload },
+      }
+    case SET_PAGES:
+      return {
+        ...state,
+        filterObject: { ...state.filterObject, pages: action.payload },
       }
     default:
       return state

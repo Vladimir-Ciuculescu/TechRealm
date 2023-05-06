@@ -4,6 +4,7 @@ import {
   ADD_PRODUCT,
   SELECT_ALL_PRODUCTS,
   SELECT_PRODUCT,
+  SET_PAGES,
   SET_PRODUCTS,
   SET_ROWS_PER_PAGE,
   SET_SELECTED_PRODUCT,
@@ -48,3 +49,8 @@ export const setSelectedProductsAction: ActionCreator<any> = (
 export const setRowsPerPageAction: ActionCreator<any> = (
   rowsPerPage: number,
 ) => ({ type: SET_ROWS_PER_PAGE, payload: rowsPerPage })
+
+export const setPagesAction: ActionCreator<any> = (pages: number) => ({
+  type: SET_PAGES,
+  payload: pages,
+})

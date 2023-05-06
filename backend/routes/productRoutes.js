@@ -4,12 +4,12 @@ const {
   getProductById,
   getUserProducts,
   addUserProducts,
-  getTotalProducts,
   deleteUserProduct,
   updateUserProductQuantity,
   addUserProduct,
   addProduct,
   deleteProduct,
+  getProductsLength,
 } = require("../controllers/productController");
 
 const router = express.Router();
@@ -17,6 +17,10 @@ const router = express.Router();
 // ? @desc   Get all products
 // ? @route  GET /api/products
 router.route("/products").get(getProducts);
+
+// ? @desc Get total product
+// ? @route GET/api/products/total
+router.route("/products/total").get(getProductsLength);
 
 // ? @desc   Get product by Id
 // ? @route  GET /api/products/:id

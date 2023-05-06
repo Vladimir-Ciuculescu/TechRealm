@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -13,14 +13,7 @@ import { useTheme } from '@mui/material/styles'
 import { Grid, Pagination, Typography } from '@mui/material'
 import CustomSelect from './CustomSelect'
 import { Option } from '../../interfaces/Options'
-import { getProductsApi } from '../../services/productApi'
-
-const options: Option[] = [
-  { label: '5', value: 5 },
-  { label: '10', value: 10 },
-  { label: '15', value: 15 },
-  { label: '50', value: 50 },
-]
+import { FilterObject } from '../../interfaces/FilterObject'
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -128,7 +121,11 @@ interface CustomTablePros {
   data: any[]
   columns: any[]
   headers: any[]
-  setData?: (a: any, b: any) => void
+
+  pages: number
+  page: number
+  setPage: (e: number) => void
+  getData: (e: FilterObject) => void
 }
 
 const CustomTable: React.FC<CustomTablePros> = ({
@@ -138,20 +135,18 @@ const CustomTable: React.FC<CustomTablePros> = ({
   rowsPerPage,
   setRowsPerPage,
   rowsPerPageOptions,
-  setData,
+  getData,
+  pages,
+  page,
+  setPage,
 }) => {
   const [order, setOrder] = React.useState<Order>('asc')
   const [orderBy, setOrderBy] = React.useState<string>('calories')
   const [selected, setSelected] = React.useState<readonly string[]>([])
-  const [page, setPage] = useState(1)
   const options = rowsPerPageOptions.map((item) => ({
     label: item.toString(),
     value: item,
   }))
-  //const [rowsPerPage, setRowsPerPage] = useState(options[0].value)
-
-  //const [rowsPerPageValue, setRowsPerPageValue] = useState(options[0].value)
-  //const [rowsPerPage, setRowsPerPage] = useState(5)
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -173,33 +168,16 @@ const CustomTable: React.FC<CustomTablePros> = ({
 
   const isSelected = (name: any) => selected.indexOf(name) !== -1
 
-  // let visibleRows = React.useMemo(
-  //   () =>
-  //     stableSort(data, getComparator(order, orderBy)).slice(
-  //       page * rowsPerPage,
-  //       page * rowsPerPage + rowsPerPage,
-  //     ),
-  //   [order, orderBy, page, rowsPerPage],
-  // )
-
-  // if (visibleRows.length === 0) {
-  //   visibleRows = data
-  // }
-
   let sortedData = stableSort(data, getComparator(order, orderBy))
-
-  const getData = async (filterObject: any) => {
-    const result = await getProductsApi(filterObject)
-    setData?.(result, filterObject)
-  }
 
   useEffect(() => {
     const filterObject = {
       rowsPerPage: rowsPerPage,
+      page: page,
     }
 
     getData(filterObject)
-  }, [rowsPerPage])
+  }, [rowsPerPage, page])
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -274,6 +252,7 @@ const CustomTable: React.FC<CustomTablePros> = ({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+
                 '& .MuiPagination-ul': {
                   display: 'flex',
                   alignItems: 'center',
@@ -283,7 +262,7 @@ const CustomTable: React.FC<CustomTablePros> = ({
                   },
                 },
               }}
-              count={10}
+              count={pages}
               shape="rounded"
             />
           </Grid>

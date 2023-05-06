@@ -12,6 +12,16 @@ const getProducts = async (req, res) => {
   }
 };
 
+const getProductsLength = async (req, res) => {
+  try {
+    const length = await productRepository.getProductsLength();
+
+    res.status(200).send({ length: length });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -68,7 +78,7 @@ const deleteProduct = async (req, res) => {
 
   try {
     await productRepository.deleteProducts(products);
-    console.log("here");
+
     res.status(200).json({ message: "Product(s) deleted succesfully" });
   } catch (error) {
     console.error(error);
@@ -141,6 +151,7 @@ const updateUserProductQuantity = async (req, res) => {
 
 module.exports = {
   getProducts,
+  getProductsLength,
   getProductById,
   addProduct,
   deleteProduct,

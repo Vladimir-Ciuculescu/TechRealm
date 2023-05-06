@@ -1,6 +1,6 @@
 export const ROOT_PATH = '/'
 export const PRODUCTS_PATH = '/products'
-
+export const TOTAL = '/total'
 export const MANAGE_PRODUCTS_PATH = '/manage-products'
 export const PRODUCT_PATH = '/product'
 export const CART_PATH = '/cart'

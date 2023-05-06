@@ -9,6 +9,7 @@ import DeleteProductModal from '../components/Admin/DeleteProductModal'
 import ProductsTable from '../components/Admin/ProductsTable'
 import {
   selectProductAction,
+  setPagesAction,
   setProductsAction,
   setRowsPerPageAction,
   setSelectedProductsAction,
@@ -18,7 +19,7 @@ import {
   filterObjectSelector,
   productsSelector,
 } from '../redux/manage_products/selectors'
-import { getProductsApi } from '../services/productApi'
+import { getProductsApi, getProductsLengthApi } from '../services/productApi'
 import CustomTable from '../components/common/CustomTable'
 import { MdModeEditOutline } from 'react-icons/md'
 import { FaTrash } from 'react-icons/fa'
@@ -26,6 +27,7 @@ import CustomCheckbox from '../components/common/CustomCheckbox'
 import { Product } from '../interfaces/Product'
 import { toggleDeleteProductModal } from '../redux/modals/actions'
 import { ROWS_PER_PAGE_OPTIONS } from '../consts/filters/filters'
+import { FilterObject } from '../interfaces/FilterObject'
 
 const ManageProducts = () => {
   const dispatch = useDispatch()
@@ -33,10 +35,21 @@ const ManageProducts = () => {
   const filterObject = useSelector(filterObjectSelector)
   const { palette }: any = useTheme()
   const [rowsPerPage, setRowsPerPage] = useState(filterObject.rowsPerPage)
+  const [page, setPage] = useState(1)
+  const pages = filterObject.pages
+  const [totalProducts, setTotalProducts] = useState(0)
 
   useEffect(() => {
     const fetchProducts = async () => {
       const products = await getProductsApi(filterObject)
+      const {
+        data: { length },
+      } = await getProductsLengthApi()
+
+      setTotalProducts(length)
+
+      dispatch(setPagesAction(Math.ceil(length / rowsPerPage)))
+
       dispatch(
         setProductsAction(
           products!.map((item) => ({ ...item, checked: false })),
@@ -45,6 +58,13 @@ const ManageProducts = () => {
     }
     fetchProducts()
   }, [])
+
+  useEffect(() => {
+    dispatch(setPagesAction(Math.ceil(totalProducts / rowsPerPage)))
+    setPage(1)
+  }, [rowsPerPage])
+
+  //Whenever the number of displayed rows updates, update the number of pagination pages
 
   const toggleProduct = (product: Product) => {
     if (product.checked) {
@@ -60,10 +80,15 @@ const ManageProducts = () => {
   }
 
   const setData = (data: any[], filterObject: any) => {
-    const { rowsPerPage } = filterObject
+    const { rowsPerPage, pages } = filterObject
 
     dispatch(setProductsAction(data))
     dispatch(setRowsPerPageAction(rowsPerPage))
+  }
+
+  const getData = async (filterObject: FilterObject) => {
+    const result = await getProductsApi(filterObject)
+    setData?.(result!, filterObject)
   }
 
   interface HeadCell {
@@ -205,13 +230,16 @@ const ManageProducts = () => {
 
             <Grid item>
               <CustomTable
+                pages={pages}
                 rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
                 rowsPerPage={rowsPerPage}
                 setRowsPerPage={setRowsPerPage}
                 data={products}
-                setData={setData}
+                getData={getData}
                 columns={columns}
                 headers={headers}
+                page={page}
+                setPage={setPage}
               />
             </Grid>
           </Grid>

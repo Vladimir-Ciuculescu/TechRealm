@@ -1,4 +1,4 @@
-import { PRODUCTS_PATH, USER_PATH } from '../constants/paths'
+import { PRODUCTS_PATH, TOTAL, USER_PATH } from '../constants/paths'
 import { Image } from '../interfaces/Image'
 import { Product } from '../interfaces/Product'
 import { axiosInstance } from './axiosInstance'
@@ -10,6 +10,18 @@ export const getProductsApi = async (filterObject: any = { value: 5 }) => {
       { params: filterObject },
     )
     return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getProductsLengthApi = async () => {
+  try {
+    const result = await axiosInstance.get<any, any>(
+      `/api${PRODUCTS_PATH}${TOTAL}`,
+    )
+
+    return result
   } catch (error) {
     console.log(error)
   }
