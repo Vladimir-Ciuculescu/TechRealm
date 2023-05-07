@@ -9,7 +9,11 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { MANAGE_PRODUCTS_PATH, USERS_PATH } from '../../../constants/paths'
+import {
+  MANAGE_PRODUCTS_PATH,
+  MANAGE_USERS_PATH,
+  USERS_PATH,
+} from '../../../constants/paths'
 import { userSelector } from '../../../redux/user/selectors'
 import { MdLogout, MdOutlineInventory } from 'react-icons/md'
 import { HiUsers } from 'react-icons/hi'
@@ -44,7 +48,7 @@ const AdminToolTip = () => {
     },
     {
       title: 'Users',
-      path: USERS_PATH,
+      path: MANAGE_USERS_PATH,
       icon: <HiUsers style={{ fontSize: '20px' }} />,
     },
   ]

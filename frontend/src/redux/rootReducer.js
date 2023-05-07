@@ -7,6 +7,7 @@ import { productsReducer } from './product/productReducer'
 import { userReducer } from './user/userReducer'
 import { manageProductsReducer } from './manage_products/manageProductsReducer'
 import { modalsReducer } from './modals/modalsReducer'
+import { manageUsersReducer } from './manage_users/manageUsersReducer'
 
 const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   categoryMenu: categoryMenuReducer,
   manageProducts: manageProductsReducer,
+  manageUsers: manageUsersReducer,
   modals: modalsReducer,
 })
 

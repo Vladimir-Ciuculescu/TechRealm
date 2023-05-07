@@ -2,6 +2,20 @@ const pool = require("../database/config");
 const { cryptPassword } = require("../utils/cryptPassword");
 const { generateAvatarColor } = require("../utils/generateAvatarColor");
 
+const getUsers = async () => {
+  try {
+    const result = await pool.query(`SELECT u.id, 
+                                            u.email,
+                                            u.role,
+                                            u.first_name as "firstName",
+                                            u.last_name as "lastName"
+                                            FROM users u`);
+    return result.rows;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const registerUser = async (registerData) => {
   try {
     const { firstName, lastName, email, password, gender } = registerData;
@@ -50,4 +64,4 @@ const getUserById = async (id) => {
   }
 };
 
-module.exports = { registerUser, getUserByEmail, getUserById };
+module.exports = { getUsers, registerUser, getUserByEmail, getUserById };

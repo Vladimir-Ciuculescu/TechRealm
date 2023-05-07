@@ -2,6 +2,11 @@ const userRepository = require("../repositories/userRepository");
 const { comparePassword } = require("../utils/comparePassword");
 const { generateToken } = require("../utils/generateToken");
 
+const getUsers = async (req, res) => {
+  const users = await userRepository.getUsers();
+  res.status(200).json(users);
+};
+
 const authUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -71,4 +76,4 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-module.exports = { authUser, registerUser, getCurrentUser };
+module.exports = { getUsers, authUser, registerUser, getCurrentUser };

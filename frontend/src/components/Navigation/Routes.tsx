@@ -2,6 +2,7 @@ import {
   CART_PATH,
   LOGIN_PATH,
   MANAGE_PRODUCTS_PATH,
+  MANAGE_USERS_PATH,
   PRODUCTS_PATH,
   REGISTER_PATH,
   ROOT_PATH,
@@ -11,6 +12,7 @@ import { Roles } from '../../enums/Roles'
 import CartScreen from '../../pages/CartScreen'
 import LoginScreen from '../../pages/LoginScreen'
 import ManageProducts from '../../pages/ManageProductsScreen'
+import ManageUsersScreen from '../../pages/ManageUsersScreen'
 import ProductScreen from '../../pages/ProductScreen'
 import ProductsScreen from '../../pages/ProductsScreen'
 import RegisterScreen from '../../pages/RegisterScreen'
@@ -56,6 +58,11 @@ export const routes: RoutesProps[] = [
   {
     element: <ManageProducts />,
     path: MANAGE_PRODUCTS_PATH,
+    rolesAllowed: [Roles.ADMIN],
+  },
+  {
+    element: <ManageUsersScreen />,
+    path: MANAGE_USERS_PATH,
     rolesAllowed: [Roles.ADMIN],
   },
 ]

@@ -33,8 +33,9 @@ import { useNavigate } from 'react-router-dom'
 import { PRODUCTS_PATH } from '../constants/paths'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { RiPencilFill } from 'react-icons/ri'
+import { HeadCell } from '../interfaces/HeaderCell'
 
-const ManageProducts = () => {
+const ManageProducts: React.FC<any> = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const products = useSelector(productsSelector)
@@ -95,15 +96,6 @@ const ManageProducts = () => {
   const getData = async (filterObject: FilterObject) => {
     const result = await getProductsApi(filterObject)
     setData?.(result!, filterObject)
-  }
-
-  interface HeadCell {
-    id: string
-    padding?: string
-
-    label: any
-    numeric?: boolean
-    sortable: boolean
   }
 
   const openProductModal = (product: Product) => {
@@ -246,7 +238,7 @@ const ManageProducts = () => {
         <Typography variant="h3" sx={{ fontFamily: 'Inter' }}>
           Manage Products
         </Typography>
-        <Grid container>
+        {/* <Grid container>
           <Grid item md={2}>
             <Typography>Hello there</Typography>
           </Grid>
@@ -269,6 +261,26 @@ const ManageProducts = () => {
                 setPage={setPage}
               />
             </Grid>
+          </Grid>
+        </Grid> */}
+        <Grid container direction="column" item md={12} gap="24px">
+          <Grid item>
+            <BulkActionsCard />
+          </Grid>
+
+          <Grid item>
+            <CustomTable
+              pages={pages}
+              rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+              data={products}
+              getData={getData}
+              columns={columns}
+              headers={headers}
+              page={page}
+              setPage={setPage}
+            />
           </Grid>
         </Grid>
       </Stack>

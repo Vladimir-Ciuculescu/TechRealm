@@ -1,7 +1,9 @@
 import {
   LOGIN_PATH,
+  MANAGE_USERS_PATH,
   PROFILE_PATH,
   REGISTER_PATH,
+  USERS_PATH,
   USER_PATH,
 } from '../constants/paths'
 import { RegisterData } from '../interfaces/RegisterData'
@@ -12,6 +14,15 @@ const config = {
   headers: {
     'Content-Type': 'application/json',
   },
+}
+
+export const getUsersApi = async () => {
+  try {
+    const { data } = await axiosInstance.get(`/api${USERS_PATH}`)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const registerUserApi = async (registerData: RegisterData) => {

@@ -4,9 +4,12 @@ const {
   authUser,
   registerUser,
   getCurrentUser,
+  getUsers,
 } = require("../controllers/userController");
 
 const { authMiddleware } = require("../middleware/authMiddleware");
+
+router.route("/users").get(getUsers);
 
 // ? @desc   Authenticate user and get token
 // ? @route  POST /api/users/login
