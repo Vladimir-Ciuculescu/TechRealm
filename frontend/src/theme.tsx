@@ -17,6 +17,19 @@ declare module '@mui/material/styles' {
       800: string
       900: string
     }
+    Success: {
+      25: string
+      50: string
+      100: string
+      200: string
+      300: string
+      400: string
+      500: string
+      600: string
+      700: string
+      800: string
+      900: string
+    }
     Error: {
       25: string
       50: string
@@ -406,6 +419,19 @@ const theme = createTheme({
       700: '#512da8',
       800: '#4527a0',
       900: '#311b92',
+    },
+    Success: {
+      25: '#F6FEF9',
+      50: '#ECFDF3',
+      100: '#D1FADF',
+      200: '#A6F4C5',
+      300: '#6CE9A6',
+      400: '#32D583',
+      500: '#12B76A',
+      600: '#039855',
+      700: '#027A48',
+      800: '#05603A',
+      900: '#054F31',
     },
     Error: {
       25: '#FFFBFA',
