@@ -1,6 +1,6 @@
 import { ROWS_PER_PAGE_OPTIONS } from '../../consts/filters/filters'
 import { User } from '../../interfaces/User'
-import { SET_ROWS_PER_PAGE, SET_USERS } from './actionTypes'
+import { SET_ROWS_PER_PAGE, SET_USERS, SET_USER_PAGES } from './actionTypes'
 
 interface manageUserStateProps {
   users: User[]
@@ -20,6 +20,11 @@ export const manageUsersReducer = (state = manageUsersState, action: any) => {
       return {
         ...state,
         filterObject: { ...state.filterObject, rowsPerPage: action.payload },
+      }
+    case SET_USER_PAGES:
+      return {
+        ...state,
+        filterObject: { ...state.filterObject, pages: action.payload },
       }
     default:
       return state

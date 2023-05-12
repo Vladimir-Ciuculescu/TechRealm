@@ -3,7 +3,7 @@ import { Image } from '../interfaces/Image'
 import { Product } from '../interfaces/Product'
 import { axiosInstance } from './axiosInstance'
 
-export const getProductsApi = async (filterObject: any = { value: 5 }) => {
+export const getProductsApi = async (filterObject: any) => {
   try {
     const { data } = await axiosInstance.get<Product[]>(
       `/api${PRODUCTS_PATH}`,

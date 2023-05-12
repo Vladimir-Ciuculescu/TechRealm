@@ -1,10 +1,22 @@
-const userRepository = require("../repositories/userRepository");
-const { comparePassword } = require("../utils/comparePassword");
-const { generateToken } = require("../utils/generateToken");
+const userRepository = require('../repositories/userRepository');
+const { comparePassword } = require('../utils/comparePassword');
+const { generateToken } = require('../utils/generateToken');
 
 const getUsers = async (req, res) => {
-  const users = await userRepository.getUsers();
+  const { query } = req;
+
+  const users = await userRepository.getUsers(query);
   res.status(200).json(users);
+};
+
+const getUsersLength = async (req, res) => {
+  try {
+    const length = await userRepository.getUsersLength();
+
+    res.status(200).send({ length: length });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const authUser = async (req, res) => {
@@ -24,7 +36,7 @@ const authUser = async (req, res) => {
       token: generateToken(user.id),
     });
   } else {
-    res.status(401).json({ error: "Invalid email or password" });
+    res.status(401).json({ error: 'Invalid email or password' });
   }
 };
 
@@ -34,7 +46,7 @@ const registerUser = async (req, res) => {
   const user = await userRepository.getUserByEmail(registerData.email);
 
   if (user) {
-    res.status(400).json({ error: "User already exists !" });
+    res.status(400).json({ error: 'User already exists !' });
   } else {
     registerData.firstName =
       registerData.firstName.charAt(0).toUpperCase() +
@@ -52,7 +64,7 @@ const registerUser = async (req, res) => {
       });
     } else {
       res.status(400);
-      throw new Error("Invalid user data !");
+      throw new Error('Invalid user data !');
     }
   }
 };
@@ -76,4 +88,10 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, authUser, registerUser, getCurrentUser };
+module.exports = {
+  getUsers,
+  getUsersLength,
+  authUser,
+  registerUser,
+  getCurrentUser,
+};

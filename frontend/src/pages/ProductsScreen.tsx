@@ -11,7 +11,7 @@ const HomeScreen: React.FC<any> = (props) => {
   const navigate = useNavigate()
 
   const fetchProducts = async () => {
-    const products = await getProductsApi()
+    const products = await getProductsApi({})
     if (products) {
       setProducts(products)
     }

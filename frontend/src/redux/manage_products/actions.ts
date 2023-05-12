@@ -58,7 +58,7 @@ export const setRowsPerPageAction: ActionCreator<any> = (
   rowsPerPage: number,
 ) => ({ type: SET_ROWS_PER_PAGE, payload: rowsPerPage })
 
-export const setPagesAction: ActionCreator<any> = (pages: number) => ({
+export const setProductPagesAction: ActionCreator<any> = (pages: number) => ({
   type: SET_PAGES,
   payload: pages,
 })

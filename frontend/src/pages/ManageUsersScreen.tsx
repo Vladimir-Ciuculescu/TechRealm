@@ -1,4 +1,4 @@
-import { ButtonGroup, Container, Grid, Stack, Typography } from '@mui/material'
+import { Container, Grid, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@mui/material/styles'
@@ -6,12 +6,16 @@ import CustomTable from '../components/common/CustomTable'
 import { ROWS_PER_PAGE_OPTIONS } from '../consts/filters/filters'
 import { FilterObject } from '../interfaces/FilterObject'
 import { HeadCell } from '../interfaces/HeaderCell'
-import { setUsersAction } from '../redux/manage_users/actions'
+import {
+  setRowsPerPageAction,
+  setUsersAction,
+  setUserPagesAction,
+} from '../redux/manage_users/actions'
 import {
   filterObjectSelector,
   usersSelector,
 } from '../redux/manage_users/selectors'
-import { getUsersApi } from '../services/userApi'
+import { getUsersApi, getUsersLengthApi } from '../services/userApi'
 import { User } from '../interfaces/User'
 import { BiCheck } from 'react-icons/bi'
 import { IoMdClose } from 'react-icons/io'
@@ -25,19 +29,40 @@ const ManageUsersScreen: React.FC<any> = () => {
   const users = useSelector(usersSelector)
   const [rowsPerPage, setRowsPerPage] = useState(filterObject.rowsPerPage)
   const [page, setPage] = useState(1)
+  const pages = filterObject.pages
+  const [totalUsers, setTotalUsers] = useState(0)
 
   const getUsers = async () => {
-    const result = await getUsersApi()
+    const users = await getUsersApi(filterObject)
+    const {
+      data: { length },
+    } = await getUsersLengthApi()
 
-    dispatch(setUsersAction(result))
+    setTotalUsers(length)
+
+    dispatch(setUserPagesAction(Math.ceil(length / rowsPerPage)))
+
+    dispatch(setUsersAction(users))
   }
 
   useEffect(() => {
     getUsers()
   }, [])
 
+  useEffect(() => {
+    dispatch(setUserPagesAction(Math.ceil(totalUsers / rowsPerPage)))
+    setPage(1)
+  }, [rowsPerPage])
+
+  const setData = (data: any[], filterObject: any) => {
+    const { rowsPerPage } = filterObject
+    dispatch(setUsersAction(data))
+    dispatch(setRowsPerPageAction(rowsPerPage))
+  }
+
   const getData = async (filterObject: FilterObject) => {
-    const result = await getUsersApi()
+    const result = await getUsersApi(filterObject)
+    setData(result!, filterObject)
   }
 
   const headers: HeadCell[] = [
@@ -167,7 +192,7 @@ const ManageUsersScreen: React.FC<any> = () => {
         <Grid container direction="column" item md={12} gap="24px">
           <Grid item>
             <CustomTable
-              pages={10}
+              pages={pages}
               rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}

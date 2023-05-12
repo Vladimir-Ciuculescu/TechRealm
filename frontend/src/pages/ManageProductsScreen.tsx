@@ -8,7 +8,7 @@ import DeleteProductModal from '../components/Admin/DeleteProductModal'
 import {
   selectProductAction,
   setCurrentProductAction,
-  setPagesAction,
+  setProductPagesAction,
   setProductsAction,
   setRowsPerPageAction,
   setSelectedProductsAction,
@@ -55,7 +55,7 @@ const ManageProducts: React.FC<any> = () => {
 
       setTotalProducts(length)
 
-      dispatch(setPagesAction(Math.ceil(length / rowsPerPage)))
+      dispatch(setProductPagesAction(Math.ceil(length / rowsPerPage)))
 
       dispatch(
         setProductsAction(
@@ -67,7 +67,8 @@ const ManageProducts: React.FC<any> = () => {
   }, [])
 
   useEffect(() => {
-    dispatch(setPagesAction(Math.ceil(totalProducts / rowsPerPage)))
+    console.log('here')
+    dispatch(setProductPagesAction(Math.ceil(totalProducts / rowsPerPage)))
     setPage(1)
   }, [rowsPerPage])
 
@@ -238,31 +239,6 @@ const ManageProducts: React.FC<any> = () => {
         <Typography variant="h3" sx={{ fontFamily: 'Inter' }}>
           Manage Products
         </Typography>
-        {/* <Grid container>
-          <Grid item md={2}>
-            <Typography>Hello there</Typography>
-          </Grid>
-          <Grid container direction="column" item md={10} gap="24px">
-            <Grid item>
-              <BulkActionsCard />
-            </Grid>
-
-            <Grid item>
-              <CustomTable
-                pages={pages}
-                rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
-                rowsPerPage={rowsPerPage}
-                setRowsPerPage={setRowsPerPage}
-                data={products}
-                getData={getData}
-                columns={columns}
-                headers={headers}
-                page={page}
-                setPage={setPage}
-              />
-            </Grid>
-          </Grid>
-        </Grid> */}
         <Grid container direction="column" item md={12} gap="24px">
           <Grid item>
             <BulkActionsCard />

@@ -1,15 +1,40 @@
-const pool = require("../database/config");
-const { cryptPassword } = require("../utils/cryptPassword");
-const { generateAvatarColor } = require("../utils/generateAvatarColor");
+const pool = require('../database/config');
+const { cryptPassword } = require('../utils/cryptPassword');
+const { generateAvatarColor } = require('../utils/generateAvatarColor');
 
-const getUsers = async () => {
+const getUsersLength = async () => {
   try {
-    const result = await pool.query(`SELECT u.id, 
-                                            u.email,
-                                            u.role,
-                                            u.first_name as "firstName",
-                                            u.last_name as "lastName"
-                                            FROM users u`);
+    const result = await pool.query('SELECT * FROM users u');
+
+    return result.rowCount;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getUsers = async (filterObject) => {
+  const { rowsPerPage, page } = filterObject;
+
+  console.log(rowsPerPage, page);
+
+  let query = `SELECT u.id, 
+                      u.email,
+                      u.role,
+                      u.first_name as "firstName",
+                      u.last_name as "lastName"
+                      FROM users u ORDER BY ID DESC`;
+
+  if (rowsPerPage) {
+    query += ` LIMIT ${parseInt(rowsPerPage)}`;
+  }
+
+  if (page) {
+    query += ` OFFSET ${parseInt(page - 1) * parseInt(rowsPerPage)}`;
+  }
+
+  try {
+    const result = await pool.query(query);
+
     return result.rows;
   } catch (error) {
     console.error(error);
@@ -32,7 +57,7 @@ const registerUser = async (registerData) => {
         email,
         cryptedPassword,
         gender,
-        "client",
+        'client',
         avatarColor,
       ]
     );
@@ -64,4 +89,10 @@ const getUserById = async (id) => {
   }
 };
 
-module.exports = { getUsers, registerUser, getUserByEmail, getUserById };
+module.exports = {
+  getUsers,
+  getUsersLength,
+  registerUser,
+  getUserByEmail,
+  getUserById,
+};

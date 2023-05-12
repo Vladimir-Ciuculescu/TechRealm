@@ -3,6 +3,7 @@ import {
   MANAGE_USERS_PATH,
   PROFILE_PATH,
   REGISTER_PATH,
+  TOTAL,
   USERS_PATH,
   USER_PATH,
 } from '../constants/paths'
@@ -16,10 +17,23 @@ const config = {
   },
 }
 
-export const getUsersApi = async () => {
+export const getUsersApi = async (filterObject: any) => {
   try {
-    const { data } = await axiosInstance.get(`/api${USERS_PATH}`)
+    const { data } = await axiosInstance.get(`/api${USERS_PATH}`, {
+      params: filterObject,
+    })
     return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getUsersLengthApi = async () => {
+  try {
+    const result = await axiosInstance.get<any, any>(
+      `/api${USERS_PATH}${TOTAL}`,
+    )
+    return result
   } catch (error) {
     console.log(error)
   }
