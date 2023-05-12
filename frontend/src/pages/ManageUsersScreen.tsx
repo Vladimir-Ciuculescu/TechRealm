@@ -1,4 +1,13 @@
-import { Container, Grid, Stack, Typography } from '@mui/material'
+import {
+  Container,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+  Typography,
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@mui/material/styles'
@@ -21,6 +30,18 @@ import { BiCheck } from 'react-icons/bi'
 import { IoMdClose } from 'react-icons/io'
 import { FaUserTimes, FaUserShield } from 'react-icons/fa'
 import { IoTrashBinSharp } from 'react-icons/io5'
+import { styled } from '@mui/material/styles'
+
+const ArrowTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: theme.palette.common.black,
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.black,
+  },
+}))
 
 const ManageUsersScreen: React.FC<any> = () => {
   const { palette }: any = useTheme()
@@ -154,29 +175,41 @@ const ManageUsersScreen: React.FC<any> = () => {
       render: (row: User) => (
         <Stack direction="row" gap="16px">
           {row.role === 'admin' ? (
-            <FaUserTimes
-              style={{
-                color: palette.Violet[500],
-                width: '20px',
-                height: '20px',
-              }}
-            />
+            <ArrowTooltip placement="left" title="Revoke admin">
+              <IconButton disableRipple>
+                <FaUserTimes
+                  style={{
+                    color: palette.Violet[500],
+                    width: '20px',
+                    height: '20px',
+                  }}
+                />
+              </IconButton>
+            </ArrowTooltip>
           ) : (
-            <FaUserShield
-              style={{
-                color: palette.Violet[500],
-                width: '20px',
-                height: '20px',
-              }}
-            />
+            <ArrowTooltip placement="left" title="Make admin">
+              <IconButton disableRipple>
+                <FaUserShield
+                  style={{
+                    color: palette.Violet[500],
+                    width: '20px',
+                    height: '20px',
+                  }}
+                />
+              </IconButton>
+            </ArrowTooltip>
           )}
-          <IoTrashBinSharp
-            style={{
-              width: '20px',
-              height: '20px',
-              color: palette.Violet[500],
-            }}
-          />
+          <ArrowTooltip title="Delete user" placement="right">
+            <IconButton disableRipple>
+              <IoTrashBinSharp
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  color: palette.Violet[500],
+                }}
+              />
+            </IconButton>
+          </ArrowTooltip>
         </Stack>
       ),
     },
