@@ -7,19 +7,45 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { CgClose } from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
+import { User } from '../../interfaces/User'
+import { setUsersAction } from '../../redux/manage_users/actions'
+import {
+  currentUserSelector,
+  usersSelector,
+} from '../../redux/manage_users/selectors'
 import { toggleDeleteUserModalAction } from '../../redux/modals/actions'
 import { modalsSelector } from '../../redux/modals/selectors'
+import { deleteUserApi } from '../../services/userApi'
 import CustomButton from '../common/CustomButton'
 
 const DeleteUserModal: React.FC<any> = () => {
+  const [loading, setLoading] = useState(false)
   const { deleteUserModal } = useSelector(modalsSelector)
   const dispatch = useDispatch()
+  const currentUser = useSelector(currentUserSelector)
+  const users = useSelector(usersSelector)
 
   const closeModal = () => {
     dispatch(toggleDeleteUserModalAction(false))
+  }
+
+  const deleteUser = async () => {
+    setLoading(true)
+
+    try {
+      await deleteUserApi(currentUser)
+      dispatch(
+        setUsersAction(
+          users.filter((item: User) => item.id !== currentUser.id),
+        ),
+      )
+      closeModal()
+    } catch (error) {}
+
+    setLoading(false)
   }
 
   return (
@@ -74,10 +100,9 @@ const DeleteUserModal: React.FC<any> = () => {
           </CustomButton>
 
           <CustomButton
-            onClick={() => console.log('awd')}
-            //onClick={() => submitForm()}
+            onClick={deleteUser}
             variant="contained"
-            //loading={loading}
+            loading={loading}
             sx={{
               width: '50%',
               height: '44px',

@@ -1,8 +1,8 @@
-const pool = require("../database/config");
+const pool = require('../database/config');
 
 const getProductsLength = async () => {
   try {
-    const result = await pool.query("SELECT * FROM products p");
+    const result = await pool.query('SELECT * FROM products p');
 
     return result.rowCount;
   } catch (error) {
@@ -38,7 +38,7 @@ const getProducts = async (filterObject) => {
 
     return products.rows;
   } catch (error) {
-    console.error("Error:", error);
+    console.error('Error:', error);
   }
 };
 
@@ -82,7 +82,6 @@ const editProduct = async (product) => {
   const { id, name, price, brand, category, countInStock, description } =
     product;
 
-  console.log(product);
   try {
     await pool.query(
       `UPDATE products
@@ -104,7 +103,7 @@ const editProduct = async (product) => {
 const deleteProducts = async (products) => {
   try {
     for (let i = 0; i < products.length; i++) {
-      await pool.query("DELETE FROM products WHERE id = $1", [products[i].id]);
+      await pool.query('DELETE FROM products WHERE id = $1', [products[i].id]);
     }
   } catch (error) {
     console.error(error);

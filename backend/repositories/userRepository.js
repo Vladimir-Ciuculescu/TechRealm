@@ -15,8 +15,6 @@ const getUsersLength = async () => {
 const getUsers = async (filterObject) => {
   const { rowsPerPage, page } = filterObject;
 
-  console.log(rowsPerPage, page);
-
   let query = `SELECT u.id, 
                       u.email,
                       u.role,
@@ -41,6 +39,13 @@ const getUsers = async (filterObject) => {
   }
 };
 
+const deleteUser = async (user) => {
+  try {
+    await pool.query('DELETE from USERS WHERE id = $1', [user.id]);
+  } catch (error) {
+    console.error(error);
+  }
+};
 const registerUser = async (registerData) => {
   try {
     const { firstName, lastName, email, password, gender } = registerData;
@@ -92,6 +97,7 @@ const getUserById = async (id) => {
 module.exports = {
   getUsers,
   getUsersLength,
+  deleteUser,
   registerUser,
   getUserByEmail,
   getUserById,

@@ -22,6 +22,8 @@ const CommonTooltip: React.FC<CommonTooltipProps> = styled(
     const [open, setOpen] = useState(false)
     const isLogged = useSelector(isUserLoggedSelector)
 
+    console.log(tooltipWidth)
+
     useEffect(() => {
       if (!isLogged) {
         setOpen(false)

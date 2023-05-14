@@ -19,6 +19,19 @@ const getUsersLength = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const {
+    body: { user },
+  } = req;
+
+  try {
+    await userRepository.deleteUser(user);
+    res.status(200).json({ message: 'User deleted succesfully !' });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const authUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -91,6 +104,7 @@ const getCurrentUser = async (req, res) => {
 module.exports = {
   getUsers,
   getUsersLength,
+  deleteUser,
   authUser,
   registerUser,
   getCurrentUser,

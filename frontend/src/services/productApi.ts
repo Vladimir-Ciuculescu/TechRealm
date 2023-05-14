@@ -1,4 +1,12 @@
-import { PRODUCTS_PATH, TOTAL, USER_PATH } from '../constants/paths'
+import {
+  ADD_PATH,
+  DELETE_PATH,
+  EDIT_PATH,
+  PRODUCTS_PATH,
+  PRODUCT_PATH,
+  TOTAL,
+  USER_PATH,
+} from '../constants/paths'
 import { Image } from '../interfaces/Image'
 import { Product } from '../interfaces/Product'
 import { axiosInstance } from './axiosInstance'
@@ -44,9 +52,12 @@ export const getProductApi = async (productId: number | string) => {
 
 export const addProductApi = async (product: Product) => {
   try {
-    const { data } = await axiosInstance.post(`/api${PRODUCTS_PATH}/add`, {
-      product,
-    })
+    const { data } = await axiosInstance.post(
+      `/api${PRODUCTS_PATH}${ADD_PATH}`,
+      {
+        product,
+      },
+    )
     return data
   } catch (error) {
     console.log(error)
@@ -55,7 +66,7 @@ export const addProductApi = async (product: Product) => {
 
 export const editProductApi = async (product: Product) => {
   try {
-    await axiosInstance.put(`/api${PRODUCTS_PATH}/edit`, product)
+    await axiosInstance.put(`/api${PRODUCTS_PATH}${EDIT_PATH}`, product)
   } catch (error) {
     console.log(error)
   }
@@ -63,10 +74,9 @@ export const editProductApi = async (product: Product) => {
 
 export const deleteProductApi = async (products: Product[]) => {
   try {
-    const { data } = await axiosInstance.delete<any>(`api/product/delete`, {
+    await axiosInstance.delete<any>(`api${PRODUCT_PATH}${DELETE_PATH}`, {
       data: { products: products },
     })
-    return { data }
   } catch (error) {
     console.log(error)
   }
@@ -93,7 +103,7 @@ export const addUserProductsApi = async (
   productsIds: Product[],
 ) => {
   try {
-    await axiosInstance.post<any>(`api/products/user/${userId}/get`, {
+    await axiosInstance.post<any>(`api${PRODUCTS_PATH}/user/${userId}/get`, {
       productsIds,
     })
   } catch (error) {
@@ -107,7 +117,7 @@ export const addUserProductApi = async (
   quantitiy: number,
 ) => {
   try {
-    await axiosInstance.post<any>(`api/product/user/${userId}/add`, {
+    await axiosInstance.post<any>(`api${PRODUCT_PATH}/user/${userId}/add`, {
       productId,
       quantity: quantitiy,
     })
@@ -121,9 +131,12 @@ export const deleteUserProductApi = async (
   product: Product,
 ) => {
   try {
-    await axiosInstance.delete<any>(`api/product/user/${userId}/delete`, {
-      data: { product: product },
-    })
+    await axiosInstance.delete<any>(
+      `api${PRODUCT_PATH}/user/${userId}${DELETE_PATH}`,
+      {
+        data: { product: product },
+      },
+    )
   } catch (error) {
     console.log(error)
   }
@@ -136,7 +149,7 @@ export const updateUserProductQuantityApi = async (
 ) => {
   try {
     await axiosInstance.post<any>(
-      `api/product/user/${userId}/update-quantity`,
+      `api${PRODUCT_PATH}/user/${userId}/update-quantity`,
       {
         productId: productId,
         quantity: quantity,

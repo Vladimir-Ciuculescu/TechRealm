@@ -6,6 +6,7 @@ const {
   getCurrentUser,
   getUsers,
   getUsersLength,
+  deleteUser,
 } = require('../controllers/userController');
 
 const { authMiddleware } = require('../middleware/authMiddleware');
@@ -17,6 +18,10 @@ router.route('/users').get(getUsers);
 // ? @desc Get total number of users
 // ? @desc GET /api/users/total
 router.route('/users/total').get(getUsersLength);
+
+// ? @desc Delete user
+// ? @desc DELETE /api/users/delete
+router.route('/users/delete').delete(deleteUser);
 
 // ? @desc   Authenticate user and get token
 // ? @route  POST /api/users/login

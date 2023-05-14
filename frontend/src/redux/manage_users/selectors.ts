@@ -11,3 +11,8 @@ export const filterObjectSelector: Selector<any, any> = createSelector(
   [manageUsersSelector],
   (manageUsers) => manageUsers.filterObject,
 )
+
+export const currentUserSelector: Selector<any, any> = createSelector(
+  [manageUsersSelector],
+  (manageUsers) => manageUsers.currentUser,
+)

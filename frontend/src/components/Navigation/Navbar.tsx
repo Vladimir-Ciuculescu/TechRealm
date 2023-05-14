@@ -38,6 +38,8 @@ const NavBar = (props: Props) => {
 
   const user = useSelector(userSelector)
 
+  console.log(navLinks)
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />

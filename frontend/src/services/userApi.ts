@@ -6,6 +6,7 @@ import {
   TOTAL,
   USERS_PATH,
   USER_PATH,
+  DELETE_PATH,
 } from '../constants/paths'
 import { RegisterData } from '../interfaces/RegisterData'
 import { User } from '../interfaces/User'
@@ -39,8 +40,18 @@ export const getUsersLengthApi = async () => {
   }
 }
 
+export const deleteUserApi = async (user: User) => {
+  try {
+    await axiosInstance.delete<any>(`api${USERS_PATH}${DELETE_PATH}`, {
+      data: { user: user },
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const registerUserApi = async (registerData: RegisterData) => {
-  await axiosInstance.post<any>(`/api/users${REGISTER_PATH}`, {
+  await axiosInstance.post<any>(`/api${USERS_PATH}${REGISTER_PATH}`, {
     registerData,
     config,
   })
@@ -54,7 +65,7 @@ export const loginUserApi = async (email: string, password: string) => {
   }
 
   const { data } = await axiosInstance.post<any>(
-    `/api/users${LOGIN_PATH}`,
+    `/api${USERS_PATH}${LOGIN_PATH}`,
     {
       email,
       password,

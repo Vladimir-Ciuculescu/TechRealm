@@ -5,6 +5,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Stack,
   Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
@@ -68,13 +69,7 @@ const CartTooltipProduct: React.FC<CartTooltipProductProps> = ({
         primary={cartItem.name}
         onClick={() => goToProductPage(id)}
       />
-      <ListItemText
-        sx={{ mt: -4 }}
-        primaryTypographyProps={{
-          letterSpacing: '.2rem',
-        }}
-        primary={`x${cartItem.quantity}`}
-      />
+
       <Box
         sx={{
           display: 'flex',
@@ -94,8 +89,17 @@ const CartTooltipProduct: React.FC<CartTooltipProductProps> = ({
             fontWeight: 'bold',
             fontSize: 16,
           }}
-          primary={`${(cartItem.price * cartItem.quantity).toFixed(2)}$`}
+          primary={
+            <Stack justifyContent="flex-end" alignItems="flex-end">
+              <Typography>
+                {`${(cartItem.price * cartItem.quantity).toFixed(2)} $`}
+              </Typography>
+              <Typography>{`x${cartItem.quantity}`}</Typography>
+            </Stack>
+            // `${(cartItem.price * cartItem.quantity).toFixed(2)}$`
+          }
         />
+
         {removeIcon ? (
           <IoCloseOutline
             style={{
@@ -160,9 +164,12 @@ const CartTooltip: React.FC<CartTooltipProps> = ({ products, total }) => {
           sx={{ mt: -1, mb: -2 }}
         >
           <Divider sx={{ background: '#b7b7c2', width: '100%' }} />
-          {products?.map((cartProduct: any) => (
-            <CartTooltipProduct cartItem={cartProduct} />
-          ))}
+
+          <Box sx={{ width: '100%', maxHeight: '300px', overflow: 'scroll' }}>
+            {products?.map((cartProduct: any) => (
+              <CartTooltipProduct cartItem={cartProduct} />
+            ))}
+          </Box>
           <ListItem
             sx={{
               display: 'flex',

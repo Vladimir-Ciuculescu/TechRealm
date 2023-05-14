@@ -77,15 +77,15 @@ const NavItems = () => {
       badgeValue: null,
       visibleFor: [Roles.CLIENT, Roles.UNLOGGED],
     },
-    {
-      title: 'Favorites',
-      path: FAVORITES_PATH,
-      icon: <FiHeart fontSize={30} />,
-      tooltipContent: <FavoritesTooltip />,
-      tooltipPaddingSpace: 'none',
-      badgeValue: null,
-      visibleFor: [Roles.CLIENT, Roles.UNLOGGED],
-    },
+    // {
+    //   title: 'Favorites',
+    //   path: FAVORITES_PATH,
+    //   icon: <FiHeart fontSize={30} />,
+    //   tooltipContent: <FavoritesTooltip />,
+    //   tooltipPaddingSpace: 'none',
+    //   badgeValue: null,
+    //   visibleFor: [Roles.CLIENT, Roles.UNLOGGED],
+    // },
     {
       title: 'Cart',
       path: CART_PATH,
@@ -94,6 +94,7 @@ const NavItems = () => {
         <CartTooltip total={totalProducts} products={cartProducts} />
       ),
       tooltipPaddingSpace: 0,
+      tooltipWidth: 400,
       badgeValue: totalProducts,
       visibleFor: [Roles.CLIENT, Roles.UNLOGGED],
     },

@@ -19,6 +19,7 @@ import {
   setRowsPerPageAction,
   setUsersAction,
   setUserPagesAction,
+  setCurrentUserAction,
 } from '../redux/manage_users/actions'
 import {
   filterObjectSelector,
@@ -88,7 +89,8 @@ const ManageUsersScreen: React.FC<any> = () => {
     setData(result!, filterObject)
   }
 
-  const toggleDeleteUserModal = () => {
+  const toggleDeleteUserModal = (user: User) => {
+    dispatch(setCurrentUserAction(user))
     dispatch(toggleDeleteUserModalAction(true))
   }
 
@@ -178,9 +180,9 @@ const ManageUsersScreen: React.FC<any> = () => {
     {
       id: 'actions',
       label: 'Actions',
-      render: (row: User) => (
+      render: (user: User) => (
         <Stack direction="row" gap="16px">
-          {row.role === 'admin' ? (
+          {user.role === 'admin' ? (
             <ArrowTooltip placement="left" title="Revoke admin">
               <IconButton disableRipple>
                 <FaUserTimes
@@ -206,7 +208,10 @@ const ManageUsersScreen: React.FC<any> = () => {
             </ArrowTooltip>
           )}
           <ArrowTooltip title="Delete user" placement="right">
-            <IconButton disableRipple onClick={toggleDeleteUserModal}>
+            <IconButton
+              disableRipple
+              onClick={() => toggleDeleteUserModal(user)}
+            >
               <IoTrashBinSharp
                 style={{
                   width: '20px',
