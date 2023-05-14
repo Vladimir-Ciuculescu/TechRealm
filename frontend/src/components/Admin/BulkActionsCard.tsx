@@ -19,8 +19,8 @@ import {
 import { Product } from '../../interfaces/Product'
 import { AiOutlinePlus } from 'react-icons/ai'
 import {
-  toggleProductModal,
-  toggleDeleteProductModal,
+  toggleProductModalAction,
+  toggleDeleteProductModalAction,
   setProductModalMode,
 } from '../../redux/modals/actions'
 import CustomCheckbox from '../common/CustomCheckbox'
@@ -45,7 +45,7 @@ const BulkActionsCard: React.FC<any> = () => {
   const checkedProducts = products.filter((item: Product) => item.checked)
 
   const openModal = () => {
-    dispatch(toggleProductModal(true))
+    dispatch(toggleProductModalAction(true))
     dispatch(setProductModalMode('add'))
   }
 
@@ -55,7 +55,7 @@ const BulkActionsCard: React.FC<any> = () => {
         products.filter((item: Product) => item.checked),
       ),
     )
-    dispatch(toggleDeleteProductModal(true))
+    dispatch(toggleDeleteProductModalAction(true))
   }
 
   return (

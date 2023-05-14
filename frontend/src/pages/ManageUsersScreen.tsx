@@ -31,6 +31,8 @@ import { IoMdClose } from 'react-icons/io'
 import { FaUserTimes, FaUserShield } from 'react-icons/fa'
 import { IoTrashBinSharp } from 'react-icons/io5'
 import { styled } from '@mui/material/styles'
+import DeleteUserModal from '../components/User/DeleteUserModal'
+import { toggleDeleteUserModalAction } from '../redux/modals/actions'
 
 const ArrowTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -84,6 +86,10 @@ const ManageUsersScreen: React.FC<any> = () => {
   const getData = async (filterObject: FilterObject) => {
     const result = await getUsersApi(filterObject)
     setData(result!, filterObject)
+  }
+
+  const toggleDeleteUserModal = () => {
+    dispatch(toggleDeleteUserModalAction(true))
   }
 
   const headers: HeadCell[] = [
@@ -200,7 +206,7 @@ const ManageUsersScreen: React.FC<any> = () => {
             </ArrowTooltip>
           )}
           <ArrowTooltip title="Delete user" placement="right">
-            <IconButton disableRipple>
+            <IconButton disableRipple onClick={toggleDeleteUserModal}>
               <IoTrashBinSharp
                 style={{
                   width: '20px',
@@ -239,6 +245,7 @@ const ManageUsersScreen: React.FC<any> = () => {
           </Grid>
         </Grid>
       </Stack>
+      <DeleteUserModal />
     </Container>
   )
 }

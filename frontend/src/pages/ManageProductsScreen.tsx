@@ -24,8 +24,8 @@ import CustomCheckbox from '../components/common/CustomCheckbox'
 import { Product } from '../interfaces/Product'
 import {
   setProductModalMode,
-  toggleDeleteProductModal,
-  toggleProductModal,
+  toggleDeleteProductModalAction,
+  toggleProductModalAction,
 } from '../redux/modals/actions'
 import { ROWS_PER_PAGE_OPTIONS } from '../consts/filters/filters'
 import { FilterObject } from '../interfaces/FilterObject'
@@ -83,7 +83,7 @@ const ManageProducts: React.FC<any> = () => {
   }
 
   const selectProduct = (product: Product) => {
-    dispatch(toggleDeleteProductModal(true))
+    dispatch(toggleDeleteProductModalAction(true))
     dispatch(setSelectedProductsAction([product]))
   }
 
@@ -101,7 +101,7 @@ const ManageProducts: React.FC<any> = () => {
 
   const openProductModal = (product: Product) => {
     dispatch(setProductModalMode('edit'))
-    dispatch(toggleProductModal(true))
+    dispatch(toggleProductModalAction(true))
     dispatch(setCurrentProductAction(product))
   }
 

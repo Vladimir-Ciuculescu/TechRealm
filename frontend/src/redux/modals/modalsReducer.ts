@@ -1,14 +1,25 @@
 import {
   SET_PRODUCT_MODAL_MODE,
-  TOGGLE_ADD_PRODUCT_MODAL,
   TOGGLE_DELETE_PRODUCT_MODAL,
   TOGGLE_LOGOUT_MODAL,
   TOGGLE_PRODUCT_MODAL,
+  TOGGLE_DELETE_USER_MODAL,
 } from './actionTypes'
 
-const modalsState = {
+interface modalStateProps {
+  logoutModal: boolean
+  deleteUserModal: boolean
+  productModal: {
+    visible: boolean
+    mode: string
+  }
+  deleteProductModal: boolean
+}
+
+const modalsState: modalStateProps = {
   logoutModal: false,
-  // addProductModal: false,
+
+  deleteUserModal: false,
   productModal: {
     visible: false,
     mode: '',
@@ -20,8 +31,7 @@ export const modalsReducer = (state = modalsState, action: any) => {
   switch (action.type) {
     case TOGGLE_LOGOUT_MODAL:
       return { ...state, logoutModal: action.payload }
-    // case TOGGLE_ADD_PRODUCT_MODAL:
-    //   return { ...state, addProductModal: action.payload }
+
     case TOGGLE_PRODUCT_MODAL:
       return {
         ...state,
@@ -34,6 +44,8 @@ export const modalsReducer = (state = modalsState, action: any) => {
       }
     case TOGGLE_DELETE_PRODUCT_MODAL:
       return { ...state, deleteProductModal: action.payload }
+    case TOGGLE_DELETE_USER_MODAL:
+      return { ...state, deleteUserModal: action.payload }
     default:
       return state
   }

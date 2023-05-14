@@ -31,7 +31,7 @@ import {
   getProductsApi,
 } from '../../services/productApi'
 import { modalsSelector } from '../../redux/modals/selectors'
-import { toggleProductModal } from '../../redux/modals/actions'
+import { toggleProductModalAction } from '../../redux/modals/actions'
 import { toast } from 'react-toastify'
 import { FilterObject } from '../../interfaces/FilterObject'
 import {
@@ -192,7 +192,7 @@ const AddProductModal: React.FC<any> = () => {
   }
 
   const closeModal = () => {
-    dispatch(toggleProductModal(false))
+    dispatch(toggleProductModalAction(false))
   }
 
   return (

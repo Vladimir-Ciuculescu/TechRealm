@@ -7,57 +7,24 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import { CgClose } from 'react-icons/cg'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleDeleteProductModalAction } from '../../redux/modals/actions'
-import {
-  productsSelector,
-  selectedProductsSelector,
-} from '../../redux/manage_products/selectors'
+import { toggleDeleteUserModalAction } from '../../redux/modals/actions'
 import { modalsSelector } from '../../redux/modals/selectors'
 import CustomButton from '../common/CustomButton'
-import { deleteProductApi } from '../../services/productApi'
-import { setProductsAction } from '../../redux/manage_products/actions'
-import { Product } from '../../interfaces/Product'
-import { toast } from 'react-toastify'
 
-const DeleteProductModal: React.FC<any> = () => {
+const DeleteUserModal: React.FC<any> = () => {
+  const { deleteUserModal } = useSelector(modalsSelector)
   const dispatch = useDispatch()
-  const { deleteProductModal } = useSelector(modalsSelector)
-  const selectedProducts = useSelector(selectedProductsSelector)
-  const products = useSelector(productsSelector)
-
-  const [loading, setLoading] = useState(false)
 
   const closeModal = () => {
-    dispatch(toggleDeleteProductModalAction(false))
-  }
-
-  const deleteProduct = async () => {
-    setLoading(true)
-
-    try {
-      await deleteProductApi(selectedProducts)
-
-      let selectedProductsIds = selectedProducts.map((item: Product) => item.id)
-
-      const updatedProducts = products.filter(
-        (item: Product) => !selectedProductsIds.includes(item.id),
-      )
-      dispatch(setProductsAction(updatedProducts))
-
-      closeModal()
-      setLoading(false)
-      toast.info('Product(s) succesfully deleted !')
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch(toggleDeleteUserModalAction(false))
   }
 
   return (
     <Dialog
-      open={deleteProductModal}
+      open={deleteUserModal}
       onClose={closeModal}
       sx={{ backdropFilter: 'blur(8px)' }}
       PaperProps={{
@@ -76,16 +43,14 @@ const DeleteProductModal: React.FC<any> = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="TEXT_LG_SEMIBOLD">Delete product(s)</Typography>
+          <Typography variant="TEXT_LG_SEMIBOLD">Delete user</Typography>
           <IconButton disableRipple onClick={closeModal}>
             <CgClose />
           </IconButton>
         </Stack>
       </DialogTitle>
       <DialogContent>
-        <Typography variant="TEXT_LG_REGULAR">
-          Are you sure you want to delete this product(s) ?
-        </Typography>
+        <Typography>Are you sure you want to delete this user ?</Typography>
       </DialogContent>
       <DialogActions sx={{ padding: '32px 32px 24px 32px' }}>
         <Stack
@@ -109,9 +74,10 @@ const DeleteProductModal: React.FC<any> = () => {
           </CustomButton>
 
           <CustomButton
-            loading={loading}
-            onClick={deleteProduct}
+            onClick={() => console.log('awd')}
+            //onClick={() => submitForm()}
             variant="contained"
+            //loading={loading}
             sx={{
               width: '50%',
               height: '44px',
@@ -129,4 +95,4 @@ const DeleteProductModal: React.FC<any> = () => {
   )
 }
 
-export default DeleteProductModal
+export default DeleteUserModal
