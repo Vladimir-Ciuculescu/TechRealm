@@ -42,21 +42,11 @@ const ClientTooltip: React.FC<any> = () => {
   }
 
   const options: Option[] = [
-    {
-      title: 'My account',
-      path: PROFILE_PATH,
-      icon: <MdManageAccounts style={{ fontSize: '20px' }} />,
-    },
-    {
-      title: 'Orders',
-      path: ORDERS_PATH,
-      icon: <BiPurchaseTag style={{ fontSize: '20px' }} />,
-    },
-    {
-      title: 'Favorites',
-      path: FAVORITES_PATH,
-      icon: <FiHeart style={{ fontSize: '20px' }} />,
-    },
+    // {
+    //   title: 'My account',
+    //   path: PROFILE_PATH,
+    //   icon: <MdManageAccounts style={{ fontSize: '20px' }} />,
+    // },
   ]
 
   return user.isLogged ? (

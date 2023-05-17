@@ -9,7 +9,9 @@ import {
   CART_PATH,
   FAVORITES_PATH,
   LOGIN_PATH,
+  MANAGE_PRODUCTS_PATH,
   PROFILE_PATH,
+  ROOT_PATH,
 } from '../../constants/paths'
 import { NavigationItem } from '../../interfaces/NavigationItem'
 import { setCartAction } from '../../redux/cart/actions'
@@ -52,7 +54,7 @@ const NavItems = () => {
   const navItems: NavigationItem[] = [
     {
       title: 'Admin',
-      path: PROFILE_PATH,
+      path: MANAGE_PRODUCTS_PATH,
       icon: <MdAdminPanelSettings fontSize={30} />,
       tooltipContent: <AdminToolTip />,
       tooltipPaddingSpace: 0,
